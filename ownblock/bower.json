@@ -13,6 +13,7 @@
     "angular-sanitize": "~1.2.21",
     "bootstrap": "~3.2.0",
     "angular-bootstrap": "~0.11.0",
-    "angular-ui-calendar": "~0.8.1"
+    "angular-ui-calendar": "~0.8.1",
+    "moment": "~2.8.1"
   }
 }
