@@ -18,10 +18,10 @@ class Building(models.Model):
         return self.get_full_address()
 
     def get_full_address(self):
-        return ", ".join((self.address1 + self.address2,
+        return ", ".join((self.address_1 + self.address_2,
                           self.city,
                           self.postcode,
-                          self.country.name))
+                          str(self.country.name)))
 
 
 class Apartment(models.Model):

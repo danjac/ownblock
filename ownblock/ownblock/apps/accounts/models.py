@@ -26,7 +26,7 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, email, first_name, last_name, password):
         return self.create_user(email, first_name,
-                                last_name, password, role='admin')
+                                last_name, password=password, role='admin')
 
 
 class User(AbstractBaseUser):
@@ -41,12 +41,12 @@ class User(AbstractBaseUser):
     apartment = models.ForeignKey(Apartment, null=True, blank=True)
     buildings = models.ManyToManyField(Building, blank=True)
 
-    role = models.CharField(choices=ROLES, default='resident')
+    role = models.CharField(choices=ROLES, default='resident', max_length=10)
 
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ('first_name', 'last_name', 'role')
+    REQUIRED_FIELDS = ('first_name', 'last_name')
 
     def __str__(self):
         return self.email

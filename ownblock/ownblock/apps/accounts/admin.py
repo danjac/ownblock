@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib import admin
-from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
@@ -17,7 +17,8 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'role')
+        fields = ('email', 'first_name', 'last_name', 'role',
+                  'buildings', 'apartment')
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -66,10 +67,11 @@ class CustomUserAdmin(UserAdmin):
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
     list_display = ('email', 'last_name', 'first_name', 'role')
-    list_filter = ('is_admin',)
+    list_filter = ('role',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name')}),
+        ('Buildings', {'fields': ('buildings', 'apartment')}),
         ('Permissions', {'fields': ('role',)}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -78,16 +80,17 @@ class CustomUserAdmin(UserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('email', 'first_name', 'last_name',
+                       'buildings', 'apartment',
                        'password1', 'password2')}
          ),
     )
     search_fields = ('email', 'first_name', 'last_name')
     ordering = ('last_name', 'first_name')
     filter_horizontal = ()
+    raw_id_fields = ('buildings', 'apartment')
 
 # Now register the new UserAdmin...
 admin.site.register(User, CustomUserAdmin)
 # ... and, since we're not using Django's built-in permissions,
-# unregister the Group/Permission models from admin.
+# unregister the Group model from admin.
 admin.site.unregister(Group)
-admin.site.unregister(Permission)

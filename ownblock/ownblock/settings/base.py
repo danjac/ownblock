@@ -205,6 +205,7 @@ LOCAL_APPS = (
     'ownblock.apps.organizations',
     'ownblock.apps.buildings',
     'ownblock.apps.accounts',
+    'ownblock.apps.amenities',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
