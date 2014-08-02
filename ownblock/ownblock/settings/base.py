@@ -209,6 +209,8 @@ LOCAL_APPS = (
     'ownblock.apps.documents',
     'ownblock.apps.notices',
     'ownblock.apps.organizations',
+    'ownblock.apps.parking',
+    'ownblock.apps.storage',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
