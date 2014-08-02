@@ -1,0 +1,11 @@
+ownblock/static/bower_components
+ownblock/uploads
+ownblock/media
+node_modules
+*.pyc
+*.swp
+*.db
+.env
+logs
+*.sublime-project
+*.sublime-workspace
