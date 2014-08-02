@@ -13,46 +13,35 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('password', self.gf('django.db.models.fields.CharField')(max_length=128)),
             ('last_login', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
-            ('email', self.gf('django.db.models.fields.EmailField')(max_length=160, unique=True)),
+            ('email', self.gf('django.db.models.fields.EmailField')(unique=True, max_length=160)),
             ('first_name', self.gf('django.db.models.fields.CharField')(max_length=30)),
             ('last_name', self.gf('django.db.models.fields.CharField')(max_length=30)),
             ('is_active', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('apartment', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['buildings.Apartment'], blank=True, null=True)),
-            ('role', self.gf('django.db.models.fields.CharField')(max_length=10, default='resident')),
+            ('organization', self.gf('django.db.models.fields.related.ForeignKey')(null=True, blank=True, to=orm['organizations.Organization'])),
+            ('apartment', self.gf('django.db.models.fields.related.ForeignKey')(null=True, blank=True, to=orm['buildings.Apartment'])),
+            ('role', self.gf('django.db.models.fields.CharField')(default='resident', max_length=10)),
         ))
         db.send_create_signal('accounts', ['User'])
-
-        # Adding M2M table for field buildings on 'User'
-        m2m_table_name = db.shorten_name('accounts_user_buildings')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('user', models.ForeignKey(orm['accounts.user'], null=False)),
-            ('building', models.ForeignKey(orm['buildings.building'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['user_id', 'building_id'])
 
 
     def backwards(self, orm):
         # Deleting model 'User'
         db.delete_table('accounts_user')
 
-        # Removing M2M table for field buildings on 'User'
-        db.delete_table(db.shorten_name('accounts_user_buildings'))
-
 
     models = {
         'accounts.user': {
             'Meta': {'object_name': 'User'},
-            'apartment': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['buildings.Apartment']", 'blank': 'True', 'null': 'True'}),
-            'buildings': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'to': "orm['buildings.Building']", 'symmetrical': 'False'}),
-            'email': ('django.db.models.fields.EmailField', [], {'max_length': '160', 'unique': 'True'}),
+            'apartment': ('django.db.models.fields.related.ForeignKey', [], {'null': 'True', 'blank': 'True', 'to': "orm['buildings.Apartment']"}),
+            'email': ('django.db.models.fields.EmailField', [], {'unique': 'True', 'max_length': '160'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
+            'organization': ('django.db.models.fields.related.ForeignKey', [], {'null': 'True', 'blank': 'True', 'to': "orm['organizations.Organization']"}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'role': ('django.db.models.fields.CharField', [], {'max_length': '10', 'default': "'resident'"})
+            'role': ('django.db.models.fields.CharField', [], {'default': "'resident'", 'max_length': '10'})
         },
         'buildings.apartment': {
             'Meta': {'object_name': 'Apartment'},
@@ -60,16 +49,16 @@ class Migration(SchemaMigration):
             'floor': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'number': ('django.db.models.fields.CharField', [], {'max_length': '3'}),
-            'owner_email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
-            'owner_name': ('django.db.models.fields.CharField', [], {'max_length': '60', 'blank': 'True'}),
-            'owner_phone': ('django.db.models.fields.CharField', [], {'max_length': '12', 'blank': 'True'})
+            'owner_email': ('django.db.models.fields.EmailField', [], {'blank': 'True', 'max_length': '75'}),
+            'owner_name': ('django.db.models.fields.CharField', [], {'blank': 'True', 'max_length': '60'}),
+            'owner_phone': ('django.db.models.fields.CharField', [], {'blank': 'True', 'max_length': '12'})
         },
         'buildings.building': {
             'Meta': {'object_name': 'Building'},
             'address_1': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'address_2': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
+            'address_2': ('django.db.models.fields.CharField', [], {'blank': 'True', 'max_length': '100'}),
             'city': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'country': ('django_countries.fields.CountryField', [], {'max_length': '2', 'default': "'FI'"}),
+            'country': ('django_countries.fields.CountryField', [], {'default': "'FI'", 'max_length': '2'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'organization': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['organizations.Organization']"}),
             'postcode': ('django.db.models.fields.CharField', [], {'max_length': '12'})
@@ -78,7 +67,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Organization'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100', 'unique': 'True'})
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'})
         }
     }
 

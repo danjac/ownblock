@@ -4,7 +4,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from model_utils import Choices
 
 
-from apps.buildings.models import Apartment, Building
+from apps.organizations.models import Organization
+from apps.buildings.models import Apartment
 
 
 class UserManager(BaseUserManager):
@@ -38,8 +39,8 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
 
+    organization = models.ForeignKey(Organization, null=True, blank=True)
     apartment = models.ForeignKey(Apartment, null=True, blank=True)
-    buildings = models.ManyToManyField(Building, blank=True)
 
     role = models.CharField(choices=ROLES, default='resident', max_length=10)
 
