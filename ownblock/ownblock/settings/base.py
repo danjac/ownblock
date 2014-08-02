@@ -208,6 +208,7 @@ LOCAL_APPS = (
     'ownblock.apps.buildings',
     'ownblock.apps.contacts',
     'ownblock.apps.documents',
+    'ownblock.apps.messaging',
     'ownblock.apps.notices',
     'ownblock.apps.organizations',
     'ownblock.apps.parking',
