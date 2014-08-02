@@ -4,6 +4,9 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from model_utils import Choices
 
 
+from apps.buildings.models import Apartment, Building
+
+
 class UserManager(BaseUserManager):
 
     def create_user(self, email, first_name, last_name, role, password=None):
@@ -34,6 +37,9 @@ class User(AbstractBaseUser):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
+
+    apartment = models.ForeignKey(Apartment, null=True, blank=True)
+    buildings = models.ManyToManyField(Building, blank=True)
 
     role = models.CharField(choices=ROLES, default='resident')
 

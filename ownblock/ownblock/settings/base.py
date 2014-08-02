@@ -202,6 +202,9 @@ THIRD_PARTY_APPS = (
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
+    'ownblock.apps.organizations',
+    'ownblock.apps.buildings',
+    'ownblock.apps.accounts',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -247,6 +250,10 @@ LOGGING = {
 WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 # END WSGI CONFIGURATION
 
+# AUTh CONFIGURATION
+AUTH_USER_MODEL = 'accounts.User'
+
+# END AUTH CONFIGURATION
 
 # SOUTH CONFIGURATION
 # See:
