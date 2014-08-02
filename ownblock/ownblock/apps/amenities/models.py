@@ -9,9 +9,6 @@ class Amenity(models.Model):
 
     name = models.CharField(max_length=60)
     building = models.ForeignKey(Building)
-    resident = models.ForeignKey(settings.AUTH_USER_MODEL)
-    reserved_from = models.DateTimeField()
-    reserved_to = models.DateTimeField()
     is_available = models.BooleanField(default=True)
 
     class Meta:
@@ -19,3 +16,11 @@ class Amenity(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Booking(models.Model):
+
+    amenity = models.ForeignKey(Amenity)
+    resident = models.ForeignKey(settings.AUTH_USER_MODEL)
+    reserved_from = models.DateTimeField()
+    reserved_to = models.DateTimeField()
