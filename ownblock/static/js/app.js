@@ -6,39 +6,68 @@
         'ngCookies',
         'ui.router',
         'ui.calendar',
-        'ui.bootstrap'
+        'ui.bootstrap',
+        'ownblock.controllers'
     ]).
-    config(['$stateProvider',
+    constant({
+        staticUrl: '/static'
+    }).
+    config(['$httpProvider',
+        '$stateProvider',
         '$urlRouterProvider',
+        'staticUrl',
         function(
+            $httpProvider,
             $stateProvider,
-            $urlRouterProvider) {
+            $urlRouterProvider,
+            staticUrl) {
+
+            var partialsUrl = staticUrl + '/partials/';
+
+            $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+            $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+
+            $httpProvider.interceptors.push(function($q, $location) {
+                return {
+                    'responseError': function(response) {
+                        if (response.status === 401 || response.status === 403) {
+                            $location.path("/login");
+                        }
+                        return $q.reject(response);
+                    }
+                };
+            });
 
             $urlRouterProvider.otherwise('/notices');
 
+
             $stateProvider.
+            state('login', {
+                url: '/login',
+                templateUrl: partialsUrl + 'auth/login.html'
+            }).
             state('notices', {
-                templateUrl: '/static/partials/notices/base.html'
+                templateUrl: partialsUrl + 'notices/base.html'
             }).
             state('notices.list', {
                 url: '/notices',
-                templateUrl: '/static/partials/notices/list.html'
+                templateUrl: partialsUrl + 'notices/list.html'
             }).
             state('notices.detail', {
                 url: '/notices/:id',
-                templateUrl: '/static/partials/notices/detail.html'
+                templateUrl: partialsUrl + 'notices/detail.html'
             }).
             state('messages', {
                 url: '/messages',
-                templateUrl: '/static/partials/messages.html'
+                templateUrl: partialsUrl + 'messages.html'
             }).
             state('amenities', {
                 url: '/amenities',
-                templateUrl: '/static/partials/amenities.html'
+                templateUrl: partialsUrl + 'amenities.html'
             }).
             state('calendar', {
                 url: '/calendar',
-                templateUrl: '/static/partials/calendar.html',
+                templateUrl: partialsUrl + 'calendar.html',
                 controller: function($scope) {
                     $scope.uiConfig = {
                         calendar: {
@@ -65,11 +94,11 @@
             }).
             state('documents', {
                 url: '/docs',
-                templateUrl: '/static/partials/documents.html'
+                templateUrl: partialsUrl + 'documents.html'
             }).
             state('apartment', {
                 url: '/apartment',
-                templateUrl: '/static/partials/apartment.html'
+                templateUrl: partialsUrl + 'apartment.html'
             });
         }
     ]);
