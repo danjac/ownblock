@@ -11,7 +11,8 @@ urlpatterns = patterns('',
                        url(r'^$', TemplateView.as_view(
                            template_name='index.html')),
 
-                       url(r'^api/auth', include('apps.accounts.urls')),
+                       url(r'^api/auth/', include('apps.accounts.urls')),
+                       url(r'^api/notices/', include('apps.notices.urls')),
 
                        # Uncomment the next line to enable the admin:
                        url(r'^admin/', include(admin.site.urls)),

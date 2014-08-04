@@ -4,6 +4,7 @@ ownblock/media
 node_modules
 *.pyc
 *.swp
+*.swo
 *.db
 .env
 logs
