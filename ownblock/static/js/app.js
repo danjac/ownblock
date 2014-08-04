@@ -7,7 +7,8 @@
         'ui.router',
         'ui.calendar',
         'ui.bootstrap',
-        'ownblock.controllers'
+        'ownblock.controllers',
+        'ownblock.services'
     ]).
     constant({
         staticUrl: '/static'
@@ -23,6 +24,8 @@
             staticUrl) {
 
             var partialsUrl = staticUrl + '/partials/';
+
+            //$resourceProvider.defaults.stripTrailingSlashes = false;
 
             $httpProvider.defaults.xsrfCookieName = 'csrftoken';
             $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -40,11 +43,11 @@
 
             $urlRouterProvider.otherwise('/notices');
 
-
             $stateProvider.
             state('login', {
                 url: '/login',
-                templateUrl: partialsUrl + 'auth/login.html'
+                templateUrl: partialsUrl + 'auth/login.html',
+                controller: 'LoginCtrl'
             }).
             state('notices', {
                 templateUrl: partialsUrl + 'notices/base.html'
