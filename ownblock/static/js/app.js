@@ -14,18 +14,20 @@
         staticUrl: '/static'
     }).
     config(['$httpProvider',
+        '$resourceProvider',
         '$stateProvider',
         '$urlRouterProvider',
         'staticUrl',
         function(
             $httpProvider,
+            $resourceProvider,
             $stateProvider,
             $urlRouterProvider,
             staticUrl) {
 
             var partialsUrl = staticUrl + '/partials/';
 
-            //$resourceProvider.defaults.stripTrailingSlashes = false;
+            $resourceProvider.defaults.stripTrailingSlashes = false;
 
             $httpProvider.defaults.xsrfCookieName = 'csrftoken';
             $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
