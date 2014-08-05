@@ -5,7 +5,6 @@
         return {
             user: undefined,
             authorize: function(access) {
-                console.log(this.user);
                 if (!this.user) {
                     return false;
                 }
@@ -16,6 +15,13 @@
             }
         };
     }).
+    factory('Notice', ['$resource',
+        function($resource) {
+            return $resource('/api/notices/notices/:id', {
+                id: '@id'
+            });
+        }
+    ]).
     factory('Auth', ['$resource',
         function($resource) {
             return $resource('/api/auth/', {}, {

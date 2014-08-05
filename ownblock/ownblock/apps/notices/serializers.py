@@ -16,4 +16,11 @@ class NoticeSerializer(serializers.ModelSerializer):
             'author',
             'title',
             'details',
+            'created',
         )
+
+    def save_object(self, obj, *args, **kwargs):
+        request = self.context['request']
+        obj.author = request.user
+        obj.building = request.building
+        super(NoticeSerializer, self).save_object(obj, *args, **kwargs)

@@ -49,18 +49,25 @@
             state('login', {
                 url: '/login',
                 templateUrl: partialsUrl + 'auth/login.html',
-                controller: 'LoginCtrl'
+                controller: 'auth.LoginCtrl'
             }).
             state('notices', {
                 templateUrl: partialsUrl + 'notices/base.html'
             }).
             state('notices.list', {
                 url: '/notices',
-                templateUrl: partialsUrl + 'notices/list.html'
+                templateUrl: partialsUrl + 'notices/list.html',
+                controller: 'notices.ListCtrl'
+            }).
+            state('notices.new', {
+                url: '/notices/new',
+                templateUrl: partialsUrl + 'notices/form.html',
+                controller: 'notices.NewCtrl'
             }).
             state('notices.detail', {
                 url: '/notices/:id',
-                templateUrl: partialsUrl + 'notices/detail.html'
+                templateUrl: partialsUrl + 'notices/detail.html',
+                controller: 'notices.DetailCtrl'
             }).
             state('messages', {
                 url: '/messages',

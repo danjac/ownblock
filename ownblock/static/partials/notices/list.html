@@ -1,11 +1,15 @@
+<div>
+    <a class="btn btn-primary" ui-sref="notices.new">
+        <span class="glyphicon glyphicon-plus"></span> Add notice</a>
+</div>
 <table class="table table-bordered table-striped table-hover">
     <thead>
     </thead>
     <tbody>
-        <tr>
-            <td>31 July, 2014</td>
-            <td><a ui-sref="notices.detail({id: 1})">Water will be cut off from 12pm to 1pm on Thursday for repairs</a>
+        <tr ng-repeat="notice in notices">
+            <td><a ui-sref="notices.detail({id: notice.id})">{{notice.title}}</a>
             </td>
+            <td>{{notice.created|date}}</td>
         </tr>
     </tbody>
 </table>
