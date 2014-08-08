@@ -49,7 +49,10 @@
             state('login', {
                 url: '/login',
                 templateUrl: partialsUrl + 'auth/login.html',
-                controller: 'auth.LoginCtrl'
+                controller: 'auth.LoginCtrl',
+                data: {
+                    access: 'ignore'
+                }
             }).
             state('notices', {
                 templateUrl: partialsUrl + 'notices/base.html'
