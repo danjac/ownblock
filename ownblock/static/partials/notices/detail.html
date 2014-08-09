@@ -2,6 +2,6 @@
 
 <p>{{notice.details}}</p>
 
-<button ng-click="deleteNotice()" class="btn btn-danger">
+<button ng-click="deleteNotice()" ng-show="notice.can_edit_or_delete" class="btn btn-danger">
     <span class="glyphicon glyphicon-trash"></span> Delete</button>
 

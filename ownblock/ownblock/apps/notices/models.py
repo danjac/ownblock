@@ -15,3 +15,8 @@ class Notice(TimeStampedModel):
 
     def __str__(self):
         return self.title
+
+    def can_edit_or_delete(self, user):
+        if not user.is_authenticated():
+            return False
+        return user.role == 'resident' or user.id == self.author_id

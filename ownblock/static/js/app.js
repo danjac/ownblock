@@ -113,7 +113,8 @@
             }).
             state('apartment', {
                 url: '/apartment',
-                templateUrl: partialsUrl + 'apartment.html'
+                templateUrl: partialsUrl + 'apartment.html',
+                controller: 'ApartmentCtrl'
             });
         }
     ]);

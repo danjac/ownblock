@@ -8,4 +8,4 @@ class IsAuthorOrManager(IsResidentOrManager):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return obj.author == request.user or request.user.role == 'manager'
+        return obj.can_edit_or_delete(request.user)

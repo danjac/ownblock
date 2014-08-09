@@ -36,6 +36,13 @@
 
         }
     ]).
+    controller('ApartmentCtrl', ['$scope', '$window',
+        function($scope, $window) {
+            var map = new $window.OpenLayers.Map("map");
+            map.addLayer(new $window.OpenLayers.Layer.OSM());
+            map.zoomToMaxExtent();
+        }
+    ]).
     controller('notices.ListCtrl', ['$scope', 'Notice',
         function($scope, Notice) {
             $scope.notices = [];
