@@ -43,8 +43,11 @@ class Building(models.Model):
                            field in self.tracker.fields])
         if has_changed or None in (self.latitude, self.longitude):
             location = _geolocator.geocode(self.get_full_address())
-            self.latitude, self.longitude = (location.latitude,
-                                             location.longitude)
+            if location is None:
+                self.latitude, self.longitude = (None, None)
+            else:
+                self.latitude, self.longitude = (location.latitude,
+                                                 location.longitude)
         return super().save(*args, **kwargs)
 
 
