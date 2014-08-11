@@ -168,7 +168,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'ownblock.apps.buildings.middleware.CurrentBuildingMiddleware',
+    'apps.buildings.middleware.CurrentBuildingMiddleware',
 )
 # END MIDDLEWARE CONFIGURATION
 
@@ -205,16 +205,16 @@ THIRD_PARTY_APPS = (
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
-    'ownblock.apps.accounts',
-    'ownblock.apps.amenities',
-    'ownblock.apps.buildings',
-    'ownblock.apps.contacts',
-    'ownblock.apps.documents',
-    'ownblock.apps.messaging',
-    'ownblock.apps.notices',
-    'ownblock.apps.organizations',
-    'ownblock.apps.parking',
-    'ownblock.apps.storage',
+    'apps.accounts',
+    'apps.amenities',
+    'apps.buildings',
+    'apps.contacts',
+    'apps.documents',
+    'apps.messaging',
+    'apps.notices',
+    'apps.organizations',
+    'apps.parking',
+    'apps.storage',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

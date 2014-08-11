@@ -2,7 +2,6 @@ Django==1.6.5
 django-braces==1.4.0
 django-model-utils==2.2
 logutils==0.3.3
-South==0.8.4
 ipython==2.2.0
 django-extensions==1.3.10
 django-countries==2.1.2
