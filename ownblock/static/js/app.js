@@ -54,6 +54,14 @@
                     access: 'ignore'
                 }
             }).
+            state('residents', {
+                templateUrl: partialsUrl + 'residents/base.html'
+            }).
+            state('residents.list', {
+                url: '/residents',
+                templateUrl: partialsUrl + 'residents/list.html',
+                controller: 'residents.ListCtrl'
+            }).
             state('notices', {
                 templateUrl: partialsUrl + 'notices/base.html'
             }).
@@ -77,8 +85,12 @@
                 templateUrl: partialsUrl + 'messages.html'
             }).
             state('amenities', {
+                templateUrl: partialsUrl + 'amenities/base.html'
+            }).
+            state('amenities.list', {
                 url: '/amenities',
-                templateUrl: partialsUrl + 'amenities.html'
+                templateUrl: partialsUrl + 'amenities/list.html',
+                controller: 'amenities.ListCtrl'
             }).
             state('calendar', {
                 url: '/calendar',

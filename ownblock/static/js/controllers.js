@@ -67,7 +67,26 @@
                 markers.addMarker(new OL.Marker(point, icon));
             }
             generateMap();
+            $scope.building = Session.user.building;
         }
+    ]).
+    controller('residents.ListCtrl', ['$scope', 'Resident', 'Session',
+        function($scope, Resident, Session) {
+            $scope.residents = [];
+            $scope.user = Session.user;
+            Resident.query().$promise.then(function(response) {
+                $scope.residents = response;
+            });
+        }
+    ]).
+    controller('amenities.ListCtrl', ['$scope', 'Amenity',
+        function($scope, Amenity) {
+            $scope.amenities = [];
+            Amenity.query().$promise.then(function(response) {
+                $scope.amenities = response;
+            });
+        }
+
     ]).
     controller('notices.ListCtrl', ['$scope', 'Notice',
         function($scope, Notice) {

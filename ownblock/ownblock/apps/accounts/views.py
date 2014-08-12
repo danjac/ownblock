@@ -18,7 +18,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_queryset(self, *args, **kwargs):
         return super().get_queryset(*args, **kwargs).filter(
             apartment__building=self.request.building
-        )
+        ).select_related('apartment')
 
 
 class AuthView(APIView):

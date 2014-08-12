@@ -29,6 +29,13 @@
             });
         }
     ]).
+    factory('Amenity', ['$resource',
+        function($resource) {
+            return $resource('/api/amenities/amenities/:id', {
+                id: '@id'
+            });
+        }
+    ]).
     factory('Auth', ['$resource',
         function($resource) {
             return $resource('/api/users/auth/', {}, {

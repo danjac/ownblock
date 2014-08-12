@@ -1,0 +1,18 @@
+<table class="table table-striped table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>Resident</th>
+            <th>Apartment</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="resident in residents">
+            <td>{{resident.first_name}} {{resident.last_name}}</td>
+            <td>{{resident.apartment}}</td>
+            <td>
+                <button class="btn btn-primary" ng-show="resident.id !== user.id"></button>
+            </td>
+        </tr>
+    </tbody>
+</table>

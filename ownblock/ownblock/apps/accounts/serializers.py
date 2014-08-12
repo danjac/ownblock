@@ -22,6 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'role',
+            'apartment',
         )
 
         read_only_fields = ('role', )
