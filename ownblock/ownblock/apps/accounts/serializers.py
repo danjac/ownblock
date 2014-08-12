@@ -30,5 +30,12 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_building(self, obj):
         if 'request' in self.context:
-            return self.context['request'].building
+            building = self.context['request'].building
+            if building is not None:
+                return {
+                    'id': building.id,
+                    'full_address': building.get_full_address(),
+                    'latitude': building.latitude,
+                    'longitude': building.longitude,
+                }
         return None
