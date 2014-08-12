@@ -1,16 +1,30 @@
 from django.contrib.auth import login, logout, authenticate
 
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializers import UserSerializer
+from .models import User
+from .permissions import IsResidentOrManager
+from .serializers import UserSerializer, AuthUserSerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+
+    model = User
+    serializer_class = UserSerializer
+    permission_classes = (IsResidentOrManager, )
+
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(
+            apartment__building=self.request.building
+        )
 
 
 class AuthView(APIView):
 
     def get_user_response(self, request):
-            return Response(UserSerializer(
+            return Response(AuthUserSerializer(
                 request.user, context={'request': request}).data)
 
     def get(self, request, *args, **kwargs):

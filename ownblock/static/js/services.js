@@ -22,9 +22,16 @@
             });
         }
     ]).
+    factory('Resident', ['$resource',
+        function($resource) {
+            return $resource('/api/users/residents/:id', {
+                id: '@id'
+            });
+        }
+    ]).
     factory('Auth', ['$resource',
         function($resource) {
-            return $resource('/api/auth/', {}, {
+            return $resource('/api/users/auth/', {}, {
                 login: {
                     method: 'POST'
                 },

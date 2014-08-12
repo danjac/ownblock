@@ -13,7 +13,6 @@ class UserRelatedField(serializers.RelatedField):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    building = serializers.SerializerMethodField('get_building')
 
     class Meta:
         model = User
@@ -23,10 +22,19 @@ class UserSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'role',
-            'building',
         )
 
         read_only_fields = ('role', )
+
+
+class AuthUserSerializer(UserSerializer):
+
+    """Current authenticated user"""
+
+    building = serializers.SerializerMethodField('get_building')
+
+    class Meta(UserSerializer.Meta):
+        fields = UserSerializer.Meta.fields + ('building',)
 
     def get_building(self, obj):
         if 'request' in self.context:
