@@ -1,33 +1,11 @@
-import datetime
+from django.utils import timezone
 
 from rest_framework import serializers
-
-from apps.accounts.serializers import UserRelatedField
 
 from .models import Amenity, Booking
 
 
-class BookingRelatedField(serializers.RelatedField):
-
-    class Meta:
-        model = Booking
-        fields = ('id',
-                  'resident',
-                  'amenity',
-                  'reserved_from',
-                  'reserved_to')
-
-
-class AmenitySerializer(serializers.ModelSerializer):
-    bookings = BookingRelatedField(many=True, source='booking_set')
-
-    class Meta:
-        model = Amenity
-        fields = ('id', 'name', 'is_available', 'booking_set')
-
-
 class BookingSerializer(serializers.ModelSerializer):
-    resident = UserRelatedField(source='resident', read_only=True)
 
     class Meta:
         model = Booking
@@ -36,19 +14,18 @@ class BookingSerializer(serializers.ModelSerializer):
                   'amenity',
                   'reserved_from',
                   'reserved_to')
-
-        read_only_fields = ('amenity', )
 
     def validate_amenity(self, attrs, source):
         value = attrs[source]
-        if not self.context['request'].building.amenity_set.filter(
-                pk=value, is_available=True).exists():
+        if not value.is_available:
+            raise serializers.ValidationError("Amenity not available")
+        if not value in self.context['request'].building.amenity_set.all():
             raise serializers.ValidationError("Amenity not found")
         return attrs
 
     def validate_reserved_from(self, attrs, source):
         value = attrs[source]
-        if value < datetime.datetime.now():
+        if value < timezone.now():
             raise serializers.ValidationError("Start date before present")
         return attrs
 
@@ -58,6 +35,14 @@ class BookingSerializer(serializers.ModelSerializer):
         # TBD: validate booking conflicts
         return attrs
 
-    def save_object(self, obj):
+    def save_object(self, obj, *args, **kwargs):
         obj.resident = self.context['request'].user
-        return super().save_object(obj)
+        return super().save_object(obj, *args, **kwargs)
+
+
+class AmenitySerializer(serializers.ModelSerializer):
+    booking_set = BookingSerializer(many=True)
+
+    class Meta:
+        model = Amenity
+        fields = ('id', 'name', 'is_available', 'booking_set')

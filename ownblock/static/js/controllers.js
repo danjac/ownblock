@@ -110,19 +110,24 @@
             };
 
             $scope.save = function() {
-                $scope.booking.$save().$promise.then(function() {
+                $scope.booking.$save(function() {
                     // alert this
                     $state.go('amenities.detail', {
                         id: $stateParams.id
                     });
-                }).catch(function(response) {
+                }, function(response) {
                     console.log(response);
                 });
             };
         }
     ]).
-    controller('amenities.DetailCtrl', ['$scope', '$stateParams', 'Amenity',
-        function($scope, $stateParams, Amenity) {
+    controller('amenities.DetailCtrl', ['$scope',
+        '$window',
+        '$stateParams',
+        'Amenity',
+        'Booking',
+        'Session',
+        function($scope, $window, $stateParams, Amenity, Booking, Session) {
             $scope.eventSources = [];
 
             Amenity.get({
@@ -134,16 +139,36 @@
                     function(start, end, callback) {
                         var items = [];
                         angular.forEach($scope.amenity.booking_set, function(booking) {
+                            var reservedFrom = new Date(booking.reserved_from),
+                                reservedTo = new Date(booking.reserved_to),
+                                title = reservedFrom.getHours() + ":" + reservedFrom.getMinutes() +
+                                " - " + reservedTo.getHours() + ":" + reservedTo.getMinutes(),
+                                color = Session.user.id === booking.resident ? '#800' : '#008';
+
                             items.push({
-                                start: booking.reserved_from,
-                                end: booking.reserved_to,
-                                color: '#800'
+                                start: reservedFrom,
+                                end: reservedTo,
+                                color: color,
+                                title: title,
+                                data: booking
                             });
                         });
                         return callback(items);
                     }
                 ];
             });
+
+            function cancelBooking(booking) {
+                if (booking.resident !== Session.user.id) {
+                    return;
+                }
+                if (!$window.confirm("You want to cancel this booking?")) {
+                    return;
+                }
+                Booking.remove({
+                    id: booking.id
+                });
+            }
 
             $scope.uiConfig = {
                 calendar: {
@@ -153,21 +178,22 @@
                         left: 'basicDay basicWeek month',
                         center: 'title',
                         right: 'today prev,next'
+                    },
+                    eventClick: function(calEvent) {
+                        cancelBooking(calEvent.data);
                     }
                 }
             };
 
         }
-    ]).
-    controller('notices.ListCtrl', ['$scope', 'Notice',
+    ]).controller('notices.ListCtrl', ['$scope', 'Notice',
         function($scope, Notice) {
             $scope.notices = [];
             Notice.query().$promise.then(function(response) {
                 $scope.notices = response;
             });
         }
-    ]).
-    controller('notices.DetailCtrl', ['$scope', '$stateParams', '$state', 'Notice',
+    ]).controller('notices.DetailCtrl', ['$scope', '$stateParams', '$state', 'Notice',
 
         function($scope, $stateParams, $state, Notice) {
             Notice.get({
@@ -182,8 +208,7 @@
                 });
             };
         }
-    ]).
-    controller('notices.NewCtrl', ['$scope', '$state', 'Notice',
+    ]).controller('notices.NewCtrl', ['$scope', '$state', 'Notice',
         function($scope, $state, Notice) {
             $scope.notice = new Notice();
             $scope.save = function() {
