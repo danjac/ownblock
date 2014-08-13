@@ -15,6 +15,7 @@ urlpatterns = patterns('',
                        url(r'^api/users/', include('apps.accounts.urls')),
                        url(r'^api/notices/', include('apps.notices.urls')),
                        url(r'^api/amenities/', include('apps.amenities.urls')),
+                       url(r'^api/messages/', include('apps.messaging.urls')),
 
                        # Admin site
                        url(r'^admin/', include(admin.site.urls)),

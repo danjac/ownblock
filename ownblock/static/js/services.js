@@ -15,44 +15,56 @@
             }
         };
     }).
-    factory('Notice', ['$resource',
-        function($resource) {
-            return $resource('/api/notices/notices/:id', {
-                id: '@id'
-            });
+    factory('Notifier', ['$rootScope',
+        function($rootScope) {
+            var Notifier = function() {
+                this.notifications = [];
+            };
+            Notifier.prototype.notify = function(type, msg) {
+                var notification = {
+                    type: type,
+                    message: msg
+                };
+                $rootScope.$broadcast('Notifier.new', notification);
+                this.notifications.push(notification);
+            };
+            Notifier.prototype.dismiss = function(index) {
+                this.notifications.splice(index, 1);
+            };
+            Notifier.prototype.remove = function(notification) {
+                var index = this.notifications.indexOf(notification);
+                this.dismiss(index);
+            };
+            Notifier.prototype.success = function(msg) {
+                this.notify('success', msg);
+            };
+            return new Notifier();
         }
     ]).
-    factory('Resident', ['$resource',
+    service('Api', ['$resource',
         function($resource) {
-            return $resource('/api/users/people/:id', {
-                id: '@id'
-            });
-        }
-    ]).
-    factory('Amenity', ['$resource',
-        function($resource) {
-            return $resource('/api/amenities/items/:id', {
-                id: '@id'
-            });
-        }
-    ]).
-    factory('Booking', ['$resource',
-        function($resource) {
-            return $resource('/api/amenities/bookings/:id', {
-                id: '@id'
-            });
-        }
-    ]).
-    factory('Auth', ['$resource',
-        function($resource) {
-            return $resource('/api/users/auth/', {}, {
-                login: {
-                    method: 'POST'
-                },
-                logout: {
-                    method: 'DELETE'
-                }
-            });
+            return {
+                Notice: $resource('/api/notices/notices/:id', {
+                    id: '@id'
+                }),
+                Resident: $resource('/api/users/people/:id', {
+                    id: '@id'
+                }),
+                Amenity: $resource('/api/amenities/items/:id', {
+                    id: '@id'
+                }),
+                Booking: $resource('/api/amenities/bookings/:id', {
+                    id: '@id'
+                }),
+                Auth: $resource('/api/users/auth/', {}, {
+                    login: {
+                        method: 'POST'
+                    },
+                    logout: {
+                        method: 'DELETE'
+                    }
+                })
+            };
         }
     ]);
 }());

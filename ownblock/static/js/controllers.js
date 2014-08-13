@@ -1,12 +1,20 @@
 (function() {
     'use strict';
     angular.module('ownblock.controllers', []).
-    controller('AppCtrl', ['$scope', '$state', 'Session', 'Auth',
-        function($scope, $state, Session, Auth) {
+    controller('AppCtrl', ['$scope', '$timeout', '$state', 'Session', 'Notifier', 'Api',
+        function($scope, $timeout, $state, Session, Notifier, Api) {
 
             $scope.session = Session;
+            $scope.notifier = Notifier;
 
-            Auth.get().$promise.then(function(response) {
+            $scope.$on('Notifier.new', function(event, notification) {
+                $timeout(function() {
+                    Notifier.remove(notification);
+                }, 3000);
+
+            });
+
+            Api.Auth.get().$promise.then(function(response) {
                 Session.user = response;
                 Session.loggedIn = Session.user !== undefined;
                 // set this up once we've authenticated
@@ -27,16 +35,16 @@
             });
 
             $scope.logout = function() {
-                Auth.remove({}, function() {
+                Api.Auth.remove({}, function() {
                     Session.user = undefined;
                     Session.loggedIn = false;
                     $state.go('login');
                 });
             };
 
+
         }
-    ]).
-    controller('ApartmentCtrl', ['$scope', '$window', 'Session',
+    ]).controller('ApartmentCtrl', ['$scope', '$window', 'Session',
         function($scope, $window, Session) {
             function generateMap() {
                 var OL = $window.OpenLayers,
@@ -69,32 +77,29 @@
             generateMap();
             $scope.building = Session.user.building;
         }
-    ]).
-    controller('residents.ListCtrl', ['$scope', 'Resident', 'Session',
-        function($scope, Resident, Session) {
+    ]).controller('residents.ListCtrl', ['$scope', 'Api', 'Session',
+        function($scope, Api, Session) {
             $scope.residents = [];
             $scope.user = Session.user;
-            Resident.query().$promise.then(function(response) {
+            Api.Resident.query().$promise.then(function(response) {
                 $scope.residents = response;
             });
         }
-    ]).
-    controller('amenities.ListCtrl', ['$scope', 'Amenity',
-        function($scope, Amenity) {
+    ]).controller('amenities.ListCtrl', ['$scope', 'Api',
+        function($scope, Api) {
             $scope.amenities = [];
-            Amenity.query().$promise.then(function(response) {
+            Api.Amenity.query().$promise.then(function(response) {
                 $scope.amenities = response;
             });
         }
 
-    ]).
-    controller('amenities.NewBookingCtrl', ['$scope', '$state', '$stateParams', 'Amenity', 'Booking',
-        function($scope, $state, $stateParams, Amenity, Booking) {
-            Amenity.get({
+    ]).controller('amenities.NewBookingCtrl', ['$scope', '$state', '$stateParams', 'Api',
+        function($scope, $state, $stateParams, Api) {
+            Api.Amenity.get({
                 id: $stateParams.id
             }).$promise.then(function(response) {
                 $scope.amenity = response;
-                $scope.booking = new Booking({
+                $scope.booking = new Api.Booking({
                     amenity: $scope.amenity.id,
                     reserved_from: new Date(),
                     reserved_to: new Date()
@@ -120,18 +125,17 @@
                 });
             };
         }
-    ]).
-    controller('amenities.DetailCtrl', ['$scope',
+    ]).controller('amenities.DetailCtrl', ['$scope',
         '$window',
         '$stateParams',
-        'Amenity',
-        'Booking',
+        'Api',
+        'Notifier',
         'Session',
-        function($scope, $window, $stateParams, Amenity, Booking, Session) {
+        function($scope, $window, $stateParams, Api, Notifier, Session) {
             var bookings = [];
             $scope.eventSources = [bookings];
 
-            Amenity.get({
+            Api.Amenity.get({
                 id: $stateParams.id
             }).$promise.then(function(response) {
                 $scope.amenity = response;
@@ -162,10 +166,11 @@
                 if (!$window.confirm("You want to cancel this booking?")) {
                     return;
                 }
-                Booking.remove({
+                Api.Booking.remove({
                     id: booking.id
                 });
                 bookings.splice(counter, 1);
+                Notifier.success('Your booking has been canceled');
             }
 
             $scope.uiConfig = {
@@ -184,17 +189,22 @@
             };
 
         }
-    ]).controller('notices.ListCtrl', ['$scope', 'Notice',
-        function($scope, Notice) {
+    ]).controller('notices.ListCtrl', ['$scope', 'Api',
+        function($scope, Api) {
             $scope.notices = [];
-            Notice.query().$promise.then(function(response) {
+            Api.Notice.query().$promise.then(function(response) {
                 $scope.notices = response;
             });
         }
-    ]).controller('notices.DetailCtrl', ['$scope', '$stateParams', '$state', 'Notice',
+    ]).controller('notices.DetailCtrl', [
+        '$scope',
+        '$stateParams',
+        '$state',
+        'Notifier',
+        'Api',
 
-        function($scope, $stateParams, $state, Notice) {
-            Notice.get({
+        function($scope, $stateParams, $state, Notifier, Api) {
+            Api.Notice.get({
                 id: $stateParams.id
             }).$promise.then(function(response) {
                 $scope.notice = response;
@@ -202,25 +212,26 @@
 
             $scope.deleteNotice = function() {
                 $scope.notice.$delete(function() {
+                    Notifier.success('Your notice has been removed');
                     $state.go('notices.list');
                 });
             };
         }
-    ]).controller('notices.NewCtrl', ['$scope', '$state', 'Notice',
-        function($scope, $state, Notice) {
-            $scope.notice = new Notice();
+    ]).controller('notices.NewCtrl', ['$scope', '$state', 'Notifier', 'Api',
+        function($scope, $state, Notifier, Api) {
+            $scope.notice = new Api.Notice();
             $scope.save = function() {
                 $scope.notice.$save(function() {
-                    // fire alert
+                    Notifier.success('Your notice has been published');
                     $state.go('notices.list');
                 });
             };
         }
-    ]).controller('auth.LoginCtrl', ['$scope', '$state', '$window', 'Auth', 'Session',
-        function($scope, $state, $window, Auth, Session) {
+    ]).controller('auth.LoginCtrl', ['$scope', '$state', '$window', 'Api', 'Session',
+        function($scope, $state, $window, Api, Session) {
             $scope.creds = {};
             $scope.login = function() {
-                Auth.login($scope.creds).$promise.then(function(response) {
+                Api.Auth.login($scope.creds).$promise.then(function(response) {
                     if (response.role === 'admin') {
                         $window.location.href = '/admin/';
                     }

@@ -27,7 +27,7 @@
 
             var partialsUrl = staticUrl + '/partials/';
 
-            //$resourceProvider.defaults.stripTrailingSlashes = false;
+            $resourceProvider.defaults.stripTrailingSlashes = true;
 
             $httpProvider.defaults.xsrfCookieName = 'csrftoken';
             $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -43,7 +43,6 @@
                 };
             });
 
-            $urlRouterProvider.otherwise('/notices');
 
             $stateProvider.
             state('login', {
@@ -111,6 +110,8 @@
                 templateUrl: partialsUrl + 'apartment.html',
                 controller: 'ApartmentCtrl'
             });
+
+            $urlRouterProvider.otherwise('/notices');
         }
     ]);
 }());

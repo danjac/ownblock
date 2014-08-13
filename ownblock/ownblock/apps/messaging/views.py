@@ -1,3 +1,21 @@
-from django.shortcuts import render
+from django.db.models.query import Q
 
-# Create your views here.
+from rest_framework import viewsets
+
+from apps.accounts.permissions import IsResidentOrManager
+
+from .models import Message
+from .serializers import MessageSerializer
+
+
+class MessageViewSet(viewsets.ModelViewSet):
+
+    model = Message
+    serializer_class = MessageSerializer
+    permission_classes = (IsResidentOrManager, )
+
+    def get_queryset(self):
+        return super().get_queryset().filter(
+            Q(recipient=self.request.user) |
+            Q(sender=self.request.user)
+        ).select_related('sender', 'recipient').order_by('-created')
