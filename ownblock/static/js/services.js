@@ -36,6 +36,13 @@
             });
         }
     ]).
+    factory('Booking', ['$resource',
+        function($resource) {
+            return $resource('/api/amenities/bookings/:id', {
+                id: '@id'
+            });
+        }
+    ]).
     factory('Auth', ['$resource',
         function($resource) {
             return $resource('/api/users/auth/', {}, {

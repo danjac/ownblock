@@ -1,0 +1,23 @@
+<h2>Make a reservation for {{amenity.name}}</h2>
+<form role="form" name="bookingForm" action="">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="" class="control-label">From</label>
+                <input type="text" class="form-control" datepicker-popup="dd/MM/yyyy" placeholder="Date (dd/mm/yyyy)" ng-click="isDatepickerFromOpen=true" is-open="isDatepickerFromOpen" ng-model="booking.reserved_from">
+                <timepicker name="reserved_from" ng-model="booking.reserved_from"></timepicker>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="" class="control-label">To</label>
+                <input type="text" class="form-control" datepicker-popup="dd/MM/yyyy" placeholder="Date (dd/mm/yyyy)" ng-click="isDatepickerToOpen=true" is-open="isDatepickerToOpen" ng-model="booking.reserved_to">
+                <timepicker name="reserved_to" ng-model="booking.reserved_to"></timepicker>
+            </div>
+
+
+        </div>
+    </div>
+    <button class="btn btn-primary" ng-click="save()">Save</button>
+    <a ui-sref="amenities.detail({id: amenity.id})" class="btn btn-default">Cancel</a>
+</form>

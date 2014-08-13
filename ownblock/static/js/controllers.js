@@ -94,18 +94,30 @@
                 id: $stateParams.id
             }).$promise.then(function(response) {
                 $scope.amenity = response;
+                $scope.booking = new Booking({
+                    amenity: $scope.amenity.id,
+                    reserved_from: new Date(),
+                    reserved_to: new Date()
+                });
             });
 
-            $scope.booking = new Booking({
-                amenity: $scope.amenity.id
-            });
+            $scope.timepickerOptions = {
+                showMeridian: false,
+                disabled: false
+            };
+            $scope.datepickerOptions = {
+                disabled: false
+            };
+
             $scope.save = function() {
                 $scope.booking.$save().$promise.then(function() {
                     // alert this
                     $state.go('amenities.detail', {
                         id: $stateParams.id
                     });
-                }).catch(function(response) {});
+                }).catch(function(response) {
+                    console.log(response);
+                });
             };
         }
     ]).

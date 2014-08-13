@@ -1,3 +1,5 @@
 <h2>{{amenity.name}}</h2>
-<div class="calendar" ui-calendar="uiConfig.calendar" ng-model="eventSources" calendar="calendar"></div>
+
+<div ng-if="amenity.is_available" class="calendar" ui-calendar="uiConfig.calendar" ng-model="eventSources" calendar="calendar"></div>
+<div ng-if="amenity && !amenity.is_available">Sorry, this amenity is currently unavailable.</div>
 

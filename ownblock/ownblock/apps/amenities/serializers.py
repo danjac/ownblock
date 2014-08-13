@@ -42,7 +42,7 @@ class BookingSerializer(serializers.ModelSerializer):
     def validate_amenity(self, attrs, source):
         value = attrs[source]
         if not self.context['request'].building.amenity_set.filter(
-                pk=value).exists():
+                pk=value, is_available=True).exists():
             raise serializers.ValidationError("Amenity not found")
         return attrs
 
@@ -57,3 +57,7 @@ class BookingSerializer(serializers.ModelSerializer):
             raise serializers.ValdiationError("Start after end")
         # TBD: validate booking conflicts
         return attrs
+
+    def save_object(self, obj):
+        obj.resident = self.context['request'].user
+        return super().save_object(obj)
