@@ -24,14 +24,14 @@
     ]).
     factory('Resident', ['$resource',
         function($resource) {
-            return $resource('/api/users/residents/:id', {
+            return $resource('/api/users/people/:id', {
                 id: '@id'
             });
         }
     ]).
     factory('Amenity', ['$resource',
         function($resource) {
-            return $resource('/api/amenities/amenities/:id', {
+            return $resource('/api/amenities/items/:id', {
                 id: '@id'
             });
         }
