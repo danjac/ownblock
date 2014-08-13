@@ -47,6 +47,9 @@
                 Notice: $resource('/api/notices/notices/:id', {
                     id: '@id'
                 }),
+                Message: $resource('/api/messages/messages/:id', {
+                    id: '@id'
+                }),
                 Resident: $resource('/api/users/people/:id', {
                     id: '@id'
                 }),

@@ -61,6 +61,19 @@
                 templateUrl: partialsUrl + 'residents/list.html',
                 controller: 'residents.ListCtrl'
             }).
+            state('messages', {
+                templateUrl: partialsUrl + 'messages/base.html'
+            }).
+            state('messages.list', {
+                url: '/messages',
+                templateUrl: partialsUrl + 'messages/list.html',
+                controller: 'messages.ListCtrl'
+            }).
+            state('messages.send', {
+                url: '/messages/:recipient',
+                templateUrl: partialsUrl + 'messages/form.html',
+                controller: 'messages.SendCtrl'
+            }).
             state('notices', {
                 templateUrl: partialsUrl + 'notices/base.html'
             }).
@@ -78,10 +91,6 @@
                 url: '/notices/:id',
                 templateUrl: partialsUrl + 'notices/detail.html',
                 controller: 'notices.DetailCtrl'
-            }).
-            state('messages', {
-                url: '/messages',
-                templateUrl: partialsUrl + 'messages.html'
             }).
             state('amenities', {
                 templateUrl: partialsUrl + 'amenities/base.html'

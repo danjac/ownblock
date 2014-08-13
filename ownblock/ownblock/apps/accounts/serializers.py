@@ -14,6 +14,8 @@ class UserRelatedField(serializers.RelatedField):
 
 class UserSerializer(serializers.ModelSerializer):
 
+    full_name = serializers.SerializerMethodField('get_full_name')
+
     class Meta:
         model = User
 
@@ -23,9 +25,13 @@ class UserSerializer(serializers.ModelSerializer):
             'last_name',
             'role',
             'apartment',
+            'full_name',
         )
 
         read_only_fields = ('role', )
+
+    def get_full_name(self, obj):
+        return obj.get_full_name()
 
 
 class AuthUserSerializer(UserSerializer):
@@ -40,7 +46,7 @@ class AuthUserSerializer(UserSerializer):
     def get_building(self, obj):
         if 'request' in self.context:
             building = self.context['request'].building
-            if building is not None:
+            if building:
                 return {
                     'id': building.id,
                     'full_address': building.get_full_address(),

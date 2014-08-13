@@ -8,7 +8,7 @@ from .models import Message
 class MessageSerializer(serializers.ModelSerializer):
 
     sender = UserSerializer(source='sender', read_only=True)
-    recipient = UserSerializer(source='recipient')
+    recipient_detail = UserSerializer(source='recipient', read_only=True)
 
     class Meta:
         model = Message
@@ -16,12 +16,15 @@ class MessageSerializer(serializers.ModelSerializer):
             'id',
             'sender',
             'recipient',
+            'recipient_detail',
             'header',
             'details',
             'is_read',
             'parent',
             'created',
         )
+
+        read_only_fields = ('is_read', 'created',)
 
     def validate_recipient(self, attrs, source):
         recipient = attrs[source]
@@ -33,6 +36,6 @@ class MessageSerializer(serializers.ModelSerializer):
             )
         return attrs
 
-    def save_object(self, obj):
+    def save_object(self, obj, *args, **kwargs):
         obj.sender = self.context['request'].user
-        return super().save_object(obj)
+        return super().save_object(obj, *args, **kwargs)

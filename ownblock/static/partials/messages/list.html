@@ -1,0 +1,34 @@
+<tabset>
+
+    <tab heading="Inbox">
+        <table class="table table-bordered table-striped table-hover">
+            <tbody>
+                <tr ng-repeat="message in receivedMessages">
+                    <td><a href>{{message.header}}</a>
+                    </td>
+                    <td>{{message.sender.full_name}}
+                    </td>
+                    <td>{{message.created|date:"short"}}</td>
+                    <td>
+                        <a href="" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-share-alt"></span> Reply
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </tab>
+    <tab heading="Outbox">
+        <table class="table table-bordered table-striped table-hover">
+            <tbody>
+                <tr ng-repeat="message in sentMessages">
+                    <td><a href>{{message.header}}</a>
+                    </td>
+                    <td>{{message.created|date:"short"}}</td>
+                    <td>{{message.recipient_detail.full_name}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </tab>
+</tabset>

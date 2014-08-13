@@ -227,6 +227,37 @@
                 });
             };
         }
+    ]).controller('messages.ListCtrl', ['$scope', 'Api', 'Session',
+        function($scope, Api, Session) {
+            $scope.receivedMessages = [];
+            $scope.sentMessages = [];
+            Api.Message.query().$promise.then(function(response) {
+                angular.forEach(response, function(message) {
+                    if (message.recipient === Session.user.id) {
+                        $scope.receivedMessages.push(message);
+                    } else {
+                        $scope.sentMessages.push(message);
+                    }
+                });
+            });
+        }
+    ]).controller('messages.SendCtrl', [
+        '$scope',
+        '$state',
+        '$stateParams',
+        'Api',
+        'Notifier',
+        function($scope, $state, $stateParams, Api, Notifier) {
+            $scope.message = new Api.Message({
+                recipient: $stateParams.recipient
+            });
+            $scope.send = function() {
+                $scope.message.$save(function() {
+                    Notifier.success('Your message has been sent');
+                    $state.go('messages.list');
+                }, function(response) {});
+            };
+        }
     ]).controller('auth.LoginCtrl', ['$scope', '$state', '$window', 'Api', 'Session',
         function($scope, $state, $window, Api, Session) {
             $scope.creds = {};
