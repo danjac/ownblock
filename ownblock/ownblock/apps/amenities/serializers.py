@@ -1,3 +1,4 @@
+from django.db.models.query import Q
 from django.utils import timezone
 
 from rest_framework import serializers
@@ -14,6 +15,7 @@ class BookingSerializer(serializers.ModelSerializer):
                   'amenity',
                   'reserved_from',
                   'reserved_to')
+        read_only_fields = ('resident',)
 
     def validate_amenity(self, attrs, source):
         value = attrs[source]
@@ -32,7 +34,13 @@ class BookingSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs['reserved_from'] > attrs['reserved_to']:
             raise serializers.ValdiationError("Start after end")
-        # TBD: validate booking conflicts
+        bookings = attrs['amenity'].booking_set.all()
+        date_range = (attrs['reserved_from'], attrs['reserved_to'])
+        if bookings.filter(
+            Q(reserved_from__range=date_range) |
+                Q(reserved_to__range=date_range)).exists():
+            raise serializers.ValidationError("Booking conflict")
+
         return attrs
 
     def save_object(self, obj, *args, **kwargs):

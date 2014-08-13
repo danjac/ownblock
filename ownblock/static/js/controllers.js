@@ -128,37 +128,34 @@
         'Booking',
         'Session',
         function($scope, $window, $stateParams, Amenity, Booking, Session) {
-            $scope.eventSources = [];
+            var bookings = [];
+            $scope.eventSources = [bookings];
 
             Amenity.get({
                 id: $stateParams.id
             }).$promise.then(function(response) {
                 $scope.amenity = response;
-                $scope.eventSources = [
+                $scope.bookings = [];
 
-                    function(start, end, callback) {
-                        var items = [];
-                        angular.forEach($scope.amenity.booking_set, function(booking) {
-                            var reservedFrom = new Date(booking.reserved_from),
-                                reservedTo = new Date(booking.reserved_to),
-                                title = reservedFrom.getHours() + ":" + reservedFrom.getMinutes() +
-                                " - " + reservedTo.getHours() + ":" + reservedTo.getMinutes(),
-                                color = Session.user.id === booking.resident ? '#800' : '#008';
+                angular.forEach($scope.amenity.booking_set, function(booking, counter) {
+                    var reservedFrom = new Date(booking.reserved_from),
+                        reservedTo = new Date(booking.reserved_to),
+                        title = reservedFrom.getHours() + ":" + reservedFrom.getMinutes() +
+                        " - " + reservedTo.getHours() + ":" + reservedTo.getMinutes(),
+                        color = Session.user.id === booking.resident ? '#800' : '#008';
 
-                            items.push({
-                                start: reservedFrom,
-                                end: reservedTo,
-                                color: color,
-                                title: title,
-                                data: booking
-                            });
-                        });
-                        return callback(items);
-                    }
-                ];
+                    bookings.push({
+                        start: reservedFrom,
+                        end: reservedTo,
+                        color: color,
+                        title: title,
+                        data: booking,
+                        index: counter
+                    });
+                });
             });
 
-            function cancelBooking(booking) {
+            function cancelBooking(booking, counter) {
                 if (booking.resident !== Session.user.id) {
                     return;
                 }
@@ -168,6 +165,7 @@
                 Booking.remove({
                     id: booking.id
                 });
+                bookings.splice(counter, 1);
             }
 
             $scope.uiConfig = {
@@ -180,7 +178,7 @@
                         right: 'today prev,next'
                     },
                     eventClick: function(calEvent) {
-                        cancelBooking(calEvent.data);
+                        cancelBooking(calEvent.data, calEvent.index);
                     }
                 }
             };
