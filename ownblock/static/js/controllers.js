@@ -88,6 +88,37 @@
         }
 
     ]).
+    controller('amenities.DetailCtrl', ['$scope', '$stateParams', 'Amenity',
+        function($scope, $stateParams, Amenity) {
+            Amenity.get({
+                id: $stateParams.id,
+            }).$promise.then(function(response) {
+                $scope.amenity = response;
+            });
+
+            $scope.uiConfig = {
+                calendar: {
+                    height: 450,
+                    editable: false,
+                    header: {
+                        left: 'basicDay basicWeek month',
+                        center: 'title',
+                        right: 'today prev,next'
+                    }
+                }
+            };
+
+            $scope.eventSources = [
+                // fetch bookings
+                function(start, end, callback) {
+                    var items = [];
+                    return callback(items);
+                }
+            ];
+
+
+        }
+    ]).
     controller('notices.ListCtrl', ['$scope', 'Notice',
         function($scope, Notice) {
             $scope.notices = [];

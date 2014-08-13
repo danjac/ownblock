@@ -92,32 +92,10 @@
                 templateUrl: partialsUrl + 'amenities/list.html',
                 controller: 'amenities.ListCtrl'
             }).
-            state('calendar', {
-                url: '/calendar',
-                templateUrl: partialsUrl + 'calendar.html',
-                controller: function($scope) {
-                    $scope.uiConfig = {
-                        calendar: {
-                            height: 450,
-                            editable: false,
-                            header: {
-                                left: 'basicDay basicWeek month',
-                                center: 'title',
-                                right: 'today prev,next'
-                            }
-                        }
-                    };
-
-                    $scope.eventSources = [
-
-                        function(start, end, callback) {
-                            var items = [];
-                            return callback(items);
-                        }
-                    ];
-
-
-                }
+            state('amenities.detail', {
+                url: '/amenities/:id',
+                templateUrl: partialsUrl + 'amenities/detail.html',
+                controller: 'amenities.DetailCtrl'
             }).
             state('documents', {
                 url: '/docs',
