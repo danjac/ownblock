@@ -201,14 +201,17 @@
         '$stateParams',
         '$state',
         'Notifier',
+        'Session',
         'Api',
 
-        function($scope, $stateParams, $state, Notifier, Api) {
+        function($scope, $stateParams, $state, Notifier, Session, Api) {
             Api.Notice.get({
                 id: $stateParams.id
             }).$promise.then(function(response) {
                 $scope.notice = response;
             });
+
+            $scope.session = Session;
 
             $scope.deleteNotice = function() {
                 $scope.notice.$delete(function() {
@@ -250,6 +253,28 @@
         function($scope, $state, $stateParams, Api, Notifier) {
             $scope.message = new Api.Message({
                 recipient: $stateParams.recipient
+            });
+            $scope.send = function() {
+                $scope.message.$save(function() {
+                    Notifier.success('Your message has been sent');
+                    $state.go('messages.list');
+                }, function(response) {});
+            };
+        }
+    ]).controller('messages.ReplyCtrl', [
+        '$scope',
+        '$state',
+        '$stateParams',
+        'Api',
+        'Notifier',
+        function($scope, $state, $stateParams, Api, Notifier) {
+            $scope.message = new Api.Message();
+            Api.Message.get({
+                id: $stateParams.parent
+            }).$promise.then(function(response) {
+                $scope.message.header = "Re: " + response.header;
+                $scope.message.parent = response.id;
+                $scope.message.recipient = response.sender.id;
             });
             $scope.send = function() {
                 $scope.message.$save(function() {

@@ -10,7 +10,7 @@
                     </td>
                     <td>{{message.created|date:"short"}}</td>
                     <td>
-                        <a href="" class="btn btn-primary">
+                        <a ui-sref="messages.reply({parent: message.id})" class="btn btn-primary">
                             <span class="glyphicon glyphicon-share-alt"></span> Reply
                         </a>
                     </td>

@@ -70,9 +70,14 @@
                 controller: 'messages.ListCtrl'
             }).
             state('messages.send', {
-                url: '/messages/:recipient',
+                url: '/messages/send/:recipient',
                 templateUrl: partialsUrl + 'messages/form.html',
                 controller: 'messages.SendCtrl'
+            }).
+            state('messages.reply', {
+                url: '/messages/reply/:parent',
+                templateUrl: partialsUrl + 'messages/form.html',
+                controller: 'messages.ReplyCtrl'
             }).
             state('notices', {
                 templateUrl: partialsUrl + 'notices/base.html'

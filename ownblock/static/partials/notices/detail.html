@@ -2,6 +2,11 @@
 
 <p>{{notice.details}}</p>
 
+<p>{{notice.author.full_name}}
+    <a ng-show="notice.author.id !== session.user.id" ui-sref="messages.send({recipient:notice.author.id})" class="btn btn-default">
+        <span class="glyphicon glyphicon-send"></span> Send message</a>
+</p>
+
 <button ng-click="deleteNotice()" ng-show="notice.can_edit_or_delete" class="btn btn-danger">
     <span class="glyphicon glyphicon-trash"></span> Delete</button>
 
