@@ -59,6 +59,9 @@
                 Booking: $resource('/api/amenities/bookings/:id', {
                     id: '@id'
                 }),
+                Apartment: $resource('/api/buildings/apartments/:id', {
+                    id: '@id'
+                }),
                 Auth: $resource('/api/users/auth/', {}, {
                     login: {
                         method: 'POST'

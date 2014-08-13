@@ -1,7 +1,13 @@
 (function() {
     'use strict';
     angular.module('ownblock.controllers', []).
-    controller('AppCtrl', ['$scope', '$timeout', '$state', 'Session', 'Notifier', 'Api',
+    controller('AppCtrl', [
+        '$scope',
+        '$timeout',
+        '$state',
+        'Session',
+        'Notifier',
+        'Api',
         function($scope, $timeout, $state, Session, Notifier, Api) {
 
             $scope.session = Session;
@@ -44,8 +50,8 @@
 
 
         }
-    ]).controller('ApartmentCtrl', ['$scope', '$window', 'Session',
-        function($scope, $window, Session) {
+    ]).controller('ApartmentCtrl', ['$scope', '$window', 'Api', 'Session',
+        function($scope, $window, Api, Session) {
             function generateMap() {
                 var OL = $window.OpenLayers,
                     map = new OL.Map("map", {
@@ -74,8 +80,14 @@
                 map.setCenter(point, 15);
                 markers.addMarker(new OL.Marker(point, icon));
             }
+
             generateMap();
+
             $scope.building = Session.user.building;
+            $scope.apartments = [];
+            Api.Apartment.query().$promise.then(function(response) {
+                $scope.apartments = response;
+            });
         }
     ]).controller('residents.ListCtrl', ['$scope', 'Api', 'Session',
         function($scope, Api, Session) {
@@ -268,12 +280,16 @@
         'Api',
         'Notifier',
         function($scope, $state, $stateParams, Api, Notifier) {
-            $scope.message = new Api.Message();
+            $scope.message = new Api.Message({
+                parent: $stateParams.parent
+            });
             Api.Message.get({
                 id: $stateParams.parent
             }).$promise.then(function(response) {
                 $scope.message.header = "Re: " + response.header;
-                $scope.message.parent = response.id;
+                if (response.details) {
+                    $scope.message.details = "> " + response.details;
+                }
                 $scope.message.recipient = response.sender.id;
             });
             $scope.send = function() {
@@ -283,7 +299,12 @@
                 }, function(response) {});
             };
         }
-    ]).controller('auth.LoginCtrl', ['$scope', '$state', '$window', 'Api', 'Session',
+    ]).controller('auth.LoginCtrl', [
+        '$scope',
+        '$state',
+        '$window',
+        'Api',
+        'Session',
         function($scope, $state, $window, Api, Session) {
             $scope.creds = {};
             $scope.login = function() {
