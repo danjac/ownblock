@@ -83,11 +83,40 @@
 
             generateMap();
 
+            $scope.session = Session;
             $scope.building = Session.user.building;
             $scope.apartments = [];
             Api.Apartment.query().$promise.then(function(response) {
                 $scope.apartments = response;
+                angular.forEach($scope.apartments, function(apt) {
+                    if (apt.id === Session.user.apartment) {
+                        $scope.apartment = apt;
+                        $scope.apartment_name = "My apartment";
+                        return;
+                    }
+                });
             });
+            $scope.tabs = {
+                building: {
+                    active: true
+                },
+                apartment: {
+                    active: false
+                },
+                apartments: {
+                    active: false
+                }
+            };
+            $scope.getApartment = function(id) {
+                angular.forEach($scope.apartments, function(apt) {
+                    if (apt.id === id) {
+                        $scope.apartment = apt;
+                        $scope.apartment_name = apt.id === Session.user.apartment ? 'My apartment' : 'Apartment ' + apt.number + "/" + apt.floor;
+                        $scope.tabs.apartment.active = true;
+                        return;
+                    }
+                });
+            };
         }
     ]).controller('residents.ListCtrl', ['$scope', 'Api', 'Session',
         function($scope, Api, Session) {
