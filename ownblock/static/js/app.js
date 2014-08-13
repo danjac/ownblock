@@ -97,6 +97,11 @@
                 templateUrl: partialsUrl + 'amenities/detail.html',
                 controller: 'amenities.DetailCtrl'
             }).
+            state('amenities.newBooking', {
+                url: '/amenities/:id/bookings/new',
+                templateUrl: partialsUrl + 'amenities/bookingForm.html',
+                controller: 'amenities.NewBookingCtrl'
+            }).
             state('documents', {
                 url: '/docs',
                 templateUrl: partialsUrl + 'documents.html'

@@ -88,12 +88,49 @@
         }
 
     ]).
-    controller('amenities.DetailCtrl', ['$scope', '$stateParams', 'Amenity',
-        function($scope, $stateParams, Amenity) {
+    controller('amenities.NewBookingCtrl', ['$scope', '$state', '$stateParams', 'Amenity', 'Booking',
+        function($scope, $state, $stateParams, Amenity, Booking) {
             Amenity.get({
-                id: $stateParams.id,
+                id: $stateParams.id
             }).$promise.then(function(response) {
                 $scope.amenity = response;
+            });
+
+            $scope.booking = new Booking({
+                amenity: $scope.amenity.id
+            });
+            $scope.save = function() {
+                $scope.booking.$save().$promise.then(function() {
+                    // alert this
+                    $state.go('amenities.detail', {
+                        id: $stateParams.id
+                    });
+                }).catch(function(response) {});
+            };
+        }
+    ]).
+    controller('amenities.DetailCtrl', ['$scope', '$stateParams', 'Amenity',
+        function($scope, $stateParams, Amenity) {
+            $scope.eventSources = [];
+
+            Amenity.get({
+                id: $stateParams.id
+            }).$promise.then(function(response) {
+                $scope.amenity = response;
+                $scope.eventSources = [
+
+                    function(start, end, callback) {
+                        var items = [];
+                        angular.forEach($scope.amenity.booking_set, function(booking) {
+                            items.push({
+                                start: booking.reserved_from,
+                                end: booking.reserved_to,
+                                color: '#800'
+                            });
+                        });
+                        return callback(items);
+                    }
+                ];
             });
 
             $scope.uiConfig = {
@@ -107,15 +144,6 @@
                     }
                 }
             };
-
-            $scope.eventSources = [
-                // fetch bookings
-                function(start, end, callback) {
-                    var items = [];
-                    return callback(items);
-                }
-            ];
-
 
         }
     ]).

@@ -15,9 +15,9 @@
                 <span class="label label-danger" ng-show="!amenity.is_available">Not Available</span>
             </td>
             <td>
-                <button class="btn btn-primary btn-sm" ng-show="amenity.is_available">
+                <a class="btn btn-primary btn-sm" ng-show="amenity.is_available" ui-sref="amenities.newBooking({id: amenity.id})">
                     <span class="glyphicon glyphicon-calendar"></span> Reserve
-                </button>
+                </a>
             </td>
         </tr>
     </tbody>
