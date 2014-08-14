@@ -1,6 +1,7 @@
 from django.db import models
 
 from geopy.geocoders import Nominatim
+from geopy.exc import GeopyError
 
 from model_utils import FieldTracker
 
@@ -42,12 +43,16 @@ class Building(models.Model):
         has_changed = any([self.tracker.has_changed(field) for
                            field in self.tracker.fields])
         if has_changed or None in (self.latitude, self.longitude):
-            location = _geolocator.geocode(self.get_full_address())
-            if location is None:
-                self.latitude, self.longitude = (None, None)
-            else:
-                self.latitude, self.longitude = (location.latitude,
-                                                 location.longitude)
+            try:
+                location = _geolocator.geocode(self.get_full_address(),
+                                               timeout=10.0)
+                if location is None:
+                    self.latitude, self.longitude = (None, None)
+                else:
+                    self.latitude, self.longitude = (location.latitude,
+                                                     location.longitude)
+            except GeopyError:
+                pass
         return super().save(*args, **kwargs)
 
 

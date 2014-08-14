@@ -9,9 +9,9 @@
     <tbody>
         <tr ng-repeat="resident in residents">
             <td>{{resident.first_name}} {{resident.last_name}}</td>
-            <td>{{resident.apartment}}</td>
+            <td>{{resident.apartment.number}} / Floor {{ resident.apartment.floor}}</td>
             <td>
-                <a ui-sref="messages.send({recipient: resident.id})" class="btn btn-primary btn-sm" ng-show="resident.id !== user.id">
+                <a ui-sref="site.messages.send({recipient: resident.id})" class="btn btn-primary btn-sm" ng-show="resident.id !== user.id">
                     <span class="glyphicon glyphicon-send"></span> Send message</a>
             </td>
         </tr>

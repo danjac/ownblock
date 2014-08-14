@@ -25,7 +25,8 @@
             $urlRouterProvider,
             staticUrl) {
 
-            var partialsUrl = staticUrl + '/partials/';
+            var partialsUrl = staticUrl + '/partials/',
+                defaultBaseTemplate = '<div ui-view></div>';
 
             $resourceProvider.defaults.stripTrailingSlashes = true;
 
@@ -43,8 +44,18 @@
                 };
             });
 
-
             $stateProvider.
+            state('site', {
+                'abstract': true,
+                template: defaultBaseTemplate,
+                resolve: {
+                    auth: ['auth',
+                        function(auth) {
+                            return auth.authorize();
+                        }
+                    ]
+                }
+            }).
             state('login', {
                 url: '/login',
                 templateUrl: partialsUrl + 'auth/login.html',
@@ -54,7 +65,8 @@
                 }
             }).
             state('residents', {
-                templateUrl: partialsUrl + 'residents/base.html'
+                template: defaultBaseTemplate,
+                parent: 'site'
             }).
             state('residents.list', {
                 url: '/residents',
@@ -62,12 +74,13 @@
                 controller: 'residents.ListCtrl'
             }).
             state('messages', {
-                templateUrl: partialsUrl + 'messages/base.html'
+                templateUrl: partialsUrl + 'messages/base.html',
+                parent: 'site'
             }).
             state('messages.list', {
                 url: '/messages',
                 templateUrl: partialsUrl + 'messages/list.html',
-                controller: 'messages.ListCtrl'
+                controller: 'messages.ListCtrl',
             }).
             state('messages.send', {
                 url: '/messages/send/:recipient',
@@ -80,7 +93,8 @@
                 controller: 'messages.ReplyCtrl'
             }).
             state('notices', {
-                templateUrl: partialsUrl + 'notices/base.html'
+                templateUrl: partialsUrl + 'notices/base.html',
+                parent: 'site'
             }).
             state('notices.list', {
                 url: '/notices',
@@ -98,7 +112,8 @@
                 controller: 'notices.DetailCtrl'
             }).
             state('amenities', {
-                templateUrl: partialsUrl + 'amenities/base.html'
+                templateUrl: partialsUrl + 'amenities/base.html',
+                parent: 'site'
             }).
             state('amenities.list', {
                 url: '/amenities',
@@ -121,6 +136,7 @@
             }).
             state('apartment', {
                 url: '/apartment',
+                parent: 'site',
                 templateUrl: partialsUrl + 'apartment.html',
                 controller: 'ApartmentCtrl'
             });

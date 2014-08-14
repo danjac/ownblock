@@ -13,12 +13,10 @@
     <link rel="stylesheet" href="{% static 'css/app.css' %}" />
 </head>
 
-<!--<body ng-controller="AppCtrl">-->
-
 <body ng-controller="AppCtrl">
 
     {% verbatim %}
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" ng-show="session.loggedIn">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" ng-show="auth.loggedIn">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-links">
@@ -55,7 +53,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="glyphicon glyphicon-user"></span> {{session.user.full_name}}<span class="caret"></span>
+                            <span class="glyphicon glyphicon-user"></span> {{auth.user.full_name}}<span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a ng-href="">My account</a>
@@ -78,19 +76,19 @@
     </div>
     {% endverbatim %}
     <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
-    <script src="{% static 'bower_components/jquery-ui/ui/jquery-ui.js' %}"></script>
-    <script src="{% static 'bower_components/openlayers/lib/OpenLayers.js' %}"></script>
-    <script src="{% static 'bower_components/moment/moment.js' %}"></script>
+    <script src="{% static 'bower_components/jquery-ui/ui/minified/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'bower_components/openlayers/build/OpenLayers.js' %}"></script>
+    <script src="{% static 'bower_components/moment/min/moment.min.js' %}"></script>
     <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'bower_components/angular/angular.js' %}"></script>
-    <script src="{% static 'bower_components/angular-cookies/angular-cookies.js' %}"></script>
+    <script src="{% static 'bower_components/angular/angular.min.js' %}"></script>
+    <script src="{% static 'bower_components/angular-cookies/angular-cookies.min.js' %}"></script>
     <script src="{% static 'bower_components/angular-ui-router/release/angular-ui-router.min.js' %}"></script>
     <script src="{% static 'bower_components/angular-bootstrap/ui-bootstrap.min.js' %}"></script>
     <script src="{% static 'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js' %}"></script>
-    <script src="{% static 'bower_components/angular-sanitize/angular-sanitize.js' %}"></script>
-    <script src="{% static 'bower_components/angular-resource/angular-resource.js' %}"></script>
+    <script src="{% static 'bower_components/angular-sanitize/angular-sanitize.min.js' %}"></script>
+    <script src="{% static 'bower_components/angular-resource/angular-resource.min.js' %}"></script>
     <script src="{% static 'bower_components/angular-ui-calendar/src/calendar.js' %}"></script>
-    <script src="{% static 'bower_components/fullcalendar/fullcalendar.js' %}"></script>
+    <script src="{% static 'bower_components/fullcalendar/fullcalendar.min.js' %}"></script>
     <script src="{% static 'js/app.js' %}"></script>
     <script src="{% static 'js/controllers.js' %}"></script>
     <script src="{% static 'js/services.js' %}"></script>

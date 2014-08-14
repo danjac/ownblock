@@ -4,6 +4,8 @@ from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.buildings.middleware import get_building
+
 from .models import User
 from .permissions import IsResidentOrManager
 from .serializers import UserSerializer, AuthUserSerializer
@@ -42,6 +44,7 @@ class AuthView(APIView):
 
         if user is not None:
             login(request, user)
+            request.building = get_building(request)
             return self.get_user_response(request)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 

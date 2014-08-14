@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.accounts.serializers import UserRelatedField
+from apps.accounts.serializers.related import UserRelatedField
 
 from .models import Notice
 
