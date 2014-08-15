@@ -8,7 +8,7 @@
     </thead>
     <tbody>
         <tr ng-repeat="amenity in amenities">
-            <td><a ui-sref="site.amenities.detail({id: amenity.id})">{{amenity.name}}</a>
+            <td><a ui-sref="amenities.detail({id: amenity.id})">{{amenity.name}}</a>
             </td>
             <td>
                 <span class="label label-success" ng-show="amenity.is_available">Available</span>

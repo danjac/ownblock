@@ -12,6 +12,11 @@ class Place(models.Model):
     def __str__(self):
         return self.name
 
+    def can_edit_or_delete(self, user):
+        if not user.is_authenticated() or user.role != 'manager':
+            return False
+        return user.organization_id == self.building.organization_id
+
 
 class Item(models.Model):
 
@@ -22,3 +27,10 @@ class Item(models.Model):
 
     def __str__(self):
         return self.description
+
+    def can_edit_or_delete(self, user):
+        if not user.is_authenticated():
+            return False
+        if user.id == self.resident.id:
+            return True
+        return self.place.can_edit_or_delete(user)

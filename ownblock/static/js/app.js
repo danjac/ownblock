@@ -25,8 +25,7 @@
             $urlRouterProvider,
             staticUrl) {
 
-            var partialsUrl = staticUrl + '/partials/',
-                defaultBaseTemplate = '<div ui-view></div>';
+            var partialsUrl = staticUrl + '/partials/';
 
             $resourceProvider.defaults.stripTrailingSlashes = true;
 
@@ -65,7 +64,7 @@
                 }
             }).
             state('residents', {
-                template: defaultBaseTemplate,
+                templateUrl: partialsUrl + 'residents/base.html',
                 parent: 'site'
             }).
             state('residents.list', {

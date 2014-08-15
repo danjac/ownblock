@@ -1,18 +1,6 @@
 from django.utils.functional import SimpleLazyObject
 
-
-def get_building(request):
-    if not request.user.is_authenticated():
-        return None
-
-    if request.user.apartment:
-        return request.user.apartment.building
-
-    if request.user.organization and 'building_id' in request.session:
-        return request.user.organization.building_set.get(
-            request.session['building_id']
-        )
-    return None
+from . import get_building
 
 
 class CurrentBuildingMiddleware(object):
