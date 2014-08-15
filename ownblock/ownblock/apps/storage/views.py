@@ -31,4 +31,5 @@ class ItemViewSet(viewsets.ModelViewSet):
         ).select_related(
             'place',
             'resident',
+            'resident__apartment',
             'place__building').order_by('description')

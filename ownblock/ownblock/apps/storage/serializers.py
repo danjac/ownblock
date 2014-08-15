@@ -27,6 +27,7 @@ class ItemSerializer(serializers.ModelSerializer):
 
     resident = UserRelatedField(read_only=True)
     place_name = serializers.SerializerMethodField('get_place_name')
+    apartment = serializers.SerializerMethodField('get_apartment')
     is_editable = serializers.SerializerMethodField(
         'can_edit_or_delete'
     )
@@ -38,11 +39,15 @@ class ItemSerializer(serializers.ModelSerializer):
                   'place_name',
                   'resident',
                   'description',
+                  'apartment',
                   'is_editable',
                   'serial_no')
 
     def get_place_name(self, obj):
         return obj.place.name
+
+    def get_apartment(self, obj):
+        return obj.resident.apartment.number
 
     def can_edit_or_delete(self, obj):
         return obj.can_edit_or_delete(self.context['request'].user)

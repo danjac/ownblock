@@ -148,10 +148,10 @@
                 booking: $resource('/api/amenities/bookings/:id', {
                     id: '@id'
                 }),
-                places: $resource('/api/storage/places/:id', {
+                place: $resource('/api/storage/places/:id', {
                     id: '@id'
                 }),
-                items: $resource('/api/storage/items/:id', {
+                item: $resource('/api/storage/items/:id', {
                     id: '@id'
                 }),
                 apartment: $resource('/api/buildings/apartments/:id', {

@@ -124,7 +124,7 @@
                 id: $stateParams.id
             }).$promise.then(function(response) {
                 $scope.amenity = response;
-                $scope.booking = new api.Booking({
+                $scope.booking = new api.booking({
                     amenity: $scope.amenity.id,
                     reserved_from: new Date(),
                     reserved_to: new Date()
@@ -311,6 +311,40 @@
                     $state.go('messages.list');
                 }, function(response) {});
             };
+        }
+    ]).controller('storage.ListCtrl', ['$scope', '$window', 'api',
+        function($scope, $window, api) {
+
+            $scope.items = [];
+            api.item.query().$promise.then(function(response) {
+                $scope.items = response;
+            });
+
+            $scope.deleteItem = function(item, index) {
+                if (!$window.confirm('Are you sure you want to remove this item?')) {
+                    return;
+                }
+                $scope.items.splice(index, 1);
+                item.$delete();
+            };
+        }
+    ]).controller('storage.NewItemCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+
+            $scope.item = new api.item();
+            $scope.places = [];
+
+            api.place.query().$promise.then(function(response) {
+                $scope.places = response;
+            });
+
+            $scope.save = function() {
+                $scope.item.$save(function() {
+                    notifier.success('Your item has been added');
+                    $state.go('storage.list');
+                });
+            };
+
         }
     ]).controller('auth.LoginCtrl', [
         '$scope',

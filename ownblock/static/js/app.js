@@ -129,6 +129,15 @@
                 templateUrl: partialsUrl + 'amenities/bookingForm.html',
                 controller: 'amenities.NewBookingCtrl'
             }).
+            state('storage', {
+                templateUrl: partialsUrl + 'storage/base.html',
+                parent: 'site'
+            }).
+            state('storage.list', {
+                url: '/storage',
+                templateUrl: partialsUrl + 'storage/list.html',
+                controller: 'storage.ListCtrl'
+            }).
             state('documents', {
                 url: '/docs',
                 templateUrl: partialsUrl + 'documents.html'

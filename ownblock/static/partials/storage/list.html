@@ -1,0 +1,35 @@
+<div class="btn-toolbar" role="toolbar">
+    <a ui-sref="storage.newItem" class="btn btn-primary">
+        <span class="glyphicon glyphicon-plus"></span> Add new
+    </a>
+</div>
+<hr>
+
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Place</th>
+            <th>Owner/Apartment</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in items">
+            <td>{{item.description}}</td>
+            <td>{{item.place_name}}</td>
+            <td>{{item.resident.full_name}} / {{item.apartment}}</td>
+            <td>
+                <button class="btn btn-default" ng-show="item.is_editable">
+                    <span class="glyphicon glyphicon-edit"></span> Edit
+                </button>
+                <button class="btn btn-danger" ng-show="item.is_editable" ng-click="deleteItem(item, $index)">
+                    <span class="glyphicon glyphicon-trash"></span> Remove
+                </button>
+                <button class="btn btn-default" ng-show="item.resident.id != auth.user.id">
+                    <span class="glyphicon glyphicon-send"></span> Send message
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
