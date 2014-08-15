@@ -35,7 +35,6 @@
     ]).controller('ApartmentCtrl', ['$scope', '$window', 'api', 'auth',
         function($scope, $window, api, auth) {
 
-            $scope.auth = auth;
             $scope.building = $scope.auth.user.building;
 
             function generateMap() {
@@ -345,6 +344,28 @@
                 });
             };
 
+        }
+    ]).controller('storage.EditItemCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+
+            api.item.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.item = response;
+            });
+
+            $scope.places = [];
+
+            api.place.query().$promise.then(function(response) {
+                $scope.places = response;
+            });
+
+            $scope.save = function() {
+                $scope.item.$update(function() {
+                    notifier.success('Your item has been updated');
+                    $state.go('storage.list');
+                });
+            };
         }
     ]).controller('auth.LoginCtrl', [
         '$scope',

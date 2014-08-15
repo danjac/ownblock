@@ -153,6 +153,10 @@
                 }),
                 item: $resource('/api/storage/items/:id', {
                     id: '@id'
+                }, {
+                    update: {
+                        method: 'PUT'
+                    }
                 }),
                 apartment: $resource('/api/buildings/apartments/:id', {
                     id: '@id'

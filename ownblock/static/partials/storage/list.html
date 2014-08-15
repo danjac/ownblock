@@ -20,9 +20,9 @@
             <td>{{item.place_name}}</td>
             <td>{{item.resident.full_name}} / {{item.apartment}}</td>
             <td>
-                <button class="btn btn-default" ng-show="item.is_editable">
+                <a ui-sref="storage.editItem({id: item.id})" class="btn btn-default" ng-show="item.is_editable">
                     <span class="glyphicon glyphicon-edit"></span> Edit
-                </button>
+                </a>
                 <button class="btn btn-danger" ng-show="item.is_editable" ng-click="deleteItem(item, $index)">
                     <span class="glyphicon glyphicon-trash"></span> Remove
                 </button>

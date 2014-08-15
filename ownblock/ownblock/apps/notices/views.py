@@ -12,4 +12,6 @@ class NoticeViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthorOrManager, )
 
     def get_queryset(self):
-        return super().get_queryset().filter(building=self.request.building)
+        return super().get_queryset().filter(
+            building=self.request.building
+        ).order_by('-created')

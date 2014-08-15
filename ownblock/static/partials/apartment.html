@@ -59,7 +59,7 @@
                             <td>{{resident.full_name}}
                             </td>
                             <td>
-                                <a ng-show="session.user.id !== resident.id" ui-sref="messages.send({recipient: resident.id})" class="btn btn-default btn-sm">
+                                <a ng-show="auth.user.id !== resident.id" ui-sref="messages.send({recipient: resident.id})" class="btn btn-default btn-sm">
                                     <span class="glyphicon glyphicon-send "></span> Send message
                                 </a>
                             </td>

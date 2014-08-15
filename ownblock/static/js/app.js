@@ -138,6 +138,16 @@
                 templateUrl: partialsUrl + 'storage/list.html',
                 controller: 'storage.ListCtrl'
             }).
+            state('storage.newItem', {
+                url: '/storage/new',
+                templateUrl: partialsUrl + 'storage/itemForm.html',
+                controller: 'storage.NewItemCtrl'
+            }).
+            state('storage.editItem', {
+                url: '/storage/edit/:id',
+                templateUrl: partialsUrl + 'storage/itemForm.html',
+                controller: 'storage.EditItemCtrl'
+            }).
             state('documents', {
                 url: '/docs',
                 templateUrl: partialsUrl + 'documents.html'
