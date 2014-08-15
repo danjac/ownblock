@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Document
+
+
+class DocumentAdmin(admin.ModelAdmin):
+    raw_id_fields = ('building', )
+
+
+admin.site.register(Document, DocumentAdmin)

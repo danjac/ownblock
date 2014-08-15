@@ -367,6 +367,14 @@
                 });
             };
         }
+    ]).controller('documents.ListCtrl', ['$scope', 'api',
+        function($scope, api) {
+            $scope.documents = [];
+            api.document.query().$promise.then(function(response) {
+                $scope.documents = response;
+            });
+
+        }
     ]).controller('auth.LoginCtrl', [
         '$scope',
         'auth',

@@ -149,8 +149,13 @@
                 controller: 'storage.EditItemCtrl'
             }).
             state('documents', {
+                templateUrl: partialsUrl + 'documents/base.html',
+                parent: 'site'
+            }).
+            state('documents.list', {
                 url: '/docs',
-                templateUrl: partialsUrl + 'documents.html'
+                templateUrl: partialsUrl + 'documents/list.html',
+                controller: 'documents.ListCtrl'
             }).
             state('apartment', {
                 url: '/apartment',

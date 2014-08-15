@@ -151,6 +151,9 @@
                 place: $resource('/api/storage/places/:id', {
                     id: '@id'
                 }),
+                document: $resource('/api/documents/documents/:id', {
+                    id: '@id'
+                }),
                 item: $resource('/api/storage/items/:id', {
                     id: '@id'
                 }, {

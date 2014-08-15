@@ -1,5 +1,7 @@
-from django.db import models
+import mimetypes
+import os
 
+from django.db import models
 
 from model_utils.models import TimeStampedModel
 
@@ -16,3 +18,13 @@ class Document(TimeStampedModel):
 
     def __str__(self):
         return self.title
+
+    def get_content_type(self):
+        return mimetypes.guess_type(self.file.name)[0]
+
+    def get_filename(self):
+        return os.path.basename(self.file.name)
+
+    @models.permalink
+    def get_download_url(self):
+        return ('document-download', [self.pk])
