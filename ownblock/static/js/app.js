@@ -47,7 +47,7 @@
             $stateProvider.
             state('site', {
                 'abstract': true,
-                template: defaultBaseTemplate,
+                templateUrl: partialsUrl + 'base.html',
                 resolve: {
                     auth: ['auth',
                         function(auth) {

@@ -1,13 +1,36 @@
 (function() {
     'use strict';
     angular.module('ownblock.services', []).
-    service('auth', ['$q', '$state', '$window', 'api',
-        function($q, $state, $window, api) {
+    service('auth', [
+        '$q',
+        '$state',
+        '$stateParams',
+        '$window',
+        'api',
+        function($q, $state, $stateParams, $window, api) {
             return {
-                user: undefined,
-                authorize: function(access) {
+                authorize: function(toState, toStateParams) {
                     var deferred = $q.defer(),
-                        self = this;
+                        self = this,
+                        access = null,
+                        defaultView = "notices.list";
+
+                    if (!angular.isDefined(toState)) {
+                        toState = $state.current;
+                    }
+                    if (!angular.isDefined(toStateParams)) {
+                        toStateParams = $stateParams;
+                    }
+
+                    if (toState.data) {
+                        access = toState.data.access;
+                    }
+                    if (access !== 'ignore') {
+                        self.returnToState = {
+                            name: toState.name,
+                            params: toState.params
+                        };
+                    }
 
                     function redirectToLogin() {
                         $state.go('login');
@@ -44,11 +67,11 @@
                     return deferred.promise;
                 },
                 hasRole: function(access) {
-                    if (!angular.isDefined(this.user)) {
-                        return false;
-                    }
                     if (!access) {
                         return true;
+                    }
+                    if (!angular.isDefined(this.user)) {
+                        return false;
                     }
                     return (access === this.user.role);
                 },
@@ -60,8 +83,12 @@
                         }
                         self.user = response;
                         self.loggedIn = true;
-                        // tbd: set based on state params etc
-                        $state.go("notices.list");
+
+                        if (angular.isDefined(self.returnToState)) {
+                            $state.go(self.returnToState.name, self.returnToState.params);
+                        } else {
+                            $state.go(defaultView);
+                        }
                     });
 
                 },
