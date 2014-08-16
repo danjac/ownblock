@@ -43,7 +43,7 @@
 
                     } else {
 
-                        api.auth.get().$promise.then(function(response) {
+                        api.Auth.get().$promise.then(function(response) {
                             self.user = response;
                             self.loggedIn = true;
 
@@ -78,7 +78,7 @@
                     var self = this,
                         defaultView = 'notices.list',
                         deferred = $q.defer();
-                    api.auth.login(creds).$promise.then(function(response) {
+                    api.Auth.login(creds).$promise.then(function(response) {
                         if (response.role === 'admin') {
                             $window.location.href = '/admin/';
                         }
@@ -99,7 +99,7 @@
                     var deferred = $q.defer(),
                         self = this;
 
-                    api.auth.remove({}, function() {
+                    api.Auth.remove({}, function() {
                         self.user = undefined;
                         self.loggedIn = false;
                         deferred.resolve(true);
@@ -147,18 +147,18 @@
             }
 
             return {
-                notice: makeEndpoint('/api/notices/notices/:id'),
-                message: makeEndpoint('/api/messages/messages/:id'),
-                resident: makeEndpoint('/api/users/people/:id'),
-                amenity: makeEndpoint('/api/amenities/items/:id'),
-                booking: makeEndpoint('/api/amenities/bookings/:id'),
-                place: makeEndpoint('/api/storage/places/:id'),
-                document: makeEndpoint('/api/documents/documents/:id'),
-                contact: makeEndpoint('/api/contacts/contacts/:id'),
-                vehicle: makeEndpoint('/api/parking/vehicles/:id'),
-                item: makeEndpoint('/api/storage/items/:id'),
-                apartment: makeEndpoint('/api/buildings/apartments/:id'),
-                auth: $resource('/api/users/auth/', {}, {
+                Notice: makeEndpoint('/api/notices/notices/:id'),
+                Message: makeEndpoint('/api/messages/messages/:id'),
+                Resident: makeEndpoint('/api/users/people/:id'),
+                Amenity: makeEndpoint('/api/amenities/items/:id'),
+                Booking: makeEndpoint('/api/amenities/bookings/:id'),
+                Place: makeEndpoint('/api/storage/places/:id'),
+                Document: makeEndpoint('/api/documents/documents/:id'),
+                Contact: makeEndpoint('/api/contacts/contacts/:id'),
+                Vehicle: makeEndpoint('/api/parking/vehicles/:id'),
+                StorageItem: makeEndpoint('/api/storage/items/:id'),
+                Apartment: makeEndpoint('/api/buildings/apartments/:id'),
+                Auth: $resource('/api/users/auth/', {}, {
                     login: {
                         method: 'POST'
                     },

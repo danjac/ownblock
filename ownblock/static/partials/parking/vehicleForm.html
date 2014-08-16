@@ -1,0 +1,19 @@
+<form role="form" name="vehicleForm" novalidate>
+
+    <div class="form-group">
+        <label for="" class="label-control">Description</label>
+        <input type="" class="form-control" ng-model="vehicle.description" required/>
+    </div>
+    <div class="form-group">
+        <label for="" class="label-control">Registration number</label>
+        <input type="" class="form-control" ng-model="vehicle.registration_number" required/>
+    </div>
+    <div class="form-group">
+        <label for="" class="label-control">Reserved space</label>
+        <input type="" class="form-control" ng-model="vehicle.reserved_place" />
+    </div>
+
+    <button class="btn btn-primary" ng-disabled="vehicleForm.$invalid" ng-click="save()">Save</button>
+
+
+</form>

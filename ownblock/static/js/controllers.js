@@ -69,7 +69,7 @@
             generateMap();
 
             $scope.apartments = [];
-            api.apartment.query().$promise.then(function(response) {
+            api.Apartment.query().$promise.then(function(response) {
                 $scope.apartments = response;
                 angular.forEach($scope.apartments, function(apt) {
                     if (apt.id === auth.user.apartment.id) {
@@ -105,25 +105,25 @@
         function($scope, api, auth) {
             $scope.residents = [];
             $scope.user = auth.user;
-            api.resident.query().$promise.then(function(response) {
+            api.Resident.query().$promise.then(function(response) {
                 $scope.residents = response;
             });
         }
     ]).controller('amenities.ListCtrl', ['$scope', 'api',
         function($scope, api) {
             $scope.amenities = [];
-            api.amenity.query().$promise.then(function(response) {
+            api.Amenity.query().$promise.then(function(response) {
                 $scope.amenities = response;
             });
         }
 
     ]).controller('amenities.NewBookingCtrl', ['$scope', '$state', '$stateParams', 'api',
         function($scope, $state, $stateParams, api) {
-            api.amenity.get({
+            api.Amenity.get({
                 id: $stateParams.id
             }).$promise.then(function(response) {
                 $scope.amenity = response;
-                $scope.booking = new api.booking({
+                $scope.booking = new api.Booking({
                     amenity: $scope.amenity.id,
                     reserved_from: new Date(),
                     reserved_to: new Date()
@@ -159,7 +159,7 @@
             var bookings = [];
             $scope.eventSources = [bookings];
 
-            api.amenity.get({
+            api.Amenity.get({
                 id: $stateParams.id
             }).$promise.then(function(response) {
                 $scope.amenity = response;
@@ -216,7 +216,7 @@
     ]).controller('notices.ListCtrl', ['$scope', 'api',
         function($scope, api) {
             $scope.notices = [];
-            api.notice.query().$promise.then(function(response) {
+            api.Notice.query().$promise.then(function(response) {
                 $scope.notices = response;
             });
         }
@@ -229,7 +229,7 @@
         'api',
 
         function($scope, $stateParams, $state, notifier, auth, api) {
-            api.notice.get({
+            api.Notice.get({
                 id: $stateParams.id
             }).$promise.then(function(response) {
                 $scope.notice = response;
@@ -246,7 +246,7 @@
         }
     ]).controller('notices.NewCtrl', ['$scope', '$state', 'notifier', 'api',
         function($scope, $state, notifier, api) {
-            $scope.notice = new api.notice();
+            $scope.notice = new api.Notice();
             $scope.save = function() {
                 $scope.notice.$save(function() {
                     notifier.success('Your notice has been published');
@@ -258,7 +258,7 @@
         function($scope, api, auth) {
             $scope.receivedMessages = [];
             $scope.sentMessages = [];
-            api.message.query().$promise.then(function(response) {
+            api.Message.query().$promise.then(function(response) {
                 angular.forEach(response, function(message) {
                     if (message.recipient === auth.user.id) {
                         $scope.receivedMessages.push(message);
@@ -275,7 +275,7 @@
         'api',
         'notifier',
         function($scope, $state, $stateParams, api, notifier) {
-            $scope.message = new api.message({
+            $scope.message = new api.Message({
                 recipient: $stateParams.recipient
             });
             $scope.send = function() {
@@ -292,10 +292,10 @@
         'api',
         'notifier',
         function($scope, $state, $stateParams, api, notifier) {
-            $scope.message = new api.message({
+            $scope.message = new api.Message({
                 parent: $stateParams.parent
             });
-            api.message.get({
+            api.Message.get({
                 id: $stateParams.parent
             }).$promise.then(function(response) {
                 $scope.message.header = "Re: " + response.header;
@@ -315,7 +315,7 @@
         function($scope, $window, api) {
 
             $scope.items = [];
-            api.item.query().$promise.then(function(response) {
+            api.StorageItem.query().$promise.then(function(response) {
                 $scope.items = response;
             });
 
@@ -330,7 +330,7 @@
     ]).controller('storage.NewItemCtrl', ['$scope', '$state', 'api', 'notifier',
         function($scope, $state, api, notifier) {
 
-            $scope.item = new api.item();
+            $scope.item = new api.StorageItem();
             $scope.places = [];
 
             api.place.query().$promise.then(function(response) {
@@ -348,7 +348,7 @@
     ]).controller('storage.EditItemCtrl', ['$scope', '$state', 'api', 'notifier',
         function($scope, $state, api, notifier) {
 
-            api.item.get({
+            api.StorageItem.get({
                 id: $state.params.id
             }, function(response) {
                 $scope.item = response;
@@ -370,7 +370,7 @@
     ]).controller('contacts.ListCtrl', ['$scope', 'api',
         function($scope, api) {
             $scope.contacts = [];
-            api.contact.query().$promise.then(function(response) {
+            api.Contact.query().$promise.then(function(response) {
                 $scope.contacts = response;
             });
 
@@ -378,7 +378,7 @@
     ]).controller('documents.ListCtrl', ['$scope', 'api',
         function($scope, api) {
             $scope.documents = [];
-            api.document.query().$promise.then(function(response) {
+            api.Document.query().$promise.then(function(response) {
                 $scope.documents = response;
             });
 
@@ -386,7 +386,7 @@
     ]).controller('parking.ListCtrl', ['$scope', '$window', 'api', 'notifier',
         function($scope, $window, api, notifier) {
             $scope.vehicles = [];
-            api.vehicle.query().$promise.then(function(response) {
+            api.Vehicle.query().$promise.then(function(response) {
                 $scope.vehicles = response;
             });
 
@@ -402,7 +402,7 @@
         }
     ]).controller('parking.NewCtrl', ['$scope', '$state', 'api', 'notifier',
         function($scope, $state, api, notifier) {
-            $scope.vehicle = new api.vehicle();
+            $scope.vehicle = new api.Vehicle();
             $scope.save = function() {
                 $scope.vehicle.$save(function() {
                     notifier.success('Your vehicle has been added');
