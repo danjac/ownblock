@@ -1,6 +1,16 @@
 (function() {
     'use strict';
     angular.module('ownblock.directives', []).
+    directive('icon', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                name: '@',
+                text: '@'
+            },
+            template: '<span class="glyphicon glyphicon-{{name}}"></span>&nbsp;{{text}}'
+        };
+    }).
     directive('sendMessage', ['$modal', 'api', 'notifier', 'staticUrl',
         function($modal, api, notifier, staticUrl) {
             var modalInstanceCtrl = function($scope, $modalInstance, recipient) {

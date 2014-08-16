@@ -433,7 +433,7 @@
             $scope.login = function() {
                 // Tbd: move this to auth service
                 auth.login($scope.creds).then(function() {
-                    notifier.success('Welcome back, ' + auth.user.name);
+                    notifier.success('Welcome back, ' + auth.user.first_name);
                 });
             };
         }

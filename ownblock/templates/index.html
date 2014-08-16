@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="{% static 'css/app.css' %}" />
 </head>
 
-<body ng-controller="AppCtrl">
+<body ng-controller="AppCtrl" ng-cloak>
 
     {% verbatim %}
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" ng-show="auth.loggedIn">
@@ -25,35 +25,64 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-home"></span> ownblock</a>
+                <a class="navbar-brand" href="#">
+                    <icon name="home" text="ownblock" />
+                </a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-links">
                 <ul class="nav navbar-nav navbar-left">
-                    <li ui-sref-active="acitve"><a ui-sref="notices.list"><span class="glyphicon glyphicon-bullhorn"></span> Notice board</a>
-                    </li>
-                    <li ui-sref-active="active"><a ui-sref="messages.list"><span class="glyphicon glyphicon-send"></span> Messages
-                        <!-- <span class="badge">42</span>-->
+                    <li ui-sref-active="active">
+                        <a ui-sref="notices.list">
+                            <icon name="bullhorn" text="Notice board" />
                         </a>
                     </li>
-                    <li ui-sref-active="active"><a ui-sref="residents.list"><span class="glyphicon glyphicon-user"></span> Residents</a>
+                    <li ui-sref-active="active">
+                        <a ui-sref="messages.list">
+                            <icon name="send" text="Messages" />
+                            <!-- <span class="badge">42</span>-->
+                        </a>
                     </li>
-                    <li ui-sref-active="active"><a ui-sref="documents.list"><span class="glyphicon glyphicon-upload"></span> Documents</a>
+                    <li ui-sref-active="active">
+                        <a ui-sref="residents.list">
+                            <icon name="user" text="Residents" />
+                        </a>
                     </li>
-                    <li ui-sref-active="active"><a ui-sref="amenities.list"><span class="glyphicon glyphicon-calendar"></span> Amenities</a>
+                    <li ui-sref-active="active">
+                        <a ui-sref="documents.list">
+                            <icon name="download" text="Documents" />
+                        </a>
                     </li>
-                    <li ui-sref-active="active"><a ui-sref="contacts.list"><span class="glyphicon glyphicon-earphone"></span> Contacts</a>
+                    <li ui-sref-active="active">
+                        <a ui-sref="amenities.list">
+                            <icon name="calendar" text="Amenities" />
+                        </a>
                     </li>
-                    <li ui-sref-active="active"><a ui-sref="parking.list"><span class="glyphicon glyphicon-road"></span> Parking</a>
+                    <li ui-sref-active="active">
+                        <a ui-sref="contacts.list">
+                            <icon name="earphone" text="Contacts" />
+                        </a>
                     </li>
-                    <li ui-sref-active="active"><a ui-sref="storage.list"><span class="glyphicon glyphicon-lock"></span> Storage</a>
+                    <li ui-sref-active="active">
+                        <a ui-sref="parking.list">
+                            <icon name="road" text="Parking" />
+                        </a>
                     </li>
-                    <li ui-sref-active="active"><a ui-sref="apartment"><span class="glyphicon glyphicon-home"></span> Building</a>
+                    <li ui-sref-active="active">
+                        <a ui-sref="storage.list">
+                            <icon name="lock" text="Storage" />
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="apartment">
+                            <icon name="home" text="My building" />
+                        </a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="glyphicon glyphicon-user"></span> {{auth.user.full_name}}<span class="caret"></span>
+                            <icon name="user" text="{{auth.user.full_name}}"></icon>
+                            <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a ng-href="">My account</a>

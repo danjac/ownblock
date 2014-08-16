@@ -27,7 +27,7 @@
                 <button class="btn btn-danger btn-sm" ng-show="vehicle.is_editable" ng-click="deleteVehicle(vehicle, $index)">
                     <span class="glyphicon glyphicon-trash"></span> Remove
                 </button>
-                <button class="btn btn-default btn-sm" ng-show="vehicle.resident.id != auth.user.id">
+                <button send-message="{{vehicle.resident}}" class="btn btn-default btn-sm" ng-show="vehicle.resident.id != auth.user.id">
                     <span class="glyphicon glyphicon-send"></span> Send message
                 </button>
 

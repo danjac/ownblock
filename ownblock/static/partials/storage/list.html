@@ -1,6 +1,6 @@
 <div class="btn-toolbar" role="toolbar">
     <a ui-sref="storage.newItem" class="btn btn-primary">
-        <span class="glyphicon glyphicon-plus"></span> Add new
+        <icon name="plus" />Add new
     </a>
 </div>
 <hr>
@@ -21,13 +21,13 @@
             <td>{{item.resident.full_name}} / {{item.apartment}}</td>
             <td>
                 <a ui-sref="storage.editItem({id: item.id})" class="btn btn-default btn-sm" ng-show="item.is_editable">
-                    <span class="glyphicon glyphicon-edit"></span> Edit
+                    <icon name="edit" />Edit
                 </a>
                 <button class="btn btn-danger btn-sm" ng-show="item.is_editable" ng-click="deleteItem(item, $index)">
-                    <span class="glyphicon glyphicon-trash"></span> Remove
+                    <icon name="trash" />Remove
                 </button>
-                <button class="btn btn-default btn-sm" ng-show="item.resident.id != auth.user.id">
-                    <span class="glyphicon glyphicon-send"></span> Send message
+                <button send-message="{{item.resident}}" class="btn btn-default btn-sm" ng-show="item.resident.id != auth.user.id">
+                    <icon name="send" />Send message
                 </button>
             </td>
         </tr>

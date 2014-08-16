@@ -1,16 +1,26 @@
 <div class="btn-toolbar" role="toolbar">
     <a class="btn btn-primary" ui-sref="notices.new">
-        <span class="glyphicon glyphicon-plus"></span> Add notice</a>
+        <icon name="plus" />Add notice</a>
 </div>
 <hr>
 <table class="table table-bordered table-striped table-hover">
     <thead>
+        <th>Notice</th>
+        <th>Date</th>
+        <th>Author</th>
+        <th>Actions</th>
     </thead>
     <tbody>
         <tr ng-repeat="notice in notices">
             <td><a ui-sref="notices.detail({id: notice.id})">{{notice.title}}</a>
             </td>
             <td>{{notice.created|date}}</td>
+            <td>{{notice.author.full_name}}</td>
+            <td>
+                <button send-message="{{notice.author}}" ng-show="notice.author.id !== auth.user.id" class="btn btn-default btn-sm">
+                    <icon name="send" />Send message
+                </button>
+            </td>
         </tr>
     </tbody>
 </table>
