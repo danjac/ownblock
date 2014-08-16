@@ -154,6 +154,9 @@
                 document: $resource('/api/documents/documents/:id', {
                     id: '@id'
                 }),
+                contact: $resource('/api/contacts/contacts/:id', {
+                    id: '@id'
+                }),
                 item: $resource('/api/storage/items/:id', {
                     id: '@id'
                 }, {

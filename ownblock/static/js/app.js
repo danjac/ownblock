@@ -157,6 +157,15 @@
                 templateUrl: partialsUrl + 'documents/list.html',
                 controller: 'documents.ListCtrl'
             }).
+            state('contacts', {
+                templateUrl: partialsUrl + 'documents/base.html',
+                parent: 'site'
+            }).
+            state('contacts.list', {
+                url: '/contacts',
+                templateUrl: partialsUrl + 'contacts/list.html',
+                controller: 'contacts.ListCtrl'
+            }).
             state('apartment', {
                 url: '/apartment',
                 parent: 'site',

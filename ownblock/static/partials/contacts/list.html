@@ -1,0 +1,20 @@
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Phone</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="contact in contacts">
+            <td><a href>{{contact.name}}</a>
+            </td>
+            <td>{{contact.description}}</td>
+            <td>{{contact.phone}}</td>
+            <td><a href="mailto:{{contact.email}}">{{contact.email}}</a>
+            </td>
+        </tr>
+    </tbody>
+</table>

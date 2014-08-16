@@ -367,6 +367,14 @@
                 });
             };
         }
+    ]).controller('contacts.ListCtrl', ['$scope', 'api',
+        function($scope, api) {
+            $scope.contacts = [];
+            api.contact.query().$promise.then(function(response) {
+                $scope.contacts = response;
+            });
+
+        }
     ]).controller('documents.ListCtrl', ['$scope', 'api',
         function($scope, api) {
             $scope.documents = [];
