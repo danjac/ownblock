@@ -383,6 +383,23 @@
             });
 
         }
+    ]).controller('parking.ListCtrl', ['$scope', '$window', 'api', 'notifier',
+        function($scope, $window, api, notifier) {
+            $scope.vehicles = [];
+            api.vehicle.query().$promise.then(function(response) {
+                $scope.vehicles = response;
+            });
+
+            $scope.deleteVehicle = function(vehicle, index) {
+                if (!$window.confirm('Are you sure you want to remove this vehicle?')) {
+                    return;
+                }
+                vehicle.$delete(function() {
+                    notifier.success('Your vehicle has been removed');
+                });
+                $scope.vehicles.splice(index, 1);
+            };
+        }
     ]).controller('auth.LoginCtrl', [
         '$scope',
         'auth',
