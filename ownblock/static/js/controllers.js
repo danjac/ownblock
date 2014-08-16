@@ -333,7 +333,7 @@
             $scope.item = new api.StorageItem();
             $scope.places = [];
 
-            api.place.query().$promise.then(function(response) {
+            api.Place.query().$promise.then(function(response) {
                 $scope.places = response;
             });
 
@@ -356,7 +356,7 @@
 
             $scope.places = [];
 
-            api.place.query().$promise.then(function(response) {
+            api.Place.query().$promise.then(function(response) {
                 $scope.places = response;
             });
 
