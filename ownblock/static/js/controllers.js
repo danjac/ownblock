@@ -410,6 +410,20 @@
                 });
             };
         }
+    ]).controller('parking.EditCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+            api.Vehicle.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.vehicle = response;
+            });
+            $scope.save = function() {
+                $scope.vehicle.$update(function() {
+                    notifier.success('Your vehicle has been updated');
+                    $state.go('parking.list');
+                });
+            };
+        }
     ]).controller('auth.LoginCtrl', [
         '$scope',
         'auth',

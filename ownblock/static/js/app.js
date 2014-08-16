@@ -171,6 +171,11 @@
                 templateUrl: partialsUrl + 'parking/vehicleForm.html',
                 controller: 'parking.NewCtrl'
             }).
+            state('parking.edit', {
+                url: '/parking/edit/:id',
+                templateUrl: partialsUrl + 'parking/vehicleForm.html',
+                controller: 'parking.EditCtrl'
+            }).
             state('contacts', {
                 templateUrl: partialsUrl + 'documents/base.html',
                 parent: 'site'
