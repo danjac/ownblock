@@ -12,8 +12,7 @@
                 authorize: function(toState, toStateParams) {
                     var deferred = $q.defer(),
                         self = this,
-                        access = null,
-                        defaultView = "notices.list";
+                        access = null;
 
                     if (!angular.isDefined(toState)) {
                         toState = $state.current;
@@ -76,7 +75,8 @@
                     return (access === this.user.role);
                 },
                 login: function(creds) {
-                    var self = this;
+                    var self = this,
+                        defaultView = 'notices.list';
                     api.auth.login(creds).$promise.then(function(response) {
                         if (response.role === 'admin') {
                             $window.location.href = '/admin/';
@@ -84,7 +84,7 @@
                         self.user = response;
                         self.loggedIn = true;
 
-                        if (angular.isDefined(self.returnToState)) {
+                        if (angular.isDefined(self.returnToState) && self.returnToState.name) {
                             $state.go(self.returnToState.name, self.returnToState.params);
                         } else {
                             $state.go(defaultView);
@@ -155,6 +155,9 @@
                     id: '@id'
                 }),
                 contact: $resource('/api/contacts/contacts/:id', {
+                    id: '@id'
+                }),
+                vehicle: $resource('/api/parking/vehicles/:id', {
                     id: '@id'
                 }),
                 item: $resource('/api/storage/items/:id', {

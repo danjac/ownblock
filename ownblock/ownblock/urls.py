@@ -20,6 +20,7 @@ urlpatterns = patterns('',
                        url(r'^api/buildings/', include('apps.buildings.urls')),
                        url(r'^api/documents/', include('apps.documents.urls')),
                        url(r'^api/contacts/', include('apps.contacts.urls')),
+                       url(r'^api/parking/', include('apps.parking.urls')),
 
                        # Admin site
                        url(r'^admin/', include(admin.site.urls)),

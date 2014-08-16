@@ -14,3 +14,14 @@ class Vehicle(models.Model):
 
     def __str__(self):
         return self.registration_number
+
+    def can_edit_or_delete(self, user):
+        if not user.is_authenticated():
+            return False
+        if self.resident_id == user.id:
+            return True
+        if (user.role == 'manager' and
+                user.organization_id ==
+                self.resident.apartment.building.organization_id):
+            return True
+        return False
