@@ -8,7 +8,8 @@
         'ui.calendar',
         'ui.bootstrap',
         'ownblock.controllers',
-        'ownblock.services'
+        'ownblock.services',
+        'ownblock.directives'
     ]).
     constant({
         staticUrl: '/static'
