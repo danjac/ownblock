@@ -76,7 +76,8 @@
                 },
                 login: function(creds) {
                     var self = this,
-                        defaultView = 'notices.list';
+                        defaultView = 'notices.list',
+                        deferred = $q.defer();
                     api.auth.login(creds).$promise.then(function(response) {
                         if (response.role === 'admin') {
                             $window.location.href = '/admin/';
@@ -89,7 +90,9 @@
                         } else {
                             $state.go(defaultView);
                         }
+                        deferred.resolve(self);
                     });
+                    return deferred.promise;
 
                 },
                 logout: function() {
@@ -132,44 +135,29 @@
         }
     ]).service('api', ['$resource',
         function($resource) {
-            return {
-                notice: $resource('/api/notices/notices/:id', {
-                    id: '@id'
-                }),
-                message: $resource('/api/messages/messages/:id', {
-                    id: '@id'
-                }),
-                resident: $resource('/api/users/people/:id', {
-                    id: '@id'
-                }),
-                amenity: $resource('/api/amenities/items/:id', {
-                    id: '@id'
-                }),
-                booking: $resource('/api/amenities/bookings/:id', {
-                    id: '@id'
-                }),
-                place: $resource('/api/storage/places/:id', {
-                    id: '@id'
-                }),
-                document: $resource('/api/documents/documents/:id', {
-                    id: '@id'
-                }),
-                contact: $resource('/api/contacts/contacts/:id', {
-                    id: '@id'
-                }),
-                vehicle: $resource('/api/parking/vehicles/:id', {
-                    id: '@id'
-                }),
-                item: $resource('/api/storage/items/:id', {
-                    id: '@id'
+
+            function makeEndpoint(url) {
+                return $resource(url, {
+                    id: '@id',
                 }, {
                     update: {
                         method: 'PUT'
                     }
-                }),
-                apartment: $resource('/api/buildings/apartments/:id', {
-                    id: '@id'
-                }),
+                });
+            }
+
+            return {
+                notice: makeEndpoint('/api/notices/notices/:id'),
+                message: makeEndpoint('/api/messages/messages/:id'),
+                resident: makeEndpoint('/api/users/people/:id'),
+                amenity: makeEndpoint('/api/amenities/items/:id'),
+                booking: makeEndpoint('/api/amenities/bookings/:id'),
+                place: makeEndpoint('/api/storage/places/:id'),
+                document: makeEndpoint('/api/documents/documents/:id'),
+                contact: makeEndpoint('/api/contacts/contacts/:id'),
+                vehicle: makeEndpoint('/api/parking/vehicles/:id'),
+                item: makeEndpoint('/api/storage/items/:id'),
+                apartment: makeEndpoint('/api/buildings/apartments/:id'),
                 auth: $resource('/api/users/auth/', {}, {
                     login: {
                         method: 'POST'

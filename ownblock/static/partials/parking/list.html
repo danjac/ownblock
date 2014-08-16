@@ -1,9 +1,16 @@
+<div role="toolbar" class="btn-toolbar">
+    <a ui-sref="parking.new" class="btn btn-primary">
+        <span class="glyphicon glyphicon-plus"></span> Add vehicle
+    </a>
+</div>
+<hr>
 <table class="table table-bordered table-striped table-hover">
     <thead>
         <tr>
             <th>Description</th>
             <th>Registration no.</th>
             <th>Owner/Apartment</th>
+            <th>Reserved space</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -12,14 +19,15 @@
             <td>{{vehicle.description}}</td>
             <td>{{vehicle.registration_number}}</td>
             <td>{{vehicle.resident.full_name}}/{{vehicle.resident.apartment.number}}</td>
+            <td>{{vebicle.reserved_space || 'No' }}</td>
             <td>
-                <a ui-sref="parking.edit({id: vehicle.id})" class="btn btn-default" ng-show="vehicle.is_editable">
+                <a ui-sref="parking.edit({id: vehicle.id})" class="btn btn-default btn-sm" ng-show="vehicle.is_editable">
                     <span class="glyphicon glyphicon-edit"></span> Edit
                 </a>
-                <button class="btn btn-danger" ng-show="vehicle.is_editable" ng-click="deleteVehicle(vehicle, $index)">
+                <button class="btn btn-danger btn-sm" ng-show="vehicle.is_editable" ng-click="deleteVehicle(vehicle, $index)">
                     <span class="glyphicon glyphicon-trash"></span> Remove
                 </button>
-                <button class="btn btn-default" ng-show="vehicle.resident.id != auth.user.id">
+                <button class="btn btn-default btn-sm" ng-show="vehicle.resident.id != auth.user.id">
                     <span class="glyphicon glyphicon-send"></span> Send message
                 </button>
 

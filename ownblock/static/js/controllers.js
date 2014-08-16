@@ -400,14 +400,27 @@
                 $scope.vehicles.splice(index, 1);
             };
         }
+    ]).controller('parking.NewCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+            $scope.vehicle = new api.vehicle();
+            $scope.save = function() {
+                $scope.vehicle.$save(function() {
+                    notifier.success('Your vehicle has been added');
+                    $state.go('parking.list');
+                });
+            };
+        }
     ]).controller('auth.LoginCtrl', [
         '$scope',
         'auth',
-        function($scope, auth) {
+        'notifier',
+        function($scope, auth, notifier) {
             $scope.creds = {};
             $scope.login = function() {
                 // Tbd: move this to auth service
-                auth.login($scope.creds);
+                auth.login($scope.creds).then(function() {
+                    notifier.success('Welcome back, ' + auth.user.name);
+                });
             };
         }
     ]);
