@@ -145,14 +145,17 @@
     ]).service('api', ['$resource',
         function($resource) {
 
-            function makeEndpoint(url) {
+            function makeEndpoint(url, actions) {
+                if (!angular.isDefined(actions)) {
+                    actions = {
+                        update: {
+                            method: 'PUT'
+                        }
+                    };
+                }
                 return $resource(url, {
                     id: '@id',
-                }, {
-                    update: {
-                        method: 'PUT'
-                    }
-                });
+                }, actions);
             }
 
             return {
@@ -166,7 +169,12 @@
                 Contact: makeEndpoint('/api/contacts/contacts/:id'),
                 Vehicle: makeEndpoint('/api/parking/vehicles/:id'),
                 StorageItem: makeEndpoint('/api/storage/items/:id'),
-                Apartment: makeEndpoint('/api/buildings/apartments/:id'),
+                Apartment: makeEndpoint('/api/buildings/apartments/:id', {
+                    addResident: {
+                        url: '/api/buildings/apartments/:id/add_resident',
+                        method: 'POST'
+                    }
+                }),
                 Building: makeEndpoint('/api/buildings/buildings/:id'),
                 Auth: $resource('/api/users/auth/', {}, {
                     login: {

@@ -42,16 +42,13 @@ class ApartmentViewSet(viewsets.ReadOnlyModelViewSet):
     @action(permission_classes=(IsManager,))
     def add_resident(self, request, pk=None):
         obj = self.get_object()
-        serializer = ResidentSerializer(data=request.DATA)
+        serializer = ResidentSerializer(data=request.DATA, apartment=obj)
 
         if serializer.is_valid():
-            serializer.object.apartment = obj
             resident = serializer.save(force_insert=True)
             self.send_new_resident_email(resident)
-            headers = self.get_success_headers(serializer.data)
             return Response(serializer.data,
-                            status=status.HTTP_201_CREATED,
-                            headers=headers)
+                            status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

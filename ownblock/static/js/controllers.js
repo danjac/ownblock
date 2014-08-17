@@ -67,8 +67,14 @@
                 });
             };
         }
-    ]).controller('buildings.DetailCtrl', ['$scope', '$window', 'api', 'auth',
-        function($scope, $window, api, auth) {
+    ]).controller('buildings.DetailCtrl', [
+        '$scope',
+        '$window',
+        '$modal',
+        'api',
+        'auth',
+        'staticUrl',
+        function($scope, $window, $modal, api, auth, staticUrl) {
 
             $scope.building = $scope.auth.user.building;
 
@@ -136,6 +142,29 @@
                         $scope.tabs.apartment.active = true;
                         return;
                     }
+                });
+            };
+            $scope.addResident = function(apartment) {
+                var modalInstanceCtrl = function($scope, $modalInstance) {
+                        $scope.resident = {};
+                        $scope.cancel = function() {
+                            $modalInstance.dismiss('cancel');
+                        };
+                        $scope.save = function() {
+                            $modalInstance.close($scope.resident);
+                        };
+                    },
+                    modalInstance = $modal.open({
+                        templateUrl: staticUrl + '/partials/buildings/modalResidentForm.html',
+                        controller: modalInstanceCtrl
+                    });
+                modalInstance.result.then(function(resident) {
+                    api.Apartment.addResident({
+                        id: apartment.id
+                    }, resident).$promise.then(
+                        function(response) {
+                            $scope.apartment.user_set.push(response);
+                        });
                 });
             };
         }
