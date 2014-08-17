@@ -21,7 +21,14 @@ class BuildingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Building
-        fields = ('id', 'full_address', 'latitude', 'longitude')
+        fields = ('id',
+                  'full_address',
+                  'address_1',
+                  'address_2',
+                  'city',
+                  'postcode',
+                  'latitude',
+                  'longitude')
 
     def get_full_address(self, obj):
         return obj.get_full_address()

@@ -37,7 +37,7 @@
 
                     if (angular.isDefined(self.user)) {
                         if (!self.hasRole(access)) {
-                            redirectToLogin();
+                            //redirectToLogin(); -> this doesn't work as we have the original view with this access
                         }
                         deferred.resolve(self);
 
@@ -167,6 +167,7 @@
                 Vehicle: makeEndpoint('/api/parking/vehicles/:id'),
                 StorageItem: makeEndpoint('/api/storage/items/:id'),
                 Apartment: makeEndpoint('/api/buildings/apartments/:id'),
+                Building: makeEndpoint('/api/buildings/buildings/:id'),
                 Auth: $resource('/api/users/auth/', {}, {
                     login: {
                         method: 'POST'

@@ -20,7 +20,6 @@
             });
 
             $scope.$on('$stateChangeStart', function() {
-                console.log("stateChangeStart")
                 auth.authorize();
             });
 
@@ -32,7 +31,22 @@
 
 
         }
-    ]).controller('ApartmentCtrl', ['$scope', '$window', 'api', 'auth',
+    ]).controller('buildings.ListCtrl', ['$scope', '$state', 'api', 'auth',
+        function($scope, $state, api, auth) {
+            $scope.buidings = [];
+            api.Building.query().$promise.then(function(response) {
+                $scope.buildings = response;
+            });
+            $scope.selectBuilding = function(building) {
+                api.Building.get({
+                    id: building.id
+                }, function(response) {
+                    auth.user.building = response;
+                    $state.go('buildings.detail');
+                });
+            };
+        }
+    ]).controller('buildings.DetailCtrl', ['$scope', '$window', 'api', 'auth',
         function($scope, $window, api, auth) {
 
             $scope.building = $scope.auth.user.building;

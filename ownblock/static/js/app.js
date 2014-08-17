@@ -189,11 +189,21 @@
                 templateUrl: partialsUrl + 'contacts/list.html',
                 controller: 'contacts.ListCtrl'
             }).
-            state('apartment', {
+            state('buildings', {
+                templateUrl: partialsUrl + 'buildings/base.html',
+                parent: 'site'
+            }).
+            state('buildings.list', {
+                templateUrl: partialsUrl + 'buildings/list.html',
+                controller: 'buildings.ListCtrl',
+                data: {
+                    access: 'managers'
+                }
+            }).
+            state('buildings.detail', {
                 url: '/apartment',
-                parent: 'site',
-                templateUrl: partialsUrl + 'apartment.html',
-                controller: 'ApartmentCtrl'
+                templateUrl: partialsUrl + 'buildings/detail.html',
+                controller: 'buildings.DetailCtrl'
             });
 
             $urlRouterProvider.otherwise('/notices');
