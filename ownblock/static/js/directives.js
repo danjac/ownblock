@@ -11,6 +11,19 @@
             template: '<span class="glyphicon glyphicon-{{name}}"></span>&nbsp;{{text}}'
         };
     }).
+    directive('hasRole', ['auth',
+        function(auth) {
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs) {
+                    if (!auth.hasRole(attrs.hasRole)) {
+                        element.remove();
+                    }
+                }
+
+            };
+        }
+    ]).
     directive('sendMessage', ['$modal', 'api', 'notifier', 'staticUrl',
         function($modal, api, notifier, staticUrl) {
             var modalInstanceCtrl = function($scope, $modalInstance, recipient) {

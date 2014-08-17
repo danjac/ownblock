@@ -72,7 +72,7 @@
             api.Apartment.query().$promise.then(function(response) {
                 $scope.apartments = response;
                 angular.forEach($scope.apartments, function(apt) {
-                    if (apt.id === auth.user.apartment.id) {
+                    if (auth.user.apartment && apt.id === auth.user.apartment.id) {
                         $scope.apartment = apt;
                         $scope.apartment_name = "My apartment";
                         return;
@@ -94,7 +94,10 @@
                 angular.forEach($scope.apartments, function(apt) {
                     if (apt.id === id) {
                         $scope.apartment = apt;
-                        $scope.apartment_name = apt.id === auth.user.apartment.id ? 'My apartment' : 'Apartment ' + apt.number + "/" + apt.floor;
+                        $scope.apartment_name = (auth.user.apartment && apt.id === auth.user.apartment.id) ?
+                            'My apartment' : 'Apartment ' + apt.number + "/" + apt.floor;
+
+
                         $scope.tabs.apartment.active = true;
                         return;
                     }
@@ -184,7 +187,7 @@
             });
 
             function cancelBooking(booking, counter) {
-                if (booking.resident !== auth.user.id) {
+                if (booking.resident !== auth.user.id && !auth.hasRole('manager')) {
                     return;
                 }
                 if (!$window.confirm("You want to cancel this booking?")) {

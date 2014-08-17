@@ -27,8 +27,22 @@ from apps.buildings.models import Apartment
 class DefaultPermissionsMixin(object):
 
     """
-    Automatically assigns default permissions to an object
+    Automatically assigns default permissions to a set of groups
     on save.
+
+    To use this mixin you must implement 2 things:
+
+    1) permission_tracker - FieldTracker instance listing
+    any fields to be checked when assigning permissions. For example,
+    a user "author" or "creator" field.
+
+    2) get_groups - method that should return a list of
+    User or Group instances. Default permissions will be assigned to these
+    groups whenever the tracked permission fields are saved.
+
+    Older permissions are automatically deleted - for example, if your
+    user "creator" field has edit/delete permissions, and this is changed
+    to another user, the original user will lose those permissions.
     """
 
     def get_groups(self):
@@ -150,7 +164,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.role == 'manager':
             self.groups.add(create_managers_group())
 
-            if self.organization:
+            if self.organization and self.organization.group:
                 self.groups.add(self.organization.group)
 
 

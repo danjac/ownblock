@@ -72,13 +72,26 @@
                             <icon name="lock" text="Storage" />
                         </a>
                     </li>
-                    <li ui-sref-active="active">
+                    <li ui-sref-active="active" ng-show="auth.user.role==='resident'">
                         <a ui-sref="apartment">
                             <icon name="home" text="My building" />
                         </a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown" ng-show="auth.user.role==='manager'">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                        Pikisaarenkatu 48
+                        <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a ui-sref="apartment">Building details</a>
+                            </li>
+                            <li><a href>Change building</a>
+                            </li>
+                    </li>
+                    </ul>
+                    </li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown">
                             <icon name="user" text="{{auth.user.full_name}}"></icon>

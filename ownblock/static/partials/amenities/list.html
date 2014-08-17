@@ -15,7 +15,7 @@
                 <span class="label label-danger" ng-show="!amenity.is_available">Not Available</span>
             </td>
             <td>
-                <a class="btn btn-primary btn-sm" ng-show="amenity.is_available" ui-sref="amenities.newBooking({id: amenity.id})">
+                <a has-role="resident" class="btn btn-primary btn-sm" ng-show="amenity.is_available" ui-sref="amenities.newBooking({id: amenity.id})">
                     <icon name="calendar" />Reserve
                 </a>
             </td>
