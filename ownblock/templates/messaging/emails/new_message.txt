@@ -1,0 +1,15 @@
+Hi, {{ message.recipient.first_name }}
+
+{% with sender=message.sender %}
+You have received a message from {{ sender.get_full_name }} {% if sender.apartment %} at {{ sender.apartment.building.get_full_address }}{% else %} at {{ sender.organization.name }}{% endif %}:
+{% endwith %}
+
+{{ message.header }}
+
+
+{{ message.details }}
+
+To reply to the message please visit {{ site.name }} here:
+
+https://{{ site.domain }}/#/messages/{{ message.id }}/reply
+

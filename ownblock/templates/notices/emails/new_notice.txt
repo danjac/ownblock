@@ -1,0 +1,9 @@
+Hi, {{ recipient.first_name }}
+
+{{ notice.title }}
+
+{{ notice.details }}
+
+To see other notices at {{ site.name }} please go here:
+
+https://{{ site.domain }}/#/notices
