@@ -1,36 +1,39 @@
 from django.conf import settings
 from django.db import models
 
+from model_utils import FieldTracker
+
+from apps.accounts.models import DefaultPermissionsMixin
+
 from apps.buildings.models import Building
 
 
-class Place(models.Model):
+class Place(DefaultPermissionsMixin, models.Model):
 
     name = models.CharField(max_length=60)
     building = models.ForeignKey(Building)
 
+    permission_tracker = FieldTracker(fields=('building',))
+
     def __str__(self):
         return self.name
 
-    def can_edit_or_delete(self, user):
-        if not user.is_authenticated() or user.role != 'manager':
-            return False
-        return user.organization_id == self.building.organization_id
+    def get_groups(self):
+        return [self.building.organization.group]
 
 
-class Item(models.Model):
+class Item(DefaultPermissionsMixin, models.Model):
 
     description = models.CharField(max_length=100)
     serial_no = models.CharField(max_length=30, blank=True)
     resident = models.ForeignKey(settings.AUTH_USER_MODEL)
     place = models.ForeignKey(Place)
 
+    permission_tracker = FieldTracker(fields=('resident', 'place'))
+
     def __str__(self):
         return self.description
 
-    def can_edit_or_delete(self, user):
-        if not user.is_authenticated():
-            return False
-        if user.id == self.resident.id:
-            return True
-        return self.place.can_edit_or_delete(user)
+    def get_groups(self):
+        return [self.place.building.organization.group,
+                self.resident]

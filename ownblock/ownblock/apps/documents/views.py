@@ -3,8 +3,6 @@ from django.http import HttpResponse, Http404
 from rest_framework import viewsets
 from rest_framework.decorators import link
 
-from apps.accounts.permissions import IsResidentOrManagerReadOnly
-
 
 from .models import Document
 from .serializers import DocumentSerializer
@@ -14,7 +12,6 @@ class DocumentViewSet(viewsets.ModelViewSet):
 
     model = Document
     serializer_class = DocumentSerializer
-    permission_classes = (IsResidentOrManagerReadOnly,)
 
     @link()
     def download(self, request, pk, *args, **kwargs):

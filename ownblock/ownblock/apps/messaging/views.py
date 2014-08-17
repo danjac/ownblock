@@ -2,8 +2,6 @@ from django.db.models.query import Q
 
 from rest_framework import viewsets
 
-from apps.accounts.permissions import IsResidentOrManager
-
 from .models import Message
 from .serializers import MessageSerializer
 
@@ -12,7 +10,6 @@ class MessageViewSet(viewsets.ModelViewSet):
 
     model = Message
     serializer_class = MessageSerializer
-    permission_classes = (IsResidentOrManager, )
 
     def get_queryset(self):
         return super().get_queryset().filter(

@@ -30,6 +30,13 @@ class Building(models.Model):
                                    'postcode',
                                    'country'))
 
+    class Meta:
+        unique_together = ('address_1',
+                           'address_2',
+                           'city',
+                           'postcode',
+                           'country')
+
     def __str__(self):
         return self.get_full_address()
 
@@ -65,6 +72,9 @@ class Apartment(models.Model):
     owner_name = models.CharField(max_length=60, blank=True)
     owner_phone = models.CharField(max_length=12, blank=True)
     owner_email = models.EmailField(blank=True)
+
+    class Meta:
+        unique_together = ('building', 'number')
 
     def __str__(self):
         return "#%s" % self.number

@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 
+from guardian.shortcuts import assign_perm
+
 from django_countries.fields import CountryField
 
 
@@ -15,13 +17,13 @@ class Vehicle(models.Model):
     def __str__(self):
         return self.registration_number
 
-    def can_edit_or_delete(self, user):
-        if not user.is_authenticated():
-            return False
-        if self.resident_id == user.id:
-            return True
-        if (user.role == 'manager' and
-                user.organization_id ==
-                self.resident.apartment.building.organization_id):
-            return True
-        return False
+    def save(self, **kwargs):
+        super().save(**kwargs)
+
+        perms = ('parking.change_vehicle', 'parking.delete_vehicle')
+
+        org_group = self.resident.apartment.building.organization.group
+
+        for perm in perms:
+            assign_perm(perm, self.resident, self)
+            assign_perm(perm, org_group, self)
