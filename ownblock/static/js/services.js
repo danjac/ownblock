@@ -131,6 +131,15 @@
             Notifier.prototype.success = function(msg) {
                 this.notify('success', msg);
             };
+            Notifier.prototype.warning = function(msg) {
+                this.notify('warning', msg);
+            };
+            Notifier.prototype.info = function(msg) {
+                this.notify('info', msg);
+            };
+            Notifier.prototype.danger = function(msg) {
+                this.notify('danger', msg);
+            };
             return new Notifier();
         }
     ]).service('api', ['$resource',

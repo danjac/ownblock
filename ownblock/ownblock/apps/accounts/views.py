@@ -1,13 +1,12 @@
 from django.contrib.auth import login, logout, authenticate
 
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.buildings import get_building
 
 from .models import User
-from .permissions import IsResidentOrManager
 from .serializers import UserSerializer, AuthUserSerializer
 
 
@@ -15,7 +14,6 @@ class UserViewSet(viewsets.ModelViewSet):
 
     model = User
     serializer_class = UserSerializer
-    permission_classes = (IsResidentOrManager, )
 
     def get_queryset(self, *args, **kwargs):
         return super().get_queryset(*args, **kwargs).filter(
@@ -24,6 +22,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class AuthView(APIView):
+    permission_classes = (permissions.AllowAny, )
 
     def get_user_response(self, request):
             return Response(AuthUserSerializer(

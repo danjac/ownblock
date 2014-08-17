@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 
+from guardian.shortcuts import assign_perm
+
 from model_utils.models import TimeStampedModel
 
 from apps.buildings.models import Building
@@ -17,6 +19,7 @@ class Notice(TimeStampedModel):
         return self.title
 
     def can_edit_or_delete(self, user):
+        """DEPRECATED"""
         if not user.is_authenticated():
             return False
         if user.id == self.author.id:
@@ -24,3 +27,9 @@ class Notice(TimeStampedModel):
         if user.role == 'manager':
             return self.building.organization_id == user.organization_id
         return False
+
+    def save(self, **kwargs):
+        super().save(**kwargs)
+        for group in (self.author, self.building.organization.group):
+            assign_perm('notices.change_notice', group, self)
+            assign_perm('notices.delete_notice', group, self)

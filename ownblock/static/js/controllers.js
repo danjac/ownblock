@@ -213,12 +213,21 @@
             };
 
         }
-    ]).controller('notices.ListCtrl', ['$scope', 'api',
-        function($scope, api) {
+    ]).controller('notices.ListCtrl', ['$scope', '$window', 'api', 'notifier',
+        function($scope, $window, api, notifier) {
             $scope.notices = [];
             api.Notice.query().$promise.then(function(response) {
                 $scope.notices = response;
             });
+            $scope.deleteNotice = function(notice, index) {
+                if (!$window.confirm('You sure you want to delete this notice?')) {
+                    return;
+                }
+                $scope.notices.splice(index, 1);
+                notice.$delete(function() {
+                    notifier.success('Your notice has been deleted');
+                });
+            };
         }
     ]).controller('notices.DetailCtrl', [
         '$scope',

@@ -33,11 +33,14 @@
             $httpProvider.defaults.xsrfCookieName = 'csrftoken';
             $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-            $httpProvider.interceptors.push(function($q, $location) {
+            $httpProvider.interceptors.push(function($q, $location, notifier) {
                 return {
                     'responseError': function(response) {
-                        if (response.status === 401 || response.status === 403) {
+                        if (response.status === 401) {
                             $location.path("/login");
+                        }
+                        if (response.status === 403) {
+                            notifier.warning("Sorry, you're not allowed to do this");
                         }
                         return $q.reject(response);
                     }
