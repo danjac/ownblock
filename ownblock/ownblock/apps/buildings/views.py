@@ -1,10 +1,16 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from apps.accounts.permissions import IsManager
 
 from .models import Apartment, Building
-from .serializers import ApartmentSerializer, BuildingSerializer
+
+from .serializers import (
+    ApartmentSerializer,
+    BuildingSerializer,
+    ResidentSerializer,
+)
 
 
 class BuildingViewSet(viewsets.ReadOnlyModelViewSet):
@@ -29,6 +35,25 @@ class ApartmentViewSet(viewsets.ReadOnlyModelViewSet):
 
     model = Apartment
     serializer_class = ApartmentSerializer
+
+    def send_new_resident_email(self, resident):
+        pass
+
+    @action(permission_classes=(IsManager,))
+    def add_resident(self, request, pk=None):
+        obj = self.get_object()
+        serializer = ResidentSerializer(data=request.DATA)
+
+        if serializer.is_valid():
+            serializer.object.apartment = obj
+            resident = serializer.save(force_insert=True)
+            self.send_new_resident_email(resident)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data,
+                            status=status.HTTP_201_CREATED,
+                            headers=headers)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get_queryset(self):
         return super().get_queryset().filter(

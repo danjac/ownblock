@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user_model
+
 from rest_framework import serializers
 
 from apps.accounts.serializers.related import UserRelatedField
@@ -13,6 +15,21 @@ class ApartmentRelatedField(serializers.RelatedField):
             'floor': value.floor,
             'number': value.number,
         }
+
+
+class ResidentSerializer(serializers.ModelSerializer):
+
+    """Specifically to add new residents to apartment"""
+
+    class Meta:
+        model = get_user_model()
+        fields = (
+            'id',
+            'first_name',
+            'last_name',
+            'email',
+            'apartment',
+        )
 
 
 class BuildingSerializer(serializers.ModelSerializer):
