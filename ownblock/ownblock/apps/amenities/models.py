@@ -34,7 +34,7 @@ class Booking(DefaultPermissionsMixin, models.Model):
     reserved_from = models.DateTimeField()
     reserved_to = models.DateTimeField()
 
-    permission_tracker = FieldTracker(fields=('building', 'amenity'))
+    permission_tracker = FieldTracker(fields=('resident', 'amenity'))
 
     def get_groups(self):
         return [self.amenity.building.organization.group,

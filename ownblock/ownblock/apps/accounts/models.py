@@ -45,7 +45,7 @@ class DefaultPermissionsMixin(object):
         if not has_changed:
             return
 
-        groups_for_addition = self.get_groups()
+        groups_for_addition = [g for g in self.get_groups() if g]
 
         # check existing perms for removal
 
@@ -65,9 +65,11 @@ class DefaultPermissionsMixin(object):
                 "%s.change_%s" % (app_label, model_name),
                 "%s.delete_%s" % (app_label, model_name),
             ]
+
         for group in groups_for_addition:
             for perm in permissions:
                 assign_perm(perm, group, self)
+
         for group in groups_for_deletion:
             for perm in permissions:
                 remove_perm(perm, group, self)
@@ -142,7 +144,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
         self.groups.clear()
 
-        if self.role == 'residents':
+        if self.role == 'resident':
             self.groups.add(create_residents_group())
 
         if self.role == 'manager':

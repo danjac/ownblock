@@ -3,11 +3,12 @@ import factory
 
 from django.test import TestCase
 
+from factory import fuzzy
 from factory.django import DjangoModelFactory
 
 from apps.organizations.models import Organization
 
-from .models import Building
+from .models import Building, Apartment
 
 
 class OrganizationFactory(DjangoModelFactory):
@@ -15,7 +16,7 @@ class OrganizationFactory(DjangoModelFactory):
     class Meta:
         model = Organization
 
-    name = 'Org 1'
+    name = fuzzy.FuzzyText()
 
 
 class BuildingFactory(DjangoModelFactory):
@@ -29,6 +30,17 @@ class BuildingFactory(DjangoModelFactory):
     country = 'FI'
 
     organization = factory.SubFactory(OrganizationFactory)
+
+
+class ApartmentFactory(DjangoModelFactory):
+
+    class Meta:
+        model = Apartment
+
+    number = '1'
+    floor = 1
+
+    building = factory.SubFactory(BuildingFactory)
 
 
 class BuildingTests(TestCase):

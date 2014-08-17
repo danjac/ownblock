@@ -190,7 +190,7 @@
                 if (!$window.confirm("You want to cancel this booking?")) {
                     return;
                 }
-                api.booking.remove({
+                api.Booking.remove({
                     id: booking.id
                 });
                 bookings.splice(counter, 1);
