@@ -33,9 +33,30 @@
         }
     ]).controller('buildings.ListCtrl', ['$scope', '$state', 'api', 'auth',
         function($scope, $state, api, auth) {
-            $scope.buidings = [];
+            $scope.cities = [];
+
+            function getCity(city) {
+                var rv = null;
+                angular.forEach($scope.cities, function(value) {
+                    if (value.name === city) {
+                        rv = value;
+                        return;
+                    }
+                });
+                if (rv === null) {
+                    rv = {
+                        name: city,
+                        buildings: []
+                    };
+                    $scope.cities.push(rv);
+                }
+                return rv;
+            }
             api.Building.query().$promise.then(function(response) {
-                $scope.buildings = response;
+                angular.forEach(response, function(building) {
+                    var city = getCity(building.city);
+                    city.buildings.push(building);
+                });
             });
             $scope.selectBuilding = function(building) {
                 api.Building.get({

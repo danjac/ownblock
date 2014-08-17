@@ -1,6 +1,6 @@
-<div role="toolbar" class="btn-toolbar">
+<div role="toolbar" class="btn-toolbar" has-role="resident">
     <a ui-sref="parking.new" class="btn btn-primary">
-        <span class="glyphicon glyphicon-plus"></span> Add vehicle
+        <icon name="plus" text="Add vehicle" />
     </a>
 </div>
 <hr>
@@ -22,13 +22,13 @@
             <td>{{vebicle.reserved_space || 'No' }}</td>
             <td>
                 <a ui-sref="parking.edit({id: vehicle.id})" class="btn btn-default btn-sm" ng-show="vehicle.is_editable">
-                    <span class="glyphicon glyphicon-edit"></span> Edit
+                    <icon name="edit" text="Edit" />
                 </a>
                 <button class="btn btn-danger btn-sm" ng-show="vehicle.is_editable" ng-click="deleteVehicle(vehicle, $index)">
-                    <span class="glyphicon glyphicon-trash"></span> Remove
+                    <icon name="trash" text="Remove" />
                 </button>
                 <button send-message="{{vehicle.resident}}" class="btn btn-default btn-sm" ng-show="vehicle.resident.id != auth.user.id">
-                    <span class="glyphicon glyphicon-send"></span> Send message
+                    <icon name="send" text="Send message" />
                 </button>
 
             </td>
