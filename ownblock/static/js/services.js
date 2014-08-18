@@ -40,6 +40,7 @@
 
                     function accessDenied() {
                         $state.go('accessdenied');
+                        // disable redirectlogin so we don't jump back here
                         deferred.reject("Access denied");
                     }
 

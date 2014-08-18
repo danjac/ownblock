@@ -128,6 +128,19 @@
                 templateUrl: partialsUrl + 'amenities/list.html',
                 controller: 'amenities.ListCtrl'
             }).
+            state('amenities.newAmenity', {
+                url: '/amenities/new',
+                templateUrl: partialsUrl + 'amenities/amenityForm.html',
+                controller: 'amenities.NewAmenityCtrl',
+                data: {
+                    access: 'manager'
+                }
+            }).
+            state('amenities.edit', {
+                url: '/amenities/:id/edit',
+                templateUrl: partialsUrl + 'amenities/amenityForm.html',
+                controller: 'amenities.EditAmenityCtrl'
+            }).
             state('amenities.detail', {
                 url: '/amenities/:id',
                 templateUrl: partialsUrl + 'amenities/detail.html',
@@ -136,7 +149,10 @@
             state('amenities.newBooking', {
                 url: '/amenities/:id/bookings/new',
                 templateUrl: partialsUrl + 'amenities/bookingForm.html',
-                controller: 'amenities.NewBookingCtrl'
+                controller: 'amenities.NewBookingCtrl',
+                data: {
+                    access: 'resident'
+                }
             }).
             state('storage', {
                 templateUrl: partialsUrl + 'storage/base.html',
@@ -225,6 +241,7 @@
             $urlRouterProvider.otherwise('/notices');
         }
     ]).run(function($rootScope, auth) {
+        // TBD: we should just use $stateChangeStart, but running into issues.
         $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
             auth.storePostLoginState(toState, toStateParams);
         });

@@ -49,8 +49,12 @@ class BookingSerializer(serializers.ModelSerializer):
 
 
 class AmenitySerializer(serializers.ModelSerializer):
-    booking_set = BookingSerializer(many=True)
+    booking_set = BookingSerializer(many=True, read_only=True)
 
     class Meta:
         model = Amenity
         fields = ('id', 'name', 'is_available', 'booking_set')
+
+    def save_object(self, obj, **kwargs):
+        obj.building = self.context['request'].building
+        return super().save_object(obj, **kwargs)

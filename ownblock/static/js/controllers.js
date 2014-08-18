@@ -173,14 +173,48 @@
                 $scope.residents = response;
             });
         }
-    ]).controller('amenities.ListCtrl', ['$scope', 'api',
-        function($scope, api) {
+    ]).controller('amenities.ListCtrl', ['$scope', '$window', 'api', 'notifier',
+        function($scope, $window, api, notifier) {
             $scope.amenities = [];
             api.Amenity.query().$promise.then(function(response) {
                 $scope.amenities = response;
             });
+            $scope.deleteAmenity = function(amenity, index) {
+                if (!$window.confirm('This will remove the amenity and ALL its bookings. Continue?')) {
+                    return;
+                }
+                $scope.amenities.splice(index, 1);
+                amenity.$delete(function() {
+                    notifier.success('The amenity has been removed');
+                });
+            };
         }
-
+    ]).controller('amenities.NewAmenityCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+            $scope.amenity = new api.Amenity({
+                is_available: true
+            });
+            $scope.save = function() {
+                $scope.amenity.$save(function() {
+                    notifier.success('Amenity has been added');
+                    $state.go('amenities.list');
+                });
+            };
+        }
+    ]).controller('amenities.EditAmenityCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+            api.Amenity.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.amenity = response;
+            });
+            $scope.save = function() {
+                $scope.amenity.$update(function() {
+                    notifier.success('Amenity has been updated');
+                    $state.go('amenities.list');
+                });
+            };
+        }
     ]).controller('amenities.NewBookingCtrl', ['$scope', '$state', '$stateParams', 'api',
         function($scope, $state, $stateParams, api) {
             api.Amenity.get({
