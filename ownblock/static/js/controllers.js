@@ -482,12 +482,21 @@
                 });
             };
         }
-    ]).controller('contacts.ListCtrl', ['$scope', 'api',
-        function($scope, api) {
+    ]).controller('contacts.ListCtrl', ['$scope', '$window', 'api', 'notifier',
+        function($scope, $window, api, notifier) {
             $scope.contacts = [];
             api.Contact.query().$promise.then(function(response) {
                 $scope.contacts = response;
             });
+            $scope.deleteContact = function(contact, index) {
+                if (!$window.confirm('Are you sure')) {
+                    return;
+                }
+                $scope.contacts.splice(index, 1);
+                contact.$delete(function() {
+                    notifier.success('Contact has been removed');
+                });
+            };
 
         }
     ]).controller('contacts.DetailCtrl', ['$scope', '$state', 'api',

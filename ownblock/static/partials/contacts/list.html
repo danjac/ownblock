@@ -26,7 +26,7 @@
                 <a ui-sref="contacts.edit({id: contact.id})" class="btn btn-default btn-sm">
                     <icon name="edit" text="Edit" />
                 </a>
-                <button class="btn btn-danger btn-sm">
+                <button class="btn btn-danger btn-sm" ng-click="deleteContact(contact, $index)">
                     <icon name="trash" text="Delete" />
                 </button>
             </td>
