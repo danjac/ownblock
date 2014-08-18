@@ -213,7 +213,7 @@
                 templateUrl: partialsUrl + 'buildings/list.html',
                 controller: 'buildings.ListCtrl',
                 data: {
-                    access: 'managers'
+                    acess: 'manager'
                 }
             }).
             state('buildings.detail', {
