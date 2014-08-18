@@ -5,9 +5,10 @@
         '$scope',
         '$timeout',
         '$state',
+        '$q',
         'auth',
         'notifier',
-        function($scope, $timeout, $state, auth, notifier) {
+        function($scope, $timeout, $state, $q, auth, notifier) {
 
             $scope.auth = auth;
             $scope.notifier = notifier;
@@ -17,10 +18,6 @@
                     notifier.remove(notification);
                 }, 3000);
 
-            });
-
-            $scope.$on('$stateChangeStart', function() {
-                auth.authorize();
             });
 
             $scope.logout = function() {
@@ -401,6 +398,16 @@
                 }
                 $scope.items.splice(index, 1);
                 item.$delete();
+            };
+        }
+    ]).controller('storage.NewPlaceCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+            $scope.place = new api.Place();
+            $scope.save = function() {
+                $scope.place.$save(function() {
+                    notifier.success('The place has been saved');
+                    $state.go('storage.list');
+                });
             };
         }
     ]).controller('storage.NewItemCtrl', ['$scope', '$state', 'api', 'notifier',

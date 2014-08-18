@@ -17,10 +17,10 @@
             <td>{{notice.created|date}}</td>
             <td>{{notice.author.full_name}}</td>
             <td>
-                <button class="btn btn-default" ng-show="notice.is_editable">
+                <button class="btn btn-default btn-sm" ng-show="notice.is_editable">
                     <icon name="edit" text="Edit" />
                 </button>
-                <button class="btn btn-danger" ng-show="notice.is_editable" ng-click="deleteNotice(notice, $index)">
+                <button class="btn btn-danger btn-sm" ng-show="notice.is_editable" ng-click="deleteNotice(notice, $index)">
                     <icon name="trash" text="Delete" />
                 </button>
                 <button send-message="{{notice.author}}" ng-show="notice.author.id !== auth.user.id" class="btn btn-default btn-sm">

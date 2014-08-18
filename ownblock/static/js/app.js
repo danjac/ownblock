@@ -33,11 +33,11 @@
             $httpProvider.defaults.xsrfCookieName = 'csrftoken';
             $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-            $httpProvider.interceptors.push(function($q, $location, notifier) {
+            $httpProvider.interceptors.push(function($q, notifier) {
                 return {
                     'responseError': function(response) {
                         if (response.status === 401) {
-                            $location.path("/login");
+                            notifier.warning("Sorry, you don't appear to be logged in");
                         }
                         if (response.status === 403) {
                             notifier.warning("Sorry, you're not allowed to do this");
@@ -59,13 +59,15 @@
                     ]
                 }
             }).
+            state('accessdenied', {
+                url: '/accessdenied',
+                templateUrl: partialsUrl + 'accessDenied.html',
+                parent: 'site'
+            }).
             state('login', {
                 url: '/login',
                 templateUrl: partialsUrl + 'auth/login.html',
-                controller: 'auth.LoginCtrl',
-                data: {
-                    access: 'ignore'
-                }
+                controller: 'auth.LoginCtrl'
             }).
             state('residents', {
                 templateUrl: partialsUrl + 'residents/base.html',
@@ -143,9 +145,20 @@
                 controller: 'storage.ListCtrl'
             }).
             state('storage.newItem', {
-                url: '/storage/new',
+                url: '/storage/items/new',
                 templateUrl: partialsUrl + 'storage/itemForm.html',
-                controller: 'storage.NewItemCtrl'
+                controller: 'storage.NewItemCtrl',
+                data: {
+                    access: 'resident'
+                }
+            }).
+            state('storage.newPlace', {
+                url: '/storage/places/new',
+                templateUrl: partialsUrl + 'storage/placeForm.html',
+                controller: 'storage.NewPlaceCtrl',
+                data: {
+                    access: 'manager'
+                }
             }).
             state('storage.editItem', {
                 url: '/storage/edit/:id',
@@ -208,5 +221,11 @@
 
             $urlRouterProvider.otherwise('/notices');
         }
-    ]);
+    ]).run(function($rootScope, auth) {
+        $rootScope.$on('$stateChangeSuccess', function(event, toState, toStateParams) {
+            console.log("$stateChangeSuccess", toState);
+            auth.authorize(toState, toStateParams);
+        });
+
+    });
 }());

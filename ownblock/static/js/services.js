@@ -5,9 +5,8 @@
         '$q',
         '$state',
         '$stateParams',
-        '$window',
         'api',
-        function($q, $state, $stateParams, $window, api) {
+        function($q, $state, $stateParams, api) {
             return {
                 authorize: function(toState, toStateParams) {
                     var deferred = $q.defer(),
@@ -24,23 +23,28 @@
                     if (toState.data) {
                         access = toState.data.access;
                     }
-                    if (access !== 'ignore') {
+
+                    function loginRequired() {
                         self.returnToState = {
                             name: toState.name,
                             params: toState.params
                         };
+
+                        $state.go('login');
+                        deferred.reject("Login required");
                     }
 
-                    function redirectToLogin() {
-                        $state.go('login');
+                    function accessDenied() {
+                        $state.go('accessdenied');
+                        deferred.reject("Access denied");
                     }
 
                     if (angular.isDefined(self.user)) {
                         if (!self.hasRole(access)) {
-                            //redirectToLogin(); -> this doesn't work as we have the original view with this access
+                            accessDenied();
+                        } else {
+                            deferred.resolve(self);
                         }
-                        deferred.resolve(self);
-
                     } else {
 
                         api.Auth.get().$promise.then(function(response) {
@@ -48,17 +52,16 @@
                             self.loggedIn = true;
 
                             if (!self.hasRole(access)) {
-                                redirectToLogin();
+                                accessDenied();
+                            } else {
+                                deferred.resolve(self);
                             }
-
-                            deferred.resolve(self);
 
                         }, function() {
 
                             self.user = undefined;
                             self.loggedIn = false;
-                            redirectToLogin();
-                            deferred.resolve(self);
+                            loginRequired();
 
                         });
                     }
@@ -79,14 +82,13 @@
                         defaultView = 'notices.list',
                         deferred = $q.defer();
                     api.Auth.login(creds).$promise.then(function(response) {
-                        if (response.role === 'admin') {
-                            $window.location.href = '/admin/';
-                        }
+
                         self.user = response;
                         self.loggedIn = true;
 
                         if (angular.isDefined(self.returnToState) && self.returnToState.name) {
                             $state.go(self.returnToState.name, self.returnToState.params);
+                            self.returnToState = undefined;
                         } else {
                             $state.go(defaultView);
                         }
