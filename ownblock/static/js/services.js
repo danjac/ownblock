@@ -8,10 +8,20 @@
         'api',
         function($q, $state, $stateParams, api) {
             return {
+                storePostLoginState: function(state, stateParams) {
+                    var data = state.data || {},
+                        ignoreLoginRedirect = data.ignoreLoginRedirect || false;
+
+                    if (!ignoreLoginRedirect) {
+                        this.returnToState = {
+                            name: state.name,
+                            params: stateParams
+                        };
+                    }
+                },
                 authorize: function(toState, toStateParams) {
                     var deferred = $q.defer(),
-                        self = this,
-                        access = null;
+                        self = this;
 
                     if (!angular.isDefined(toState)) {
                         toState = $state.current;
@@ -20,16 +30,10 @@
                         toStateParams = $stateParams;
                     }
 
-                    if (toState.data) {
-                        access = toState.data.access;
-                    }
+                    var data = toState.data || {},
+                        access = data.access || null;
 
                     function loginRequired() {
-                        self.returnToState = {
-                            name: toState.name,
-                            params: toState.params
-                        };
-
                         $state.go('login');
                         deferred.reject("Login required");
                     }

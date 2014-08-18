@@ -67,7 +67,10 @@
             state('login', {
                 url: '/login',
                 templateUrl: partialsUrl + 'auth/login.html',
-                controller: 'auth.LoginCtrl'
+                controller: 'auth.LoginCtrl',
+                data: {
+                    ignoreLoginRedirect: true
+                }
             }).
             state('residents', {
                 templateUrl: partialsUrl + 'residents/base.html',
@@ -222,8 +225,10 @@
             $urlRouterProvider.otherwise('/notices');
         }
     ]).run(function($rootScope, auth) {
+        $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
+            auth.storePostLoginState(toState, toStateParams);
+        });
         $rootScope.$on('$stateChangeSuccess', function(event, toState, toStateParams) {
-            console.log("$stateChangeSuccess", toState);
             auth.authorize(toState, toStateParams);
         });
 

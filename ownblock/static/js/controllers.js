@@ -208,9 +208,7 @@
                     $state.go('amenities.detail', {
                         id: $stateParams.id
                     });
-                }, function(response) {
-                    console.log(response);
-                });
+                }, function(response) {});
             };
         }
     ]).controller('amenities.DetailCtrl', ['$scope',
