@@ -24,6 +24,31 @@
             };
         }
     ]).
+    directive('filesModel', function() {
+        /* https://github.com/angular/angular.js/issues/1375#issuecomment-21933012 */
+        return {
+            controller: function($parse, $element, $attrs, $scope, $window) {
+                var exp = $parse($attrs.filesModel);
+                console.log("filesModel")
+                $element.on('change', function() {
+                    exp.assign($scope, this.files);
+                    if ($window.FileReader !== null) {
+                        var file = this.files[0],
+                            reader = new $window.FileReader();
+                        reader.onload = function() {
+                            $scope.upload = {
+                                url: reader.result
+                            };
+                            $scope.$apply();
+                        };
+                        reader.readAsDataURL(file);
+                    }
+
+                    $scope.$apply();
+                });
+            }
+        };
+    }).
     directive('sendMessage', ['$modal', 'api', 'notifier', 'staticUrl',
         function($modal, api, notifier, staticUrl) {
             var modalInstanceCtrl = function($scope, $modalInstance, recipient) {

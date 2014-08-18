@@ -18,8 +18,11 @@
             <td>{{document.created|date:"fullDate"}}</td>
             <td>
                 <a class="btn btn-primary btn-sm" ng-href="{{document.download_url}}">
-                    <icon name="download" />Download
+                    <icon name="download" text="Download" />
                 </a>
+                <button class="btn btn-danger btn-sm" ng-click="deleteDocument(document, $index)">
+                    <icon name="trash" text="Delete" />
+                </button>
             </td>
         </tr>
     </tbody>

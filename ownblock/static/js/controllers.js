@@ -490,12 +490,21 @@
             });
 
         }
-    ]).controller('documents.ListCtrl', ['$scope', 'api',
-        function($scope, api) {
+    ]).controller('documents.ListCtrl', ['$scope', '$window', 'api', 'notifier',
+        function($scope, $window, api, notifier) {
             $scope.documents = [];
             api.Document.query().$promise.then(function(response) {
                 $scope.documents = response;
             });
+            $scope.deleteDocument = function(doc, index) {
+                if (!$window.confirm("Are you sure?")) {
+                    return;
+                }
+                $scope.documents.splice(index, 1);
+                doc.$delete(function() {
+                    notifier.success('Your document has been removed');
+                });
+            };
 
         }
     ]).controller('documents.UploadCtrl', ['$scope', '$state', 'api', 'notifier',
