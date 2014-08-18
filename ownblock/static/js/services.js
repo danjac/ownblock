@@ -3,84 +3,52 @@
     angular.module('ownblock.services', []).
     service('auth', [
         '$q',
+        '$window',
         '$state',
         '$stateParams',
         'api',
-        function($q, $state, $stateParams, api) {
+        function($q, $window, $state, $stateParams, api) {
             return {
-                storePostLoginState: function(state, stateParams) {
-                    var data = state.data || {},
-                        ignoreLoginRedirect = data.ignoreLoginRedirect || false;
 
-                    if (!ignoreLoginRedirect) {
-                        this.returnToState = {
-                            name: state.name,
-                            params: stateParams
-                        };
-                    }
-                },
-                authorize: function(toState, toStateParams) {
+                authenticate: function() {
                     var deferred = $q.defer(),
                         self = this;
 
-                    if (!angular.isDefined(toState)) {
-                        toState = $state.current;
-                    }
-                    if (!angular.isDefined(toStateParams)) {
-                        toStateParams = $stateParams;
-                    }
-
-                    var data = toState.data || {},
-                        access = data.access || null;
-
-                    function loginRequired() {
-                        $state.go('login');
-                        deferred.reject("Login required");
-                    }
-
-                    function accessDenied() {
-                        $state.go('accessdenied');
-                        // disable redirectlogin so we don't jump back here
-                        deferred.reject("Access denied");
-                    }
-
-                    if (angular.isDefined(self.user)) {
-                        if (!self.hasRole(access)) {
-                            accessDenied();
-                        } else {
+                    if (self.isAuthenticated) {
+                        if (self.loggedIn) {
                             deferred.resolve(self);
+                        } else {
+                            deferred.reject(self);
                         }
                     } else {
-
                         api.Auth.get().$promise.then(function(response) {
+
                             self.user = response;
                             self.loggedIn = true;
-
-                            if (!self.hasRole(access)) {
-                                accessDenied();
-                            } else {
-                                deferred.resolve(self);
-                            }
+                            self.isAuthenticated = true;
+                            deferred.resolve(self);
 
                         }, function() {
 
                             self.user = undefined;
                             self.loggedIn = false;
-                            loginRequired();
-
+                            self.isAuthenticated = true;
+                            deferred.reject(self);
                         });
                     }
-
                     return deferred.promise;
+                },
+                authorize: function(state) {
+                    var data = state.data || {},
+                        access = data.access || null;
+
+                    return this.hasRole(access);
                 },
                 hasRole: function(access) {
                     if (!access) {
                         return true;
                     }
-                    if (!angular.isDefined(this.user)) {
-                        return false;
-                    }
-                    return (access === this.user.role);
+                    return (this.loggedIn && this.user && this.user.role === access);
                 },
                 login: function(creds) {
                     var self = this,
@@ -90,12 +58,14 @@
 
                         self.user = response;
                         self.loggedIn = true;
+                        self.isAuthenticated = true;
+                        $window.sessionStorage.setItem('auth.user', self.user);
 
                         if (angular.isDefined(self.returnToState) && self.returnToState.name) {
-                            $state.go(self.returnToState.name, self.returnToState.params);
+                            $state.transitionTo(self.returnToState.name, self.returnToState.params);
                             self.returnToState = undefined;
                         } else {
-                            $state.go(defaultView);
+                            $state.transitionTo(defaultView);
                         }
                         deferred.resolve(self);
                     });
@@ -109,6 +79,8 @@
                     api.Auth.remove({}, function() {
                         self.user = undefined;
                         self.loggedIn = false;
+                        self.isAuthenticated = false;
+                        $window.sessionStorage.removeItem('auth.user');
                         deferred.resolve(true);
                     });
                     return deferred.promise;

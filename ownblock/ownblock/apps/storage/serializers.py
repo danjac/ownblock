@@ -71,5 +71,6 @@ class ItemSerializer(serializers.ModelSerializer):
         return obj in self.user_perms
 
     def save_object(self, obj, *args, **kwargs):
-        obj.resident = self.context['request'].user
+        if obj.resident is None:
+            obj.resident = self.context['request'].user
         return super().save_object(obj, *args, **kwargs)

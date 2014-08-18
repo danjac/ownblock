@@ -498,6 +498,17 @@
             });
 
         }
+    ]).controller('documents.UploadCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+
+            $scope.document = new api.Document();
+            $scope.save = function() {
+                $scope.document.$save(function() {
+                    notifier.success("Your document has been uploaded");
+                    $state.go('documents.list');
+                });
+            };
+        }
     ]).controller('parking.ListCtrl', ['$scope', '$window', 'api', 'notifier',
         function($scope, $window, api, notifier) {
             $scope.vehicles = [];

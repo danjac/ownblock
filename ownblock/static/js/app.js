@@ -36,25 +36,74 @@
             $httpProvider.interceptors.push(function($q, notifier) {
                 return {
                     'responseError': function(response) {
-                        if (response.status === 401) {
-                            notifier.warning("Sorry, you don't appear to be logged in");
+                        var warning = "Sorry, an error has occurred";
+                        switch (response.status) {
+                            case 401:
+                                warning = "Sorry, you don't appear to be logged in";
+                                break;
+                            case 403:
+                                warning = "Sorry, I can't let you do this dave";
+                                break;
+                            case 400:
+                                warning = "Sorry, your form appears to have some errors";
+                                break;
                         }
-                        if (response.status === 403) {
-                            notifier.warning("Sorry, you're not allowed to do this");
+                        if (warning) {
+                            notifier.warning(warning);
                         }
                         return $q.reject(response);
                     }
                 };
             });
 
+            // handle file uploads
+            $httpProvider.defaults.transformRequest = function(data, headersGetter) {
+
+                if (data === undefined) {
+                    return data;
+                }
+
+                var fd = new FormData(),
+                    isFileUpload = false,
+                    headers = headersGetter();
+
+                angular.forEach(data, function(value, key) {
+                    if (value instanceof FileList) {
+                        isFileUpload = true;
+                        if (value.length === 1) {
+                            fd.append(key, value[0]);
+                        } else {
+                            angular.forEach(value, function(file, index) {
+                                fd.append(key + "_" + index, file);
+                            });
+                        }
+                    } else {
+                        fd.append(key, value);
+                    }
+                });
+                if (isFileUpload) {
+                    headers["Content-Type"] = undefined;
+                    return fd;
+                }
+
+                return JSON.stringify(data);
+            };
+
             $stateProvider.
             state('site', {
                 'abstract': true,
                 templateUrl: partialsUrl + 'base.html',
                 resolve: {
-                    auth: ['auth',
-                        function(auth) {
-                            return auth.authorize();
+                    auth: ['$q', '$state', 'auth',
+                        function($q, $state, auth) {
+                            var deferred = $q.defer();
+                            auth.authenticate().then(function(result) {
+                                deferred.resolve(result);
+                            }).catch(function(result) {
+                                $state.transitionTo('login');
+                                deferred.reject(result);
+                            });
+                            return deferred.promise;
                         }
                     ]
                 }
@@ -69,7 +118,8 @@
                 templateUrl: partialsUrl + 'auth/login.html',
                 controller: 'auth.LoginCtrl',
                 data: {
-                    ignoreLoginRedirect: true
+                    ignoreLoginRedirect: true,
+                    loginRequired: false
                 }
             }).
             state('residents', {
@@ -176,13 +226,16 @@
                 templateUrl: partialsUrl + 'storage/placeForm.html',
                 controller: 'storage.NewPlaceCtrl',
                 data: {
-                    access: 'manager'
+                    access: 'managers'
                 }
             }).
             state('storage.editItem', {
                 url: '/storage/edit/:id',
                 templateUrl: partialsUrl + 'storage/itemForm.html',
-                controller: 'storage.EditItemCtrl'
+                controller: 'storage.EditItemCtrl',
+                data: {
+                    access: 'resident'
+                }
             }).
             state('documents', {
                 templateUrl: partialsUrl + 'documents/base.html',
@@ -192,6 +245,14 @@
                 url: '/docs',
                 templateUrl: partialsUrl + 'documents/list.html',
                 controller: 'documents.ListCtrl'
+            }).
+            state('documents.upload', {
+                url: '/docs/upload',
+                templateUrl: partialsUrl + 'documents/form.html',
+                controller: 'documents.UploadCtrl',
+                data: {
+                    access: 'manager'
+                }
             }).
             state('parking', {
                 templateUrl: partialsUrl + 'parking/base.html',
@@ -213,13 +274,21 @@
                 controller: 'parking.EditCtrl'
             }).
             state('contacts', {
-                templateUrl: partialsUrl + 'documents/base.html',
+                templateUrl: partialsUrl + 'contacts/base.html',
                 parent: 'site'
             }).
             state('contacts.list', {
                 url: '/contacts',
                 templateUrl: partialsUrl + 'contacts/list.html',
                 controller: 'contacts.ListCtrl'
+            }).
+            state('contacts.new', {
+                url: '/contacts/new',
+                templateUrl: partialsUrl + 'contacts/form.html',
+                controller: 'contacts.NewCtrl',
+                data: {
+                    access: 'manager'
+                }
             }).
             state('buildings', {
                 templateUrl: partialsUrl + 'buildings/base.html',
@@ -240,13 +309,26 @@
 
             $urlRouterProvider.otherwise('/notices');
         }
-    ]).run(function($rootScope, auth) {
-        // TBD: we should just use $stateChangeStart, but running into issues.
-        $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
-            auth.storePostLoginState(toState, toStateParams);
-        });
-        $rootScope.$on('$stateChangeSuccess', function(event, toState, toStateParams) {
-            auth.authorize(toState, toStateParams);
+    ]).run(function($rootScope, $state, auth) {
+
+        $rootScope.$on('$stateChangeStart', function(event, toState) {
+            var loginRequired = true;
+            if (toState.data && angular.isDefined(toState.data.loginRequired)) {
+                loginRequired = toState.data.loginRequired;
+            }
+            if (!loginRequired) {
+                return;
+            }
+            auth.authenticate().then(function() {
+                if (!auth.authorize(toState)) {
+                    event.preventDefault();
+                    $state.transitionTo('accessdenied');
+                }
+            }).catch(function() {
+                event.preventDefault();
+                $state.transitionTo('login');
+            });
+
         });
 
     });
