@@ -490,6 +490,38 @@
             });
 
         }
+    ]).controller('contacts.DetailCtrl', ['$scope', '$state', 'api',
+        function($scope, $state, api) {
+            api.Contact.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.contact = response;
+            });
+        }
+    ]).controller('contacts.NewCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+            $scope.contact = new api.Contact();
+            $scope.save = function() {
+                $scope.contact.$save(function() {
+                    notifier.success('Your contact has been saved');
+                    $state.go('contacts.list');
+                });
+            };
+        }
+    ]).controller('contacts.EditCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+            api.Contact.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.contact = response;
+            });
+            $scope.save = function() {
+                $scope.contact.$update(function() {
+                    notifier.success('Your contact has been saved');
+                    $state.go('contacts.list');
+                });
+            };
+        }
     ]).controller('documents.ListCtrl', ['$scope', '$window', 'api', 'notifier',
         function($scope, $window, api, notifier) {
             $scope.documents = [];

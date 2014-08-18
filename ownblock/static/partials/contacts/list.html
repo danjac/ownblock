@@ -1,3 +1,9 @@
+<div role="toolbar" class="btn-toolbar" has-role="manager">
+    <a ui-sref="contacts.new" class="btn btn-primary">
+        <icon name="plus" text="Add contact" />
+    </a>
+</div>
+<hr>
 <table class="table table-bordered table-striped table-hover">
     <thead>
         <tr>
@@ -5,15 +11,24 @@
             <th>Description</th>
             <th>Phone</th>
             <th>Email</th>
+            <th has-role="manager">Actions</th>
         </tr>
     </thead>
     <tbody>
         <tr ng-repeat="contact in contacts">
-            <td><a href>{{contact.name}}</a>
+            <td><a ui-sref="contacts.detail({id: contact.id})">{{contact.name}}</a>
             </td>
             <td>{{contact.description}}</td>
             <td>{{contact.phone}}</td>
             <td><a href="mailto:{{contact.email}}">{{contact.email}}</a>
+            </td>
+            <td has-role="manager">
+                <a ui-sref="contacts.edit({id: contact.id})" class="btn btn-default btn-sm">
+                    <icon name="edit" text="Edit" />
+                </a>
+                <button class="btn btn-danger btn-sm">
+                    <icon name="trash" text="Delete" />
+                </button>
             </td>
         </tr>
     </tbody>

@@ -111,7 +111,11 @@
             state('accessdenied', {
                 url: '/accessdenied',
                 templateUrl: partialsUrl + 'accessDenied.html',
-                parent: 'site'
+                parent: 'site',
+                data: {
+                    ignoreLoginRedirect: true,
+                    loginRequired: false
+                }
             }).
             state('login', {
                 url: '/login',
@@ -226,7 +230,7 @@
                 templateUrl: partialsUrl + 'storage/placeForm.html',
                 controller: 'storage.NewPlaceCtrl',
                 data: {
-                    access: 'managers'
+                    access: 'manager'
                 }
             }).
             state('storage.editItem', {
@@ -286,6 +290,19 @@
                 url: '/contacts/new',
                 templateUrl: partialsUrl + 'contacts/form.html',
                 controller: 'contacts.NewCtrl',
+                data: {
+                    access: 'manager'
+                }
+            }).
+            state('contacts.detail', {
+                url: '/contacts/:id',
+                templateUrl: partialsUrl + 'contacts/detail.html',
+                controller: 'contacts.DetailCtrl'
+            }).
+            state('contacts.edit', {
+                url: '/contacts/:id/edit',
+                templateUrl: partialsUrl + 'contacts/form.html',
+                controller: 'contacts.EditCtrl',
                 data: {
                     access: 'manager'
                 }

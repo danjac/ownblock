@@ -15,3 +15,7 @@ class ContactSerializer(serializers.ModelSerializer):
             'phone',
             'address',
         )
+
+    def save_object(self, obj, **kwargs):
+        obj.building = self.context['request'].building
+        return super().save_object(obj, **kwargs)
