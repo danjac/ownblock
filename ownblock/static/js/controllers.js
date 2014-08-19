@@ -4,11 +4,9 @@
     controller('AppCtrl', [
         '$scope',
         '$timeout',
-        '$state',
-        '$q',
         'auth',
         'notifier',
-        function($scope, $timeout, $state, $q, auth, notifier) {
+        function($scope, $timeout, auth, notifier) {
 
             $scope.auth = auth;
             $scope.notifier = notifier;
@@ -19,12 +17,6 @@
                 }, 3000);
 
             });
-
-            $scope.logout = function() {
-                auth.logout().then(function() {
-                    $state.go('login');
-                });
-            };
 
 
         }
@@ -73,6 +65,8 @@
         'staticUrl',
         function($scope, $window, $modal, api, auth, staticUrl) {
 
+            console.log("AUTH", auth.user);
+            console.log("SCOPEAUTH", $scope.auth.user);
             $scope.building = $scope.auth.user.building;
 
             function generateMap() {
@@ -609,12 +603,13 @@
                 });
             };
         }
-    ]).controller('account.ChangePasswordCtrl', ['$scope', 'api', 'notifier',
-        function($scope, api, notifier) {
+    ]).controller('account.ChangePasswordCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
             $scope.user = {};
             $scope.save = function() {
                 api.Auth.changePassword($scope.user, function() {
                     notifier.success('Your password has been updated');
+                    $state.go('account.edit');
                 });
             };
         }

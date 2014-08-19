@@ -95,12 +95,21 @@
                 'abstract': true,
                 templateUrl: partialsUrl + 'base.html',
                 resolve: {
-                    auth: ['$state', 'auth',
-                        function($state, auth) {
-                            if (!auth.authenticate()) {
-                                $state.transitionTo('login');
+                    auth: ['$q', '$location', 'api', 'auth',
+                        function($q, $location, api, auth) {
+                            if (auth.authenticate()) {
+                                return auth;
                             }
-                            return auth;
+                            var deferred = $q.defer();
+
+                            api.Auth.get(function(response) {
+                                auth.sync(response);
+                                deferred.resolve(auth);
+                            }, function() {
+                                $location.path("/account/login/");
+                            });
+
+                            return deferred.promise;
                         }
                     ]
                 }

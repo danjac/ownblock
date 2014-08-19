@@ -2,27 +2,12 @@
     'use strict';
     angular.module('ownblock.services', []).
     service('auth', [
-        '$q',
-        '$window',
-        'api',
-        function($q, $window, api) {
-            var storageKey = 'auth.user',
-                storage = $window.localStorage;
+
+        function() {
 
             return {
-                storageKey: 'auth.user',
                 authenticate: function() {
-                    if (this.isAuthenticated) {
-                        return true;
-                    }
-                    // check local storage 
-                    var user = storage.getItem(storageKey);
-                    if (user === null) { // user not in local storage
-                        return false;
-                    }
-                    this.user = JSON.parse(user);
-                    this.isAuthenticated = true;
-                    return true;
+                    return this.isAuthenticated;
                 },
                 authorize: function(state) {
                     var data = state.data || {},
@@ -39,12 +24,12 @@
                 sync: function(response) {
                     this.user = response;
                     this.isAuthenticated = true;
-                    storage.setItem(storageKey, JSON.stringify(this.user));
                 },
                 update: function(response) {
                     this.user.first_name = response.first_name;
                     this.user.last_name = response.last_name;
                     this.user.email = response.email;
+                    this.user.full_name = response.full_name;
                 }
             };
         }
@@ -121,7 +106,6 @@
                         method: 'PUT'
                     },
                     changePassword: {
-                        url: '/api/users/auth/change_password',
                         method: 'PATCH'
                     }
                 })

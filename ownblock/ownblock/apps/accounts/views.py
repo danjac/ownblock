@@ -38,8 +38,7 @@ class AuthView(APIView):
         serializer.save(force_update=True)
         return Response(serializer.data)
 
-    @action(method='PATCH')
-    def change_password(self, request, *args, **kwargs):
+    def patch(self, request, *args, **kwargs):
         password = request.DATA.get('password')
         if not password:
             return Response('Password is missing',
