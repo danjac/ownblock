@@ -15,6 +15,10 @@ class NoticeViewSet(viewsets.ModelViewSet):
     model = Notice
     serializer_class = NoticeSerializer
 
+    def pre_save(self, obj):
+        obj.author = self.request.user
+        obj.building = self.request.building
+
     def post_save(self, obj, created):
 
         if not created:

@@ -265,7 +265,7 @@ WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 AUTH_USER_MODEL = 'accounts.User'
 AUTHENTICATION_BACKENDS = (
     'apps.accounts.backends.ObjectPermissionBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    #'django.contrib.auth.backends.ModelBackend',
 )
 
 # END AUTH CONFIGURATION

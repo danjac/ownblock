@@ -28,3 +28,7 @@ class Document(TimeStampedModel):
     @models.permalink
     def get_download_url(self):
         return ('document-download', [self.pk])
+
+    def has_permission(self, user, perm):
+        return (user.role == 'manager' and
+                self.building.organization_id == user.organization_id)

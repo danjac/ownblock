@@ -28,7 +28,9 @@ class MessageSerializer(serializers.ModelSerializer):
 
     def validate_recipient(self, attrs, source):
         recipient = attrs[source]
-        if recipient.apartment.building != self.context['request'].building:
+        if (recipient.apartment and
+                recipient.apartment.building !=
+                self.context['request'].building):
             raise serializers.ValidationError("Recipient does not live here")
         if recipient == self.context['request'].user:
             raise serializers.ValidationError(

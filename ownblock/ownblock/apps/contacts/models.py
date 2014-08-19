@@ -14,3 +14,6 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.name
+
+    def has_permission(self, user, perm):
+        return self.building.organization_id == user.organization_id

@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
@@ -71,7 +72,7 @@ class CustomUserAdmin(UserAdmin):
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name')}),
         ('Buildings', {'fields': ('organization', 'apartment')}),
-        ('Permissions', {'fields': ('role', 'groups')}),
+        ('Permissions', {'fields': ('role', )}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
@@ -80,7 +81,7 @@ class CustomUserAdmin(UserAdmin):
             'classes': ('wide',),
             'fields': ('email', 'first_name', 'last_name',
                        'organization', 'apartment',
-                       'password1', 'password2', 'role', 'groups')}
+                       'password1', 'password2', 'role', )}
          ),
     )
     search_fields = ('email', 'first_name', 'last_name')
@@ -90,3 +91,4 @@ class CustomUserAdmin(UserAdmin):
 
 # Now register the new UserAdmin...
 admin.site.register(User, CustomUserAdmin)
+admin.site.unregister(Group)

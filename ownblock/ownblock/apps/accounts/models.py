@@ -61,10 +61,26 @@ class User(AbstractBaseUser):
 
     MODEL_PERMISSIONS = {
         'resident': {
+            'amenities.add_booking',
+            'amenities.delete_booking',
+            'messaging.add_message',
             'notices.add_notice',
+            'notices.change_notice',
+            'notices.delete_notice',
+            'notices.add_notice',
+            'storage.add_item',
         },
         'manager': {
+            'accounts.add_user',
+            'amenities.add_amenity',
+            'amenities.delete_booking',
+            'documents.add_document',
+            'documents.change_document',
+            'documents.delete_document',
             'notices.add_notice',
+            'notices.change_notice',
+            'notices.delete_notice',
+            'storage.add_place',
         },
     }
 
@@ -79,7 +95,7 @@ class User(AbstractBaseUser):
 
     # Hook for custom auth backend
 
-    def has_model_permissions(self, perm):
+    def has_model_permission(self, perm):
         """Provides model-scpe permissions"""
         return perm in self.MODEL_PERMISSIONS.get(self.role, {})
 
