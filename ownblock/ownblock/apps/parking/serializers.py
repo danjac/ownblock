@@ -24,11 +24,6 @@ class VehicleSerializer(serializers.ModelSerializer):
             'is_editable',
         )
 
-    def save_object(self, obj, *args, **kwargs):
-        if obj.resident is None:
-            obj.resident = self.context['request'].user
-        return super().save_object(obj, *args, **kwargs)
-
     @cached_property
     def user_perms(self):
         return get_objects_for_user(self.context['request'].user, (

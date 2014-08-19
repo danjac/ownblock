@@ -45,8 +45,15 @@ class ApartmentViewSet(viewsets.ReadOnlyModelViewSet):
         serializer = ResidentSerializer(data=request.DATA, apartment=obj)
 
         if serializer.is_valid():
-            resident = serializer.save(force_insert=True)
-            self.send_new_resident_email(resident)
+
+            user = serializer.object
+            user.apartment = obj
+            user.set_unusable_password()
+            user.role = 'resident'
+
+            serializer.save(force_insert=True)
+
+            self.send_new_resident_email(user)
             return Response(serializer.data,
                             status=status.HTTP_201_CREATED)
 

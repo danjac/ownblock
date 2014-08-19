@@ -35,6 +35,9 @@ class MessageViewSet(viewsets.ModelViewSet):
             [obj.recipient.email],
         )
 
+    def pre_save(self, obj):
+        obj.sender = self.request.user
+
     def get_queryset(self):
         return super().get_queryset().filter(
             Q(recipient=self.request.user) |

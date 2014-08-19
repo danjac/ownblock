@@ -35,7 +35,3 @@ class MessageSerializer(serializers.ModelSerializer):
                 "You can't send message to yourself"
             )
         return attrs
-
-    def save_object(self, obj, *args, **kwargs):
-        obj.sender = self.context['request'].user
-        return super().save_object(obj, *args, **kwargs)

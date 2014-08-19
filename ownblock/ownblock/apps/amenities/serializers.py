@@ -43,10 +43,6 @@ class BookingSerializer(serializers.ModelSerializer):
 
         return attrs
 
-    def save_object(self, obj, *args, **kwargs):
-        obj.resident = self.context['request'].user
-        return super().save_object(obj, *args, **kwargs)
-
 
 class AmenitySerializer(serializers.ModelSerializer):
     booking_set = BookingSerializer(many=True, read_only=True)
@@ -54,7 +50,3 @@ class AmenitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Amenity
         fields = ('id', 'name', 'is_available', 'booking_set')
-
-    def save_object(self, obj, **kwargs):
-        obj.building = self.context['request'].building
-        return super().save_object(obj, **kwargs)

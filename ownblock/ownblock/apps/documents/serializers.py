@@ -21,7 +21,3 @@ class DocumentSerializer(serializers.ModelSerializer):
 
     def get_download_url(self, obj):
         return obj.get_download_url()
-
-    def save_object(self, obj, **kwargs):
-        obj.building = self.context['request'].building
-        return super().save_object(obj, **kwargs)

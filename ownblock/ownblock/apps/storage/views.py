@@ -10,6 +10,9 @@ class PlaceViewSet(viewsets.ModelViewSet):
     model = Place
     serializer_class = PlaceSerializer
 
+    def pre_save(self, obj):
+        obj.building = self.request.building
+
     def get_queryset(self):
         return super().get_queryset().filter(
             building=self.request.building
@@ -20,6 +23,10 @@ class ItemViewSet(viewsets.ModelViewSet):
 
     model = Item
     serializer_class = ItemSerializer
+
+    def pre_save(self, obj):
+        if obj.resident is None:
+            obj.resident = self.request.user
 
     def get_queryset(self):
         return super().get_queryset().filter(

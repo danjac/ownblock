@@ -40,12 +40,6 @@ class ResidentSerializer(serializers.ModelSerializer):
     def get_full_name(self, obj):
         return obj.get_full_name()
 
-    def save_object(self, obj, **kwargs):
-        obj.apartment = self.apartment
-        obj.set_unusable_password()
-        obj.role = 'resident'
-        super().save_object(obj, **kwargs)
-
 
 class BuildingSerializer(serializers.ModelSerializer):
 

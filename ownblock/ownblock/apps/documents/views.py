@@ -25,6 +25,9 @@ class DocumentViewSet(viewsets.ModelViewSet):
             obj.get_filename()
         return response
 
+    def pre_save(self, obj):
+        obj.building = self.request.building
+
     def get_queryset(self):
         return super().get_queryset().filter(
             building=self.request.building

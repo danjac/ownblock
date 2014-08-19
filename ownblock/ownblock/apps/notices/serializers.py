@@ -25,12 +25,6 @@ class NoticeSerializer(serializers.ModelSerializer):
             'is_editable',
         )
 
-    def save_object(self, obj, *args, **kwargs):
-        request = self.context['request']
-        obj.author = request.user
-        obj.building = request.building
-        super(NoticeSerializer, self).save_object(obj, *args, **kwargs)
-
     @cached_property
     def user_perms(self):
         return get_objects_for_user(self.context['request'].user, (
