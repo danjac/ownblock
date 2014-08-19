@@ -3,10 +3,27 @@
     angular.module('ownblock.services', []).
     service('auth', [
         '$q',
-        '$state',
+        '$window',
         'api',
-        function($q, $state, api) {
+        function($q, $window, api) {
+            var storageKey = 'auth.user',
+                storage = $window.localStorage;
+
             return {
+                storageKey: 'auth.user',
+                authenticate: function() {
+                    if (this.isAuthenticated) {
+                        return true;
+                    }
+                    // check local storage 
+                    var user = storage.getItem(storageKey);
+                    if (user === null) { // user not in local storage
+                        return false;
+                    }
+                    this.user = JSON.parse(user);
+                    this.isAuthenticated = true;
+                    return true;
+                },
                 authorize: function(state) {
                     var data = state.data || {},
                         access = data.access || null;
@@ -21,19 +38,11 @@
                 },
                 login: function(creds) {
                     var self = this,
-                        defaultView = 'notices.list',
                         deferred = $q.defer();
                     api.Auth.login(creds).$promise.then(function(response) {
-
                         self.user = response;
                         self.isAuthenticated = true;
-
-                        if (angular.isDefined(self.returnToState) && self.returnToState.name) {
-                            $state.transitionTo(self.returnToState.name, self.returnToState.params);
-                            self.returnToState = undefined;
-                        } else {
-                            $state.transitionTo(defaultView);
-                        }
+                        storage.setItem(storageKey, JSON.stringify(self.user));
                         deferred.resolve(self);
                     });
                     return deferred.promise;
@@ -46,6 +55,7 @@
                     api.Auth.remove({}, function() {
                         self.user = undefined;
                         self.isAuthenticated = false;
+                        storage.removeItem(storageKey);
                         deferred.resolve(true);
                     });
                     return deferred.promise;

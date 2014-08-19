@@ -16,7 +16,7 @@
 <body ng-controller="AppCtrl" ng-cloak>
 
     {% verbatim %}
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" ng-show="auth.loggedIn">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-links">
@@ -29,7 +29,7 @@
                     <icon name="home" text="ownblock" />
                 </a>
             </div>
-            <div class="collapse navbar-collapse" id="navbar-links">
+            <div class="collapse navbar-collapse" id="navbar-links" ng-if="auth.isAuthenticated">
                 <ul class="nav navbar-nav navbar-left">
                     <li ui-sref-active="active">
                         <a ui-sref="notices.list">

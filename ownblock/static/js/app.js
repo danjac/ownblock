@@ -39,10 +39,11 @@
                         var warning = "Sorry, an error has occurred";
                         switch (response.status) {
                             case 401:
-                                warning = "Sorry, you don't appear to be logged in";
+                                // we're out of sync with server, logout 
+                                warning = "Please sign in again";
                                 break;
                             case 403:
-                                warning = "Sorry, I can't let you do this dave";
+                                warning = "Sorry, you're not allowed to do this";
                                 break;
                             case 400:
                                 warning = "Sorry, your form appears to have some errors";
@@ -96,7 +97,7 @@
                 resolve: {
                     auth: ['$state', 'auth',
                         function($state, auth) {
-                            if (!auth.isAuthenticated) {
+                            if (!auth.authenticate()) {
                                 $state.transitionTo('login');
                             }
                             return auth;
@@ -232,10 +233,7 @@
             state('storage.editItem', {
                 url: '/storage/edit/:id',
                 templateUrl: partialsUrl + 'storage/itemForm.html',
-                controller: 'storage.EditItemCtrl',
-                data: {
-                    access: 'resident'
-                }
+                controller: 'storage.EditItemCtrl'
             }).
             state('documents', {
                 templateUrl: partialsUrl + 'documents/base.html',
@@ -324,7 +322,7 @@
         }
     ]).run(function($rootScope, $state, auth) {
 
-        $rootScope.$on('$stateChangeStart', function(event, toState) {
+        $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
             var loginRequired = true;
             if (toState.data && angular.isDefined(toState.data.loginRequired)) {
                 loginRequired = toState.data.loginRequired;
@@ -332,8 +330,12 @@
             if (!loginRequired) {
                 return;
             }
-            if (!auth.isAuthenticated) {
+            if (!auth.authenticate()) {
                 event.preventDefault();
+                auth.loginState = {
+                    state: toState,
+                    params: toStateParams
+                };
                 $state.transitionTo('login');
             }
             if (!auth.authorize(toState)) {

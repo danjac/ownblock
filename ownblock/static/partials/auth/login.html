@@ -1,9 +1,20 @@
-<form role="form" name="loginForm" novalidate ng-submit="login()" class="col-md-6">
-    <div class="form-group">
-        <input placeholder="Email address" ng-model="creds.email" type="email" class="form-control" required>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>Sign in</h3>
     </div>
-    <div class="form-group">
-        <input placeholder="Password" ng-model="creds.password" type="password" class="form-control" required>
+    <div class="panel-body">
+        Please sign into ownblock with your email address and password.
+        <div class="row">
+            <form role="form" name="loginForm" novalidate ng-submit="login()" class="col-md-6">
+                <div class="form-group">
+                    <input placeholder="Email address" ng-model="creds.email" type="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <input placeholder="Password" ng-model="creds.password" type="password" class="form-control" required>
+                </div>
+                <button class="btn btn-default" ng-disabled="loginForm.$invalid">Sign in</button>
+                <a href>Forgot your password?</a>
+            </form>
+        </div>
     </div>
-    <button class="btn btn-default" ng-disabled="loginForm.$invalid">Sign in</button>
-</form>
+</div>
