@@ -600,27 +600,21 @@
                 });
             };
         }
-    ]).controller('auth.LoginCtrl', [
-        '$scope',
-        '$state',
-        'auth',
-        'notifier',
-        function($scope, $state, auth, notifier) {
-            $scope.creds = {};
-            $scope.login = function() {
-                // Tbd: move this to auth service
-                auth.login($scope.creds).then(function() {
-                    notifier.success('Welcome back, ' + auth.user.first_name);
-                    if (angular.isDefined(auth.loginState)) {
-                        $state.go(auth.loginState.state, auth.loginState.params);
-                        auth.loginState = undefined;
-                    } else {
-                        if (auth.role === 'resident') {
-                            $state.go('buildings.detail');
-                        } else {
-                            $state.go('buildings.list');
-                        }
-                    }
+    ]).controller('account.EditCtrl', ['$scope', 'auth', 'api', 'notifier',
+        function($scope, auth, api, notifier) {
+            $scope.save = function() {
+                api.Auth.update(auth.user, function(response) {
+                    auth.update(response);
+                    notifier.success('Your account has been updated');
+                });
+            };
+        }
+    ]).controller('account.ChangePasswordCtrl', ['$scope', 'api', 'notifier',
+        function($scope, api, notifier) {
+            $scope.user = {};
+            $scope.save = function() {
+                api.Auth.changePassword($scope.user, function() {
+                    notifier.success('Your password has been updated');
                 });
             };
         }

@@ -109,19 +109,20 @@
                 url: '/accessdenied',
                 templateUrl: partialsUrl + 'accessDenied.html',
                 parent: 'site',
-                data: {
-                    ignoreLoginRedirect: true,
-                    loginRequired: false
-                }
             }).
-            state('login', {
-                url: '/login',
-                templateUrl: partialsUrl + 'auth/login.html',
-                controller: 'auth.LoginCtrl',
-                data: {
-                    ignoreLoginRedirect: true,
-                    loginRequired: false
-                }
+            state('account', {
+                templateUrl: partialsUrl + 'account/base.html',
+                parent: 'site'
+            }).
+            state('account.edit', {
+                url: '/account',
+                templateUrl: partialsUrl + 'account/edit.html',
+                controller: 'account.EditCtrl'
+            }).
+            state('account.password', {
+                url: '/account/pass',
+                templateUrl: partialsUrl + 'account/passwordForm.html',
+                controller: 'account.ChangePasswordCtrl'
             }).
             state('residents', {
                 templateUrl: partialsUrl + 'residents/base.html',
@@ -326,7 +327,7 @@
         // redirect to the external login page; otherwise sync user details with the 
         // application.
         api.Auth.get(function(response) {
-            auth.login(response);
+            auth.sync(response);
             $rootScope.$on('$stateChangeStart', function(event, toState) {
                 // on each view change, check the user is logged in and is authorized
                 // to see that particular view.

@@ -36,10 +36,15 @@
                     }
                     return (this.user && this.user.role === access);
                 },
-                login: function(response) {
+                sync: function(response) {
                     this.user = response;
                     this.isAuthenticated = true;
                     storage.setItem(storageKey, JSON.stringify(this.user));
+                },
+                update: function(response) {
+                    this.user.first_name = response.first_name;
+                    this.user.last_name = response.last_name;
+                    this.user.email = response.email;
                 }
             };
         }
@@ -112,11 +117,12 @@
                 }),
                 Building: makeEndpoint('/api/buildings/buildings/:id'),
                 Auth: $resource('/api/users/auth/', {}, {
-                    login: {
-                        method: 'POST'
+                    update: {
+                        method: 'PUT'
                     },
-                    logout: {
-                        method: 'DELETE'
+                    changePassword: {
+                        url: '/api/users/auth/change_password',
+                        method: 'PATCH'
                     }
                 })
             };

@@ -1,0 +1,20 @@
+<form role="form" name="form" novalidate>
+
+    <div class="form-group">
+        <label for="" class="label-control">First name</label>
+        <input type="text" class="form-control" ng-model="auth.user.first_name" required />
+    </div>
+
+    <div class="form-group">
+        <label for="" class="label-control">Last name</label>
+        <input type="text" class="form-control" ng-model="auth.user.last_name" required />
+    </div>
+
+    <div class="form-group">
+        <label for="" class="label-control">Email address</label>
+        <input type="email" class="form-control" ng-model="auth.user.email" required/>
+    </div>
+
+    <button type="submit" class="btn btn-primary" ng-click="save()" ng-disabled="form.$invalid">Save</button>
+    <a ui-sref="account.password">Change your password</a>
+</form>

@@ -68,6 +68,9 @@ class User(AbstractBaseUser):
             'notices.change_notice',
             'notices.delete_notice',
             'notices.add_notice',
+            'parking.add_vehicle',
+            'parking.change_vehicle',
+            'parking.delete_vehicle',
             'storage.add_item',
         },
         'manager': {

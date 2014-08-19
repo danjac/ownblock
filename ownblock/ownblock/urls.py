@@ -37,14 +37,13 @@ urlpatterns = patterns('',
 urlpatterns += patterns(
     'django.contrib.auth.views',
     url(r'^account/login/$', 'login', name='login'),
-    url(r'^account/logout/$', 'logout_then_login',
-        name='logout'),
+    url(r'^account/logout/$', 'logout_then_login', name='logout'),
     url(r'^account/reset/$', 'password_reset'),
-    url(r'^account/reset_done/$',
-        'password_reset_done',
+    url(r'^account/reset_done/$', 'password_reset_done',
         name='password_reset_done'),
-    url(r'^account/reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/',
-        'password_reset_confirm', {
+    url(r'^account/reset/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        'password_reset_confirm',
+        kwargs={
             'post_reset_redirect': settings.LOGIN_URL,
         }, name='password_reset_confirm'),
 )

@@ -1,11 +1,9 @@
-from django.contrib.auth import login, logout, authenticate
 
 from rest_framework import status, viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.buildings import get_building
 
 from .models import User
 from .serializers import UserSerializer, AuthUserSerializer
@@ -23,31 +21,30 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class AuthView(APIView):
-    permission_classes = (permissions.AllowAny, )
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get_user_response(self, request):
             return Response(AuthUserSerializer(
                 request.user, context={'request': request}).data)
 
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated():
-            return self.get_user_response(request)
+        return self.get_user_response(request)
 
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+    def put(self, request, *args, **kwargs):
+        serializer = AuthUserSerializer(request.user, data=request.DATA)
+        if not serializer.is_valid():
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+        serializer.save(force_update=True)
+        return Response(serializer.data)
 
-    def post(self, request, *args, **kwargs):
-        try:
-            user = authenticate(email=request.DATA['email'],
-                                password=request.DATA['password'])
-        except KeyError:
-            user = None
+    @action(method='PATCH')
+    def change_password(self, request, *args, **kwargs):
+        password = request.DATA.get('password')
+        if not password:
+            return Response('Password is missing',
+                            status=status.HTTP_400_BAD_REQUEST)
 
-        if user is not None:
-            login(request, user)
-            request.building = get_building(request)
-            return self.get_user_response(request)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, *args, **kwargs):
-        logout(request)
+        request.user.set_password(request.DATA['password'])
+        request.user.save()
         return Response()
