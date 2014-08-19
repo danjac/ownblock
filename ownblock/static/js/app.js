@@ -318,7 +318,7 @@
                 controller: 'buildings.DetailCtrl'
             });
 
-            $urlRouterProvider.otherwise('/notices');
+            $urlRouterProvider.otherwise('/apartment');
         }
     ]).run(function($rootScope, $state, auth) {
 

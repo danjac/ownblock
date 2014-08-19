@@ -86,3 +86,15 @@ body { padding-top: 70px; }
 input.form-control[type="file"] {
     height: auto;
 }
+
+#index-page {
+    background-image:url('../img/background.jpg');
+}
+#index-page .jumbotron, #index-page .container {
+    zoom: 1;
+	filter: alpha(opacity=50);
+	opacity: 0.9;
+}
+#index-page .container {
+    background-color: #eee;
+}
