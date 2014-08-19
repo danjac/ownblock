@@ -3,41 +3,10 @@
     angular.module('ownblock.services', []).
     service('auth', [
         '$q',
-        '$window',
         '$state',
-        '$stateParams',
         'api',
-        function($q, $window, $state, $stateParams, api) {
+        function($q, $state, api) {
             return {
-
-                authenticate: function() {
-                    var deferred = $q.defer(),
-                        self = this;
-
-                    if (self.isAuthenticated) {
-                        if (self.loggedIn) {
-                            deferred.resolve(self);
-                        } else {
-                            deferred.reject(self);
-                        }
-                    } else {
-                        api.Auth.get().$promise.then(function(response) {
-
-                            self.user = response;
-                            self.loggedIn = true;
-                            self.isAuthenticated = true;
-                            deferred.resolve(self);
-
-                        }, function() {
-
-                            self.user = undefined;
-                            self.loggedIn = false;
-                            self.isAuthenticated = true;
-                            deferred.reject(self);
-                        });
-                    }
-                    return deferred.promise;
-                },
                 authorize: function(state) {
                     var data = state.data || {},
                         access = data.access || null;
@@ -48,7 +17,7 @@
                     if (!access) {
                         return true;
                     }
-                    return (this.loggedIn && this.user && this.user.role === access);
+                    return (this.user && this.user.role === access);
                 },
                 login: function(creds) {
                     var self = this,
@@ -57,9 +26,7 @@
                     api.Auth.login(creds).$promise.then(function(response) {
 
                         self.user = response;
-                        self.loggedIn = true;
                         self.isAuthenticated = true;
-                        $window.sessionStorage.setItem('auth.user', self.user);
 
                         if (angular.isDefined(self.returnToState) && self.returnToState.name) {
                             $state.transitionTo(self.returnToState.name, self.returnToState.params);
@@ -78,9 +45,7 @@
 
                     api.Auth.remove({}, function() {
                         self.user = undefined;
-                        self.loggedIn = false;
                         self.isAuthenticated = false;
-                        $window.sessionStorage.removeItem('auth.user');
                         deferred.resolve(true);
                     });
                     return deferred.promise;

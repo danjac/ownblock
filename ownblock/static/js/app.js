@@ -94,16 +94,12 @@
                 'abstract': true,
                 templateUrl: partialsUrl + 'base.html',
                 resolve: {
-                    auth: ['$q', '$state', 'auth',
-                        function($q, $state, auth) {
-                            var deferred = $q.defer();
-                            auth.authenticate().then(function(result) {
-                                deferred.resolve(result);
-                            }).catch(function(result) {
+                    auth: ['$state', 'auth',
+                        function($state, auth) {
+                            if (!auth.isAuthenticated) {
                                 $state.transitionTo('login');
-                                deferred.reject(result);
-                            });
-                            return deferred.promise;
+                            }
+                            return auth;
                         }
                     ]
                 }
@@ -336,15 +332,14 @@
             if (!loginRequired) {
                 return;
             }
-            auth.authenticate().then(function() {
-                if (!auth.authorize(toState)) {
-                    event.preventDefault();
-                    $state.transitionTo('accessdenied');
-                }
-            }).catch(function() {
+            if (!auth.isAuthenticated) {
                 event.preventDefault();
                 $state.transitionTo('login');
-            });
+            }
+            if (!auth.authorize(toState)) {
+                event.preventDefault();
+                $state.transitionTo('accessdenied');
+            }
 
         });
 
