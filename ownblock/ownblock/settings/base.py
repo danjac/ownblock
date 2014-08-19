@@ -202,7 +202,6 @@ DJANGO_APPS = (
 THIRD_PARTY_APPS = (
     'django_extensions',
     'rest_framework',
-    'guardian',
 )
 
 # Apps specific for this project go here.
@@ -265,10 +264,9 @@ WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 # AUTH CONFIGURATION
 AUTH_USER_MODEL = 'accounts.User'
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',  # this is default
-    'guardian.backends.ObjectPermissionBackend',
+    'apps.accounts.backends.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
-ANONYMOUS_USER_ID = -1
 
 # END AUTH CONFIGURATION
 REST_FRAMEWORK = {

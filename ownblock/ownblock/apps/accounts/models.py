@@ -3,90 +3,15 @@ from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
-    PermissionsMixin,
-    Group,
-)
-
-from rest_framework.compat import get_model_name
-
-from guardian.shortcuts import (
-    assign_perm,
-    remove_perm,
-    get_users_with_perms,
-    get_groups_with_perms,
+    _user_has_perm,
 )
 
 
-from model_utils import Choices, FieldTracker
+from model_utils import Choices
 
 
 from apps.organizations.models import Organization
 from apps.buildings.models import Apartment
-
-
-class DefaultPermissionsMixin(object):
-
-    """
-    Automatically assigns default permissions to a set of groups
-    on save.
-
-    To use this mixin you must implement 2 things:
-
-    1) permission_tracker - FieldTracker instance listing
-    any fields to be checked when assigning permissions. For example,
-    a user "author" or "creator" field.
-
-    2) get_groups - method that should return a list of
-    User or Group instances. Default permissions will be assigned to these
-    groups whenever the tracked permission fields are saved.
-
-    Older permissions are automatically deleted - for example, if your
-    user "creator" field has edit/delete permissions, and this is changed
-    to another user, the original user will lose those permissions.
-    """
-
-    def get_groups(self):
-        raise NotImplemented()
-
-    def save(self, **kwargs):
-        if not hasattr(self, 'permission_tracker'):
-            raise AttributeError('You must implement permission_tracker')
-
-        has_changed = bool(self.permission_tracker.changed())
-
-        super().save(**kwargs)
-
-        if not has_changed:
-            return
-
-        groups_for_addition = [g for g in self.get_groups() if g]
-
-        # check existing perms for removal
-
-        groups_for_deletion = [u for u in get_users_with_perms(self) if
-                               u not in groups_for_addition]
-
-        groups_for_deletion += [g for g in get_groups_with_perms(self) if
-                                g not in groups_for_addition]
-
-        permissions = getattr(self._meta, 'permissions', None)
-
-        if not permissions:
-            model_name = get_model_name(self)
-            app_label = self._meta.app_label
-            permissions = [
-                "%s.add_%s" % (app_label, model_name),
-                "%s.change_%s" % (app_label, model_name),
-                "%s.delete_%s" % (app_label, model_name),
-            ]
-
-        for group in groups_for_addition:
-            for perm in permissions:
-                assign_perm(perm, group, self)
-
-        for group in groups_for_deletion:
-            for perm in permissions:
-                remove_perm(perm, group, self)
 
 
 class UserManager(BaseUserManager):
@@ -111,11 +36,10 @@ class UserManager(BaseUserManager):
                                 last_name,
                                 role=role,
                                 password=password,
-                                is_staff=True,
-                                is_superuser=True)
+                                is_staff=True)
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser):
 
     ROLES = Choices('resident', 'manager')
 
@@ -130,12 +54,19 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     role = models.CharField(choices=ROLES, default='resident', max_length=10)
 
-    tracker = FieldTracker(fields=('role', 'organization'))
-
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ('first_name', 'last_name')
+
+    MODEL_PERMISSIONS = {
+        'resident': {
+            'notices.add_notice',
+        },
+        'manager': {
+            'notices.add_notice',
+        },
+    }
 
     def __str__(self):
         return self.email
@@ -146,66 +77,22 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         return self.first_name
 
-    def save(self, **kwargs):
-        has_changed = bool(self.tracker.changed())
+    # Hook for custom auth backend
 
-        super().save(**kwargs)
+    def has_model_permissions(self, perm):
+        """Provides model-scpe permissions"""
+        return perm in self.MODEL_PERMISSIONS.get(self.role, {})
 
-        assign_perm('accounts.change_user', self, self)
+    # Hooks for Django admin and Rest Framework
 
-        if not has_changed:
-            return
+    def has_perm(self, perm, obj=None):
+        return _user_has_perm(self, perm, obj=obj)
 
-        self.groups.clear()
+    def has_perms(self, perm_list, obj=None):
+        for perm in perm_list:
+            if not self.has_perm(perm, obj):
+                return False
+        return True
 
-        if self.role == 'resident':
-            self.groups.add(create_residents_group())
-
-        if self.role == 'manager':
-            self.groups.add(create_managers_group())
-
-            if self.organization and self.organization.group:
-                self.groups.add(self.organization.group)
-
-
-def _create_group(name, models):
-    """Create top-level group"""
-    group, created = Group.objects.get_or_create(name=name)
-    if not created:
-        return group
-
-    # this is OK for now, may require more complex lookups later
-    permissions = ('add', 'change', 'delete')
-
-    for app_label, model in models:
-        for perm in permissions:
-            assign_perm('%s.%s_%s' % (app_label, perm, model), group)
-
-    return group
-
-
-def create_managers_group():
-    models = (
-        ('amenities', 'amenity'),
-        ('amenities', 'booking'),
-        ('contacts', 'contact'),
-        ('documents', 'document'),
-        ('messaging', 'message'),
-        ('notices', 'notice'),
-        ('parking', 'vehicle'),
-        ('storage', 'item'),
-        ('storage', 'place'),
-    )
-    return _create_group('managers', models)
-
-
-def create_residents_group():
-    models = (
-        ('amenities', 'booking'),
-        ('notices', 'notice'),
-        ('messaging', 'message'),
-        ('parking', 'vehicle'),
-        ('storage', 'item'),
-    )
-
-    return _create_group('residents', models)
+    def has_module_perms(self, module):
+        return self.is_staff

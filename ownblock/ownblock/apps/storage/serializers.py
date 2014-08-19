@@ -1,8 +1,4 @@
-from django.utils.functional import cached_property
-
 from rest_framework import serializers
-
-from guardian.shortcuts import get_objects_for_user
 
 from apps.accounts.serializers.related import UserRelatedField
 
@@ -11,20 +7,26 @@ from .models import Place, Item
 
 class PlaceSerializer(serializers.ModelSerializer):
 
-    is_editable = serializers.SerializerMethodField('get_obj_perms')
+    is_editable = serializers.SerializerMethodField('is_obj_editable')
+    is_removable = serializers.SerializerMethodField('is_obj_removable')
 
     class Meta:
         model = Place
-        fields = ('id', 'name', 'is_editable')
+        fields = (
+            'id',
+            'name',
+            'is_editable',
+            'is_removable',
+        )
 
-    @cached_property
-    def user_perms(self):
-        return get_objects_for_user(self.context['request'].user, (
-                                    'storage.change_place',
-                                    'storage.delete_place'))
+    def _has_permission(self, obj, perm):
+        return obj.has_permission(self.context['request'].user, perm)
 
-    def get_obj_perms(self, obj):
-        return obj in self.user_perms
+    def is_obj_editable(self, obj):
+        return self._has_permission(obj, 'storage.change_place')
+
+    def is_obj_removable(self, obj):
+        return self._has_permission(obj, 'storage.delete_place')
 
 
 class ItemSerializer(serializers.ModelSerializer):
@@ -32,7 +34,8 @@ class ItemSerializer(serializers.ModelSerializer):
     resident = UserRelatedField(read_only=True)
     place_name = serializers.SerializerMethodField('get_place_name')
     apartment = serializers.SerializerMethodField('get_apartment')
-    is_editable = serializers.SerializerMethodField('get_obj_perms')
+    is_editable = serializers.SerializerMethodField('is_obj_editable')
+    is_removable = serializers.SerializerMethodField('is_obj_removable')
 
     class Meta:
         model = Item
@@ -43,6 +46,7 @@ class ItemSerializer(serializers.ModelSerializer):
                   'description',
                   'apartment',
                   'is_editable',
+                  'is_removable',
                   'serial_no')
 
     def get_place_name(self, obj):
@@ -57,11 +61,11 @@ class ItemSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Place not found")
         return attrs
 
-    @cached_property
-    def user_perms(self):
-        return get_objects_for_user(self.context['request'].user, (
-                                    'storage.change_item',
-                                    'storage.delete_item'))
+    def _has_permission(self, obj, perm):
+        return obj.has_permission(self.context['request'].user, perm)
 
-    def get_obj_perms(self, obj):
-        return obj in self.user_perms
+    def is_obj_editable(self, obj):
+        return self._has_permission(obj, 'storage.change_item')
+
+    def is_obj_removable(self, obj):
+        return self._has_permission(obj, 'storage.delete_item')

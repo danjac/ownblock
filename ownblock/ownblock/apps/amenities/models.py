@@ -1,21 +1,14 @@
 from django.conf import settings
 from django.db import models
 
-from model_utils import FieldTracker
-
-
-from apps.accounts.models import DefaultPermissionsMixin
-
 from apps.buildings.models import Building
 
 
-class Amenity(DefaultPermissionsMixin, models.Model):
+class Amenity(models.Model):
 
     name = models.CharField(max_length=60)
     building = models.ForeignKey(Building)
     is_available = models.BooleanField(default=True)
-
-    permission_tracker = FieldTracker(fields=('building', ))
 
     def get_groups(self):
         return [self.building.organization.group]
@@ -26,16 +19,22 @@ class Amenity(DefaultPermissionsMixin, models.Model):
     def __str__(self):
         return self.name
 
+    def has_permission(self, user, perm):
+        return (user.role == 'manager' and
+                user.organization_id == self.building.organization_id)
 
-class Booking(DefaultPermissionsMixin, models.Model):
+
+class Booking(models.Model):
 
     amenity = models.ForeignKey(Amenity)
     resident = models.ForeignKey(settings.AUTH_USER_MODEL)
     reserved_from = models.DateTimeField()
     reserved_to = models.DateTimeField()
 
-    permission_tracker = FieldTracker(fields=('resident', 'amenity'))
-
-    def get_groups(self):
-        return [self.amenity.building.organization.group,
-                self.resident]
+    def has_permission(self, user, perm):
+        if user.role == 'resident':
+            return user == self.resident
+        if user.role == 'manager':
+            return (self.amenity.building.organization_id ==
+                    user.organization_id)
+        return False

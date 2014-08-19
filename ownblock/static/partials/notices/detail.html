@@ -1,6 +1,6 @@
 <h2>{{notice.title}}</h2>
 
-<p>{{notice.details}}</p>
+<pre>{{notice.details}}</pre>
 
 <p>{{notice.author.full_name}}
     <a ng-show="notice.author.id !== session.user.id" ui-sref="messages.send({recipient:notice.author.id})" class="btn btn-default">

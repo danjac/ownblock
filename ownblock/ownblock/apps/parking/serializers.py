@@ -1,8 +1,5 @@
-from django.utils.functional import cached_property
 
 from rest_framework import serializers
-
-from guardian.shortcuts import get_objects_for_user
 
 from apps.accounts.serializers import UserSerializer
 
@@ -11,7 +8,9 @@ from .models import Vehicle
 
 class VehicleSerializer(serializers.ModelSerializer):
     resident = UserSerializer(read_only=True)
-    is_editable = serializers.SerializerMethodField('get_obj_perms')
+
+    is_editable = serializers.SerializerMethodField('is_obj_editable')
+    is_removable = serializers.SerializerMethodField('is_obj_removable')
 
     class Meta:
         model = Vehicle
@@ -22,13 +21,14 @@ class VehicleSerializer(serializers.ModelSerializer):
             'reserved_place',
             'resident',
             'is_editable',
+            'is_removable',
         )
 
-    @cached_property
-    def user_perms(self):
-        return get_objects_for_user(self.context['request'].user, (
-                                    'parking.change_vehicle',
-                                    'parking.delete_vehicle'))
+    def _has_permission(self, obj, perm):
+        return obj.has_permission(self.context['request'].user, perm)
 
-    def get_obj_perms(self, obj):
-        return obj in self.user_perms
+    def is_obj_editable(self, obj):
+        return self._has_permission(obj, 'parking.change_vehicle')
+
+    def is_obj_removable(self, obj):
+        return self._has_permission(obj, 'parking.delete_vehicle')
