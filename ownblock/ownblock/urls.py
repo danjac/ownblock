@@ -8,8 +8,15 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
+                       # Front page
                        url(r'^$', TemplateView.as_view(
-                           template_name='index.html')),
+                           template_name='index.html'),
+                           name='index'),
+
+                       # Application container
+                       url(r'^app$', TemplateView.as_view(
+                           template_name='app.html'),
+                           name='app'),
 
                        # REST API
                        url(r'^api/users/', include('apps.accounts.urls')),

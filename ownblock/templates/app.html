@@ -1,0 +1,144 @@
+<!DOCTYPE html>{% load static %}
+<html lang="en" ng-app="ownblock">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ownblock</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap-theme.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bower_components/fullcalendar/fullcalendar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}" />
+</head>
+
+<body ng-controller="AppCtrl" ng-cloak>
+
+    {% verbatim %}
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-links">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <icon name="home" text="ownblock" />
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-links" ng-if="auth.isAuthenticated">
+                <ul class="nav navbar-nav navbar-left">
+                    <li ui-sref-active="active">
+                        <a ui-sref="notices.list">
+                            <icon name="bullhorn" text="Notice board" />
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="messages.list">
+                            <icon name="send" text="Messages" />
+                            <!-- <span class="badge">42</span>-->
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="residents.list">
+                            <icon name="user" text="Residents" />
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="documents.list">
+                            <icon name="download" text="Documents" />
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="amenities.list">
+                            <icon name="calendar" text="Amenities" />
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="contacts.list">
+                            <icon name="earphone" text="Contacts" />
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="parking.list">
+                            <icon name="road" text="Parking" />
+                        </a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="storage.list">
+                            <icon name="lock" text="Storage" />
+                        </a>
+                    </li>
+                    <li ui-sref-active="active" ng-show="auth.user.role==='resident'">
+                        <a ui-sref="buildings.detail">
+                            <icon name="home" text="My building" />
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown" ng-show="auth.user.role==='manager'">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            {{auth.user.building.address_1}}, {{auth.user.building.city}}
+                        <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a ui-sref="buildings.detail">Building details</a>
+                            </li>
+                            <li><a ui-sref="buildings.list">Change building</a>
+                            </li>
+                    </li>
+                    </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <icon name="user" text="{{auth.user.full_name}}"></icon>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a ng-href="">My account</a>
+                            </li>
+                            <li><a ng-click="logout()">Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+
+        <alert ng-repeat="msg in notifier.notifications" type="{{msg.type}}" close="notifier.dismiss($index)">{{msg.message}}</alert>
+
+        <div ui-view></div>
+
+    </div>
+    {% endverbatim %}
+    <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'bower_components/jquery-ui/ui/minified/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'bower_components/openlayers/build/OpenLayers.js' %}"></script>
+    <script src="{% static 'bower_components/moment/min/moment.min.js' %}"></script>
+    <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'bower_components/angular/angular.min.js' %}"></script>
+    <script src="{% static 'bower_components/angular-cookies/angular-cookies.min.js' %}"></script>
+    <script src="{% static 'bower_components/angular-sanitize/angular-sanitize.min.js' %}"></script>
+    <script src="{% static 'bower_components/angular-resource/angular-resource.min.js' %}"></script>
+    <script src="{% static 'bower_components/angular-ui-router/release/angular-ui-router.min.js' %}"></script>
+    <script src="{% static 'bower_components/angular-bootstrap/ui-bootstrap.min.js' %}"></script>
+    <script src="{% static 'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js' %}"></script>
+    <script src="{% static 'bower_components/angular-ui-calendar/src/calendar.js' %}"></script>
+    <script src="{% static 'bower_components/fullcalendar/fullcalendar.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="{% static 'js/controllers.js' %}"></script>
+    <script src="{% static 'js/services.js' %}"></script>
+    <script src="{% static 'js/directives.js' %}"></script>
+    <!--
+    <script src="{% static 'js/filters.js' %}"></script>
+    -->
+
+</body>
+
+</html>
