@@ -1,10 +1,9 @@
-from django.conf.urls import patterns, include, url
-# from django.conf.urls.static import static
 from django.conf import settings
+from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
-
-# Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -14,9 +13,9 @@ urlpatterns = patterns('',
                            name='index'),
 
                        # Application container
-                       url(r'^app$', TemplateView.as_view(
-                           template_name='app.html'),
-                           name='app'),
+                       url(r'^app$', login_required(
+                           TemplateView.as_view(template_name='app.html')
+                           ), name='app'),
 
                        # REST API
                        url(r'^api/users/', include('apps.accounts.urls')),
@@ -29,12 +28,26 @@ urlpatterns = patterns('',
                        url(r'^api/contacts/', include('apps.contacts.urls')),
                        url(r'^api/parking/', include('apps.parking.urls')),
 
+
                        # Admin site
                        url(r'^admin/', include(admin.site.urls)),
                        )
 
-# Uncomment the next line to serve media files in dev.
-# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Authentication
+urlpatterns += patterns(
+    'django.contrib.auth.views',
+    url(r'^account/login/$', 'login', name='login'),
+    url(r'^account/logout/$', 'logout_then_login',
+        name='logout'),
+    url(r'^account/reset/$', 'password_reset'),
+    url(r'^account/reset_done/$',
+        'password_reset_done',
+        name='password_reset_done'),
+    url(r'^account/reset/confirm/(?P<uidb64>[0-9A-Za-z]+)-(?P<token>.+)/',
+        'password_reset_confirm', {
+            'post_reset_redirect': settings.LOGIN_URL,
+        }, name='password_reset_confirm'),
+)
 
 if settings.DEBUG:
     import debug_toolbar

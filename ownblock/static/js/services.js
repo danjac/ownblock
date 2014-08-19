@@ -36,29 +36,10 @@
                     }
                     return (this.user && this.user.role === access);
                 },
-                login: function(creds) {
-                    var self = this,
-                        deferred = $q.defer();
-                    api.Auth.login(creds).$promise.then(function(response) {
-                        self.user = response;
-                        self.isAuthenticated = true;
-                        storage.setItem(storageKey, JSON.stringify(self.user));
-                        deferred.resolve(self);
-                    });
-                    return deferred.promise;
-
-                },
-                logout: function() {
-                    var deferred = $q.defer(),
-                        self = this;
-
-                    api.Auth.remove({}, function() {
-                        self.user = undefined;
-                        self.isAuthenticated = false;
-                        storage.removeItem(storageKey);
-                        deferred.resolve(true);
-                    });
-                    return deferred.promise;
+                login: function(response) {
+                    this.user = response;
+                    this.isAuthenticated = true;
+                    storage.setItem(storageKey, JSON.stringify(this.user));
                 }
             };
         }

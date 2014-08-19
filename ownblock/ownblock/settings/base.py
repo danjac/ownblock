@@ -267,6 +267,8 @@ AUTHENTICATION_BACKENDS = (
     'apps.accounts.backends.ObjectPermissionBackend',
     #'django.contrib.auth.backends.ModelBackend',
 )
+LOGIN_URL = '/account/login/'
+LOGIN_REDIRECT_URL = '/app'
 
 # END AUTH CONFIGURATION
 REST_FRAMEWORK = {

@@ -320,30 +320,29 @@
 
             $urlRouterProvider.otherwise('/apartment');
         }
-    ]).run(function($rootScope, $state, auth) {
+    ]).run(function($rootScope, $location, $state, api, auth) {
 
-        $rootScope.$on('$stateChangeStart', function(event, toState, toStateParams) {
-            var loginRequired = true;
-            if (toState.data && angular.isDefined(toState.data.loginRequired)) {
-                loginRequired = toState.data.loginRequired;
-            }
-            if (!loginRequired) {
-                return;
-            }
-            if (!auth.authenticate()) {
-                event.preventDefault();
-                auth.loginState = {
-                    state: toState,
-                    params: toStateParams
-                };
-                $state.transitionTo('login');
-            }
-            if (!auth.authorize(toState)) {
-                event.preventDefault();
-                $state.transitionTo('accessdenied');
-            }
+        // fetch the current user from the session. If the user is not logged in,
+        // redirect to the external login page; otherwise sync user details with the 
+        // application.
+        api.Auth.get(function(response) {
+            auth.login(response);
+            $rootScope.$on('$stateChangeStart', function(event, toState) {
+                // on each view change, check the user is logged in and is authorized
+                // to see that particular view.
+                if (!auth.authenticate()) {
+                    event.preventDefault();
+                    $location.path("/account/login/");
+                }
+                if (!auth.authorize(toState)) {
+                    event.preventDefault();
+                    $state.transitionTo('accessdenied');
+                }
 
+            });
+
+        }, function() { // user not logged in
+            $location.path("/account/login/");
         });
-
     });
 }());
