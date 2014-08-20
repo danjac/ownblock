@@ -311,12 +311,17 @@
                 }
             }).
             state('buildings.detail', {
-                url: '/apartment',
+                url: '/building',
+                templateUrl: partialsUrl + 'buildings/detail.html',
+                controller: 'buildings.DetailCtrl'
+            }).
+            state('buildings.apartment', {
+                url: '/building/:id',
                 templateUrl: partialsUrl + 'buildings/detail.html',
                 controller: 'buildings.DetailCtrl'
             });
 
-            $urlRouterProvider.otherwise('/apartment');
+            $urlRouterProvider.otherwise('/building');
         }
     ]).run(function($rootScope, $state, auth) {
 

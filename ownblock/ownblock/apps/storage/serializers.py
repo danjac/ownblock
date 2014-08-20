@@ -53,7 +53,8 @@ class ItemSerializer(serializers.ModelSerializer):
         return obj.place.name
 
     def get_apartment(self, obj):
-        return obj.resident.apartment.number
+        return {'id': obj.resident.apartment_id,
+                'number': obj.resident.apartment.number}
 
     def validate_place(self, attrs, source):
         value = attrs[source]

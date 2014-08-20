@@ -22,7 +22,8 @@
         <tr ng-repeat="item in items.currentItems">
             <td>{{item.description}}</td>
             <td>{{item.place_name}}</td>
-            <td>{{item.resident.full_name}} / {{item.apartment}}</td>
+            <td><a ui-sref="buildings.apartment({id: item.apartment.id})">{{item.resident.full_name}} / {{item.apartment.number}}</a>
+            </td>
             <td>
                 <a ui-sref="storage.editItem({id: item.id})" class="btn btn-default btn-sm" ng-show="item.is_editable">
                     <icon name="edit" />Edit

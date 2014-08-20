@@ -66,13 +66,15 @@
         }
     ]).controller('buildings.DetailCtrl', [
         '$scope',
+        '$state',
         '$window',
         '$modal',
         'api',
         'auth',
         'staticUrl',
-        function($scope, $window, $modal, api, auth, staticUrl) {
+        function($scope, $state, $window, $modal, api, auth, staticUrl) {
 
+            var apartmentId = $state.params.id;
             $scope.building = $scope.auth.user.building;
 
             function generateMap() {
@@ -107,40 +109,37 @@
             generateMap();
 
             $scope.apartments = [];
-            api.Apartment.query().$promise.then(function(response) {
-                $scope.apartments = response;
-                angular.forEach($scope.apartments, function(apt) {
-                    if (auth.user.apartment && apt.id === auth.user.apartment.id) {
-                        $scope.apartment = apt;
-                        $scope.apartment_name = "My apartment";
-                        return;
-                    }
-                });
-            });
+
+
             $scope.tabs = {
                 building: {
                     active: true
-                },
-                apartment: {
-                    active: false
                 },
                 apartments: {
                     active: false
                 }
             };
-            $scope.getApartment = function(id) {
+
+            console.log(apartmentId);
+
+            if (apartmentId) {
+                $scope.tabs.apartments.active = true;
+            }
+
+            if (!apartmentId && auth.user.apartment) {
+                apartmentId = auth.user.apartment.id;
+            }
+
+            api.Apartment.query().$promise.then(function(response) {
+
+                $scope.apartments = response;
                 angular.forEach($scope.apartments, function(apt) {
-                    if (apt.id === id) {
-                        $scope.apartment = apt;
-                        $scope.apartment_name = (auth.user.apartment && apt.id === auth.user.apartment.id) ?
-                            'My apartment' : 'Apartment ' + apt.number + "/" + apt.floor;
-
-
-                        $scope.tabs.apartment.active = true;
+                    if (apartmentId && apt.id === parseInt(apartmentId, 10)) {
+                        $scope.currentApartment = apt;
                         return;
                     }
                 });
-            };
+            });
             $scope.addResident = function(apartment) {
                 var modalInstanceCtrl = function($scope, $modalInstance) {
                         $scope.resident = {};

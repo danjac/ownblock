@@ -31,7 +31,8 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="apartment in apartments">
-                            <td><a href ng-click="getApartment(apartment.id)">{{apartment.number}}</a>
+                            <td>
+                                <a ui-sref="buildings.apartment({id: apartment.id})">{{apartment.number}}</a>
                             </td>
                             <td>{{apartment.floor}}</td>
                         </tr>
@@ -43,13 +44,13 @@
     </div>
     <div class="col-md-6">
         <div id="map" style="height:500px" ng-show="tabs.building.active"></div>
-        <div ng-show="apartment && !tabs.building.active">
-            <h2>Apartment {{apartment.number}}</h2>
+        <div ng-show="currentApartment && !tabs.building.active">
+            <h2>Apartment {{currentApartment.number}}</h2>
             <table class="table table-condensed table-striped table-hover table-bordered">
                 <tbody>
                     <tr>
                         <td>Floor</td>
-                        <td>{{apartment.floor}}</td>
+                        <td>{{currentApartment.floor}}</td>
                     </tr>
                     <tr>
                         <td>Size</td>
@@ -63,7 +64,7 @@
             </table>
 
             <h3>Residents</h3>
-            <div class="btn-toolbar" role="toolbar" has-role="manager" ng-click="addResident(apartment)">
+            <div class="btn-toolbar" role="toolbar" has-role="manager" ng-click="addResident(currentApartment)">
                 <button class="btn btn-primary">
                     <icon name="plus" text="Add resident" />
             </div>
@@ -75,12 +76,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="resident in apartment.user_set">
+                    <tr ng-repeat="resident in currentApartment.user_set">
                         <td>{{resident.full_name}}
                         </td>
                         <td>
                             <a send-message="{{resident}}" ng-show="auth.user.id !== resident.id" class="btn btn-default btn-sm">
-                                <span class="glyphicon glyphicon-send "></span> Send message
+                                <icon name="send" text="Send message" />
                             </a>
                         </td>
                     </tr>

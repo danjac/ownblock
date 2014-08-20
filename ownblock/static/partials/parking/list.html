@@ -31,7 +31,8 @@
         <tr ng-repeat="vehicle in vehicles.currentItems">
             <td>{{vehicle.description}}</td>
             <td>{{vehicle.registration_number}}</td>
-            <td>{{vehicle.resident.full_name}}/{{vehicle.resident.apartment.number}}</td>
+            <td><a ui-sref="buildings.apartment({id: vehicle.resident.apartment.id})">{{vehicle.resident.full_name}}/{{vehicle.resident.apartment.number}}</a>
+            </td>
             <td>{{vebicle.reserved_space || 'No' }}</td>
             <td>
                 <a ui-sref="parking.edit({id: vehicle.id})" class="btn btn-default btn-sm" ng-show="vehicle.is_editable">
