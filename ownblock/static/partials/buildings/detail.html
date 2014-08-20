@@ -43,7 +43,7 @@
 
     </div>
     <div class="col-md-6">
-        <div id="map" style="height:500px" ng-show="tabs.building.active"></div>
+        <div id="map" style="height:500px" ng-show="!currentApartment||tabs.building.active"></div>
         <div ng-show="currentApartment && !tabs.building.active">
             <h2>Apartment {{currentApartment.number}}</h2>
             <table class="table table-condensed table-striped table-hover table-bordered">

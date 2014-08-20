@@ -1,11 +1,4 @@
 <div class="row">
-    <div class="col-md-6" has-role="manager">
-        <div class="btn-toolbar" role="toolbar">
-            <a class="btn btn-primary" href>
-                <icon name="plus" text="Add resident">
-            </a>
-        </div>
-    </div>
     <div class="col-md-6">
         <form class="search-form">
             <div class="input-group">
@@ -13,6 +6,13 @@
                 <span class="input-group-addon"><icon name="search" /></span>
             </div>
         </form>
+    </div>
+    <div class="col-md-6" has-role="manager">
+        <div class="btn-toolbar" role="toolbar">
+            <a class="btn btn-primary" href>
+                <icon name="plus" text="Add resident">
+            </a>
+        </div>
     </div>
 </div>
 
@@ -26,11 +26,14 @@
     </thead>
     <tbody>
         <tr ng-repeat="resident in residents.currentItems">
-            <td>{{resident.first_name}} {{resident.last_name}}</td>
-            <td>{{resident.apartment.number}} / Floor {{ resident.apartment.floor}}</td>
+            <td><a href>{{resident.first_name}} {{resident.last_name}}</a>
+            </td>
+            <td><a ui-sref="buildings.apartment({id: resident.apartment.id})">{{resident.apartment.number}} / Floor {{ resident.apartment.floor}}</a>
+            </td>
             <td>
                 <button send-message="{{resident}}" class="btn btn-primary btn-sm" ng-show="resident.id !== user.id">
-                    <span class="glyphicon glyphicon-send"></span> Send message</button>
+                    <icon name="send" text="Send message" />
+                </button>
             </td>
         </tr>
     </tbody>

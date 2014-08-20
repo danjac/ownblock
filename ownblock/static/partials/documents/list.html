@@ -1,11 +1,4 @@
 <div class="row">
-    <div class="col-md-6" has-role="manager">
-        <div class="btn-toolbar" role="toolbar">
-            <a class="btn btn-primary" ui-sref="documents.upload">
-                <icon name="upload" text="Upload document">
-            </a>
-        </div>
-    </div>
     <div class="col-md-6">
         <form class="search-form">
             <div class="input-group">
@@ -13,6 +6,13 @@
                 <span class="input-group-addon"><icon name="search" /></span>
             </div>
         </form>
+    </div>
+    <div class="col-md-6" has-role="manager">
+        <div class="btn-toolbar" role="toolbar">
+            <a class="btn btn-primary" ui-sref="documents.upload">
+                <icon name="upload" text="Upload document">
+            </a>
+        </div>
     </div>
 </div>
 
@@ -31,6 +31,9 @@
             <td>
                 <a class="btn btn-primary btn-sm" ng-href="{{document.download_url}}">
                     <icon name="download" text="Download" />
+                </a>
+                <a class="btn btn-default btn-sm" href has-role="manager">
+                    <icon name="edit" text="Edit" />
                 </a>
                 <button has-role="manager" class="btn btn-danger btn-sm" ng-click="deleteDocument(document, $index)">
                     <icon name="trash" text="Delete" />
