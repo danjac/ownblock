@@ -19,7 +19,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="item in items">
+        <tr ng-repeat="item in items.currentItems">
             <td>{{item.description}}</td>
             <td>{{item.place_name}}</td>
             <td>{{item.resident.full_name}} / {{item.apartment}}</td>
@@ -37,3 +37,5 @@
         </tr>
     </tbody>
 </table>
+
+<pager total-items="items.total" ng-model="items.page" ng-change="items.change()"></pager>

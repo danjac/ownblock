@@ -13,7 +13,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="amenity in amenities">
+        <tr ng-repeat="amenity in amenities.currentItems">
             <td><a ui-sref="amenities.detail({id: amenity.id})">{{amenity.name}}</a>
             </td>
             <td>
@@ -35,3 +35,5 @@
     </tbody>
 
 </table>
+
+<pager total-items="amenities.total" ng-model="amenities.page" ng-change="amenities.change()"></pager>

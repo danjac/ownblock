@@ -65,16 +65,11 @@
         }
     ]).factory('paginator', function() {
 
-        var Paginator = function(maxSize) {
-            this.maxSize = maxSize || 10;
-            this.page = 1;
-            this.total = 0;
-            this.items = this.currentItems = [];
-        };
-
-        Paginator.prototype.init = function(items) {
+        var Paginator = function(items, maxSize) {
             this.items = items;
             this.total = this.items.length;
+            this.page = 1;
+            this.maxSize = maxSize || 10;
             this.change();
         };
 
@@ -83,8 +78,14 @@
             this.currentItems = this.items.slice(offset, offset + this.maxSize);
         };
 
-        return function(maxSize) {
-            return new Paginator(maxSize);
+        Paginator.prototype.remove = function(index) {
+            this.items.splice(index, 1);
+            this.items.total = this.items.length;
+            this.change();
+        };
+
+        return function(items, maxSize) {
+            return new Paginator(items, maxSize);
         };
 
     }).service('api', ['$resource',

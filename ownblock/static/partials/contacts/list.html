@@ -15,7 +15,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="contact in contacts">
+        <tr ng-repeat="contact in contacts.currentItems">
             <td><a ui-sref="contacts.detail({id: contact.id})">{{contact.name}}</a>
             </td>
             <td>{{contact.description}}</td>
@@ -33,3 +33,5 @@
         </tr>
     </tbody>
 </table>
+
+<pager total-items="contacts.total" ng-model="contacts.page" ng-change="contacts.change()"></pager>

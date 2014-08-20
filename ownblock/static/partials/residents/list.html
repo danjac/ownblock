@@ -7,7 +7,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="resident in residents">
+        <tr ng-repeat="resident in residents.currentItems">
             <td>{{resident.first_name}} {{resident.last_name}}</td>
             <td>{{resident.apartment.number}} / Floor {{ resident.apartment.floor}}</td>
             <td>
@@ -17,3 +17,5 @@
         </tr>
     </tbody>
 </table>
+
+<pager total-items="residents.total" ng-model="residents.page" ng-change="residents.change()"></pager>

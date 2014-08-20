@@ -165,25 +165,24 @@
                 });
             };
         }
-    ]).controller('residents.ListCtrl', ['$scope', 'api', 'auth',
-        function($scope, api, auth) {
+    ]).controller('residents.ListCtrl', ['$scope', 'api', 'auth', 'paginator',
+        function($scope, api, auth, paginator) {
             $scope.residents = [];
             $scope.user = auth.user;
             api.Resident.query().$promise.then(function(response) {
-                $scope.residents = response;
+                $scope.residents = paginator(response);
             });
         }
-    ]).controller('amenities.ListCtrl', ['$scope', '$window', 'api', 'notifier',
-        function($scope, $window, api, notifier) {
-            $scope.amenities = [];
+    ]).controller('amenities.ListCtrl', ['$scope', '$window', 'api', 'notifier', 'paginator',
+        function($scope, $window, api, notifier, paginator) {
             api.Amenity.query().$promise.then(function(response) {
-                $scope.amenities = response;
+                $scope.amenities = paginator(response);
             });
             $scope.deleteAmenity = function(amenity, index) {
                 if (!$window.confirm('This will remove the amenity and ALL its bookings. Continue?')) {
                     return;
                 }
-                $scope.amenities.splice(index, 1);
+                $scope.amenities.remove(index);
                 amenity.$delete(function() {
                     notifier.success('The amenity has been removed');
                 });
@@ -309,17 +308,27 @@
             };
 
         }
-    ]).controller('notices.ListCtrl', ['$scope', '$window', 'api', 'notifier',
-        function($scope, $window, api, notifier) {
+    ]).controller('notices.NewCtrl', ['$scope', '$state', 'notifier', 'api',
+        function($scope, $state, notifier, api) {
+            $scope.notice = new api.Notice();
+            $scope.save = function() {
+                $scope.notice.$save(function() {
+                    notifier.success('Your notice has been published');
+                    $state.go('notices.list');
+                });
+            };
+        }
+    ]).controller('notices.ListCtrl', ['$scope', '$window', 'api', 'notifier', 'paginator',
+        function($scope, $window, api, notifier, paginator) {
             $scope.notices = [];
             api.Notice.query().$promise.then(function(response) {
-                $scope.notices = response;
+                $scope.notices = paginator(response);
             });
             $scope.deleteNotice = function(notice, index) {
                 if (!$window.confirm('You sure you want to delete this notice?')) {
                     return;
                 }
-                $scope.notices.splice(index, 1);
+                $scope.notices.remove(index);
                 notice.$delete(function() {
                     notifier.success('Your notice has been deleted');
                 });
@@ -349,21 +358,8 @@
                 });
             };
         }
-    ]).controller('notices.NewCtrl', ['$scope', '$state', 'notifier', 'api',
-        function($scope, $state, notifier, api) {
-            $scope.notice = new api.Notice();
-            $scope.save = function() {
-                $scope.notice.$save(function() {
-                    notifier.success('Your notice has been published');
-                    $state.go('notices.list');
-                });
-            };
-        }
     ]).controller('messages.ListCtrl', ['$scope', 'api', 'auth', 'paginator',
         function($scope, api, auth, paginator) {
-
-            $scope.receivedMessages = paginator();
-            $scope.sentMessages = paginator();
 
             api.Message.query().$promise.then(function(response) {
                 var received = [],
@@ -375,8 +371,8 @@
                         sent.push(message);
                     }
                 });
-                $scope.receivedMessages.init(received);
-                $scope.sentMessages.init(sent);
+                $scope.receivedMessages = paginator(received);
+                $scope.sentMessages = paginator(sent);
 
             });
         }
@@ -420,22 +416,21 @@
                 $scope.message.$save(function() {
                     notifier.success('Your message has been sent');
                     $state.go('messages.list');
-                }, function(response) {});
+                });
             };
         }
-    ]).controller('storage.ListCtrl', ['$scope', '$window', 'api',
-        function($scope, $window, api) {
+    ]).controller('storage.ListCtrl', ['$scope', '$window', 'api', 'paginator',
+        function($scope, $window, api, paginator) {
 
-            $scope.items = [];
             api.StorageItem.query().$promise.then(function(response) {
-                $scope.items = response;
+                $scope.items = paginator(response);
             });
 
             $scope.deleteItem = function(item, index) {
                 if (!$window.confirm('Are you sure you want to remove this item?')) {
                     return;
                 }
-                $scope.items.splice(index, 1);
+                $scope.items.remove(index);
                 item.$delete();
             };
         }
@@ -489,17 +484,17 @@
                 });
             };
         }
-    ]).controller('contacts.ListCtrl', ['$scope', '$window', 'api', 'notifier',
-        function($scope, $window, api, notifier) {
-            $scope.contacts = [];
+    ]).controller('contacts.ListCtrl', ['$scope', '$window', 'api', 'notifier', 'paginator',
+
+        function($scope, $window, api, notifier, paginator) {
             api.Contact.query().$promise.then(function(response) {
-                $scope.contacts = response;
+                $scope.contacts = paginator(response);
             });
             $scope.deleteContact = function(contact, index) {
                 if (!$window.confirm('Are you sure')) {
                     return;
                 }
-                $scope.contacts.splice(index, 1);
+                $scope.contacts.remove(index);
                 contact.$delete(function() {
                     notifier.success('Contact has been removed');
                 });
@@ -538,17 +533,16 @@
                 });
             };
         }
-    ]).controller('documents.ListCtrl', ['$scope', '$window', 'api', 'notifier',
-        function($scope, $window, api, notifier) {
-            $scope.documents = [];
+    ]).controller('documents.ListCtrl', ['$scope', '$window', 'api', 'notifier', 'paginator',
+        function($scope, $window, api, notifier, paginator) {
             api.Document.query().$promise.then(function(response) {
-                $scope.documents = response;
+                $scope.documents = paginator(response);
             });
             $scope.deleteDocument = function(doc, index) {
                 if (!$window.confirm("Are you sure?")) {
                     return;
                 }
-                $scope.documents.splice(index, 1);
+                $scope.documents.remove(index);
                 doc.$delete(function() {
                     notifier.success('Your document has been removed');
                 });
@@ -566,11 +560,10 @@
                 });
             };
         }
-    ]).controller('parking.ListCtrl', ['$scope', '$window', 'api', 'notifier',
-        function($scope, $window, api, notifier) {
-            $scope.vehicles = [];
+    ]).controller('parking.ListCtrl', ['$scope', '$window', 'api', 'notifier', 'paginator',
+        function($scope, $window, api, notifier, paginator) {
             api.Vehicle.query().$promise.then(function(response) {
-                $scope.vehicles = response;
+                $scope.vehicles = paginator(response);
             });
 
             $scope.deleteVehicle = function(vehicle, index) {
@@ -580,7 +573,7 @@
                 vehicle.$delete(function() {
                     notifier.success('Your vehicle has been removed');
                 });
-                $scope.vehicles.splice(index, 1);
+                $scope.vehicles.remove(index);
             };
         }
     ]).controller('parking.NewCtrl', ['$scope', '$state', 'api', 'notifier',

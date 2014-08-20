@@ -15,7 +15,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="vehicle in vehicles">
+        <tr ng-repeat="vehicle in vehicles.currentItems">
             <td>{{vehicle.description}}</td>
             <td>{{vehicle.registration_number}}</td>
             <td>{{vehicle.resident.full_name}}/{{vehicle.resident.apartment.number}}</td>
@@ -36,3 +36,5 @@
     </tbody>
 
 </table>
+
+<pager total-items="vehicles.total" ng-model="vehicles.page" ng-change="vehicles.change()"></pager>

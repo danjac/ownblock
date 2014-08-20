@@ -12,7 +12,7 @@
         <th>Actions</th>
     </thead>
     <tbody>
-        <tr ng-repeat="document in documents">
+        <tr ng-repeat="document in documents.currentItems">
             <td>{{document.title}}
             </td>
             <td>{{document.created|date:"fullDate"}}</td>
@@ -28,3 +28,5 @@
     </tbody>
 
 </table>
+
+<pager total-items="documents.total" ng-model="documents.page" ng-change="documents.change()"></pager>

@@ -11,7 +11,7 @@
         <th>Actions</th>
     </thead>
     <tbody>
-        <tr ng-repeat="notice in notices">
+        <tr ng-repeat="notice in notices.currentItems">
             <td><a ui-sref="notices.detail({id: notice.id})">{{notice.title}}</a>
             </td>
             <td>{{notice.created|date}}</td>
@@ -30,3 +30,5 @@
         </tr>
     </tbody>
 </table>
+
+<pager total-items="notices.total" ng-model="notices.page" ng-change="notices.change()"></pager>
