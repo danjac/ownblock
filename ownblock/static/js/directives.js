@@ -8,7 +8,8 @@
                 name: '@',
                 text: '@'
             },
-            template: '<span class="glyphicon glyphicon-{{name}}"></span>&nbsp;{{text}}'
+            template: '<i class="fa fa-{{name}}"></i>&nbsp;{{text}}'
+            //template: '<span class="glyphicon glyphicon-{{name}}"></span>&nbsp;{{text}}'
         };
     }).
     directive('hasRole', ['auth',

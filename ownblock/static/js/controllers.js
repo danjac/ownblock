@@ -380,6 +380,14 @@
 
             });
         }
+    ]).controller('messages.DetailCtrl', ['$scope', '$state', 'api',
+        function($scope, $state, api) {
+            api.Message.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.message = response;
+            });
+        }
     ]).controller('messages.SendCtrl', [
         '$scope',
         '$state',

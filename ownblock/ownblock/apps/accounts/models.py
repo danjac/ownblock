@@ -80,6 +80,8 @@ class User(AbstractBaseUser):
             'parking.change_vehicle',
             'parking.delete_vehicle',
             'storage.add_item',
+            'storage.change_item',
+            'storage.delete_item',
         },
         'manager': {
             'accounts.add_user',

@@ -139,6 +139,11 @@
                 templateUrl: partialsUrl + 'messages/list.html',
                 controller: 'messages.ListCtrl',
             }).
+            state('messages.detail', {
+                url: '/messages/:id',
+                templateUrl: partialsUrl + 'messages/detail.html',
+                controller: 'messages.DetailCtrl',
+            }).
             state('messages.send', {
                 url: '/messages/send/:recipient',
                 templateUrl: partialsUrl + 'messages/form.html',

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap-theme.min.css' %}">
     <link rel="stylesheet" href="{% static 'bower_components/fullcalendar/fullcalendar.css' %}">
     <link rel="stylesheet" href="{% static 'bower_components/bootswatch/flatly/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bower_components/fontawesome/css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/app.css' %}" />
 </head>
 
@@ -45,12 +46,12 @@
                     </li>
                     <li ui-sref-active="active">
                         <a ui-sref="residents.list">
-                            <icon name="user" text="Residents" />
+                            <icon name="users" text="Residents" />
                         </a>
                     </li>
                     <li ui-sref-active="active">
                         <a ui-sref="documents.list">
-                            <icon name="download" text="Documents" />
+                            <icon name="archive" text="Documents" />
                         </a>
                     </li>
                     <li ui-sref-active="active">
@@ -60,12 +61,12 @@
                     </li>
                     <li ui-sref-active="active">
                         <a ui-sref="contacts.list">
-                            <icon name="earphone" text="Contacts" />
+                            <icon name="phone" text="Contacts" />
                         </a>
                     </li>
                     <li ui-sref-active="active">
                         <a ui-sref="parking.list">
-                            <icon name="road" text="Parking" />
+                            <icon name="automobile" text="Parking" />
                         </a>
                     </li>
                     <li ui-sref-active="active">
@@ -75,7 +76,7 @@
                     </li>
                     <li ui-sref-active="active" ng-show="auth.user.role==='resident'">
                         <a ui-sref="buildings.detail">
-                            <icon name="home" text="My building" />
+                            <icon name="building" text="My building" />
                         </a>
                     </li>
                 </ul>
