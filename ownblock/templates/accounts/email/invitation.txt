@@ -1,0 +1,18 @@
+Hi, {{ user.get_short_name }}
+
+{% if user.role == 'resident' %}
+As a resident at {{ user.apartment.number }} / {{ user.apartment.building.get_full_address }}, you have been invited to {{ site.name }}. 
+
+You can use this site to keep track of news at your block, stay in touch with neighbors, reserve facilities and register your vehicles and other possessions in communal areas.
+
+{% else %}
+
+As a member of {{ user.organization.name }} you have been invited to {{ site.name }}/
+
+You can use this site to help manage your properties, communicate with residents and keep track of facilities.
+
+{% endif %}
+
+Please click on the link below to enter your password and set up your account. You have been registered with the email address {{ user.email }}.
+
+https://{{ site.domain }}/{% url 'password_reset_confirm' uidb64=uid token=token %}

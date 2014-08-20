@@ -37,6 +37,8 @@ class ApartmentViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ApartmentSerializer
 
     def send_new_resident_email(self, resident):
+        token = default_token_generator.make_token(resident)
+        uid = urlsafe_base64_encode
         pass
 
     @action(permission_classes=(IsManager,))
@@ -53,7 +55,6 @@ class ApartmentViewSet(viewsets.ReadOnlyModelViewSet):
 
             serializer.save(force_insert=True)
 
-            self.send_new_resident_email(user)
             return Response(serializer.data,
                             status=status.HTTP_201_CREATED)
 
