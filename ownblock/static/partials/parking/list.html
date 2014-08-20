@@ -1,10 +1,23 @@
-<div role="toolbar" class="btn-toolbar" has-role="resident">
-    <a ui-sref="parking.new" class="btn btn-primary">
-        <icon name="plus" text="Add vehicle" />
-    </a>
+<div class="row">
+    <div class="col-md-6" has-role="resident">
+        <div role="toolbar" class="btn-toolbar">
+            <a ui-sref="parking.new" class="btn btn-primary">
+                <icon name="plus" text="Add vehicle" />
+            </a>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <form class="search-form">
+            <div class="input-group">
+                <input class="form-control" type="search" ng-model="searchFilter.searchTerms" ng-change="vehicles.filter(searchFilter)">
+                <span class="input-group-addon"><icon name="search" /></span>
+            </div>
+        </form>
+    </div>
 </div>
-<hr>
-<table class="table table-bordered table-striped table-hover">
+
+
+<table class="table table-bordered table-striped table-hover voffset-2">
     <thead>
         <tr>
             <th>Description</th>

@@ -568,6 +568,9 @@
     ]).controller('parking.ListCtrl', ['$scope', '$window', 'api', 'notifier', 'paginator',
         function($scope, $window, api, notifier, paginator) {
             api.Vehicle.query().$promise.then(function(response) {
+                angular.forEach(response, function(item) {
+                    item.searchTerms = item.description + " " + item.registration_number + item.resident.full_name;
+                });
                 $scope.vehicles = paginator(response);
             });
 
