@@ -102,6 +102,10 @@ input.form-control[type="file"] {
 .voffset-8 { margin-top: 100px; }
 .voffset-9 { margin-top: 150px; }
 
+.pager .disabled {
+    display:none;
+}
+
 #index-page {
     background-image:url('../img/background.jpg');
 }

@@ -367,9 +367,12 @@
                 var received = [],
                     sent = [];
                 angular.forEach(response, function(message) {
+                    message.searchTerms = message.header + " " + message.received;
                     if (message.recipient === auth.user.id) {
+                        message.searchTerms += " " + message.sender.full_name;
                         received.push(message);
                     } else {
+                        message.searchTerms += " " + message.recipient_detail.full_name;
                         sent.push(message);
                     }
                 });

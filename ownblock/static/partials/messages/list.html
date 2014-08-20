@@ -1,7 +1,22 @@
 <tabset>
 
     <tab heading="Inbox">
-        <table class="table table-bordered table-striped table-hover">
+
+        <form class="search-form voffset-2">
+            <div class="input-group">
+                <input class="form-control" type="search" ng-model="receivedSearchFilter.searchTerms" ng-change="receivedMessages.filter(receivedSearchFilter)">
+                <span class="input-group-addon"><icon name="search" /></span>
+            </div>
+        </form>
+
+        <table class="table table-bordered table-striped table-hover voffset-2">
+            <thead>
+                <tr>
+                    <th>Message</th>
+                    <th>From</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
             <tbody>
                 <tr ng-repeat="message in receivedMessages.currentItems">
                     <td><a href>{{message.header}}</a>
@@ -20,14 +35,27 @@
         <pager total-items="receivedMessages.total" ng-model="receivedMessages.page" ng-change="receivedMessages.change()"></pager>
     </tab>
     <tab heading="Outbox">
-        <table class="table table-bordered table-striped table-hover">
+        <form class="search-form voffset-2">
+            <div class="input-group">
+                <input class="form-control" type="search" ng-model="sentSearchFilter.searchTerms" ng-change="sentMessages.filter(sentSearchFilter)">
+                <span class="input-group-addon"><icon name="search" /></span>
+            </div>
+        </form>
+
+        <table class="table table-bordered table-striped table-hover voffset-2">
+            <thead>
+                <tr>
+                    <th>Message</th>
+                    <th>To</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
             <tbody>
                 <tr ng-repeat="message in sentMessages.currentItems">
                     <td><a href>{{message.header}}</a>
                     </td>
+                    <td>{{message.recipient_detail.full_name}}</td>
                     <td>{{message.created|date:"short"}}</td>
-                    <td>{{message.recipient_detail.full_name}}
-                    </td>
                 </tr>
             </tbody>
         </table>
