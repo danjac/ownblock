@@ -91,6 +91,17 @@ input.form-control[type="file"] {
     color: #333;
 }
 
+.voffset  { margin-top: 2px; }
+.voffset-1 { margin-top: 5px; }
+.voffset-2 { margin-top: 10px; }
+.voffset-3 { margin-top: 15px; }
+.voffset-4 { margin-top: 30px; }
+.voffset-5 { margin-top: 40px; }
+.voffset-6 { margin-top: 60px; }
+.voffset-7 { margin-top: 80px; }
+.voffset-8 { margin-top: 100px; }
+.voffset-9 { margin-top: 150px; }
+
 #index-page {
     background-image:url('../img/background.jpg');
 }
@@ -102,3 +113,4 @@ input.form-control[type="file"] {
 #index-page .container {
     background-color: #eee;
 }
+

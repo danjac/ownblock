@@ -1,4 +1,22 @@
-<table class="table table-striped table-hover table-bordered">
+<div class="row">
+    <div class="col-md-6" has-role="manager">
+        <div class="btn-toolbar" role="toolbar">
+            <a class="btn btn-primary" href>
+                <icon name="plus" text="Add resident">
+            </a>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <form class="search-form">
+            <div class="input-group">
+                <input class="form-control" type="search" ng-model="searchFilter.full_name" ng-change="residents.filter(searchFilter)">
+                <span class="input-group-addon"><icon name="search" /></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<table class="table table-striped table-hover table-bordered voffset-2">
     <thead>
         <tr>
             <th>Resident</th>

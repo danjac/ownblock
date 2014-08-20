@@ -1,9 +1,22 @@
-<div class="btn-toolbar" role="toolbar">
-    <a class="btn btn-primary" ui-sref="notices.new">
-        <icon name="plus" />Add notice</a>
+<div class="row">
+    <div class="col-md-6" has-role="manager">
+        <div class="btn-toolbar" role="toolbar">
+            <a class="btn btn-primary" ui-sref="notices.new">
+                <icon name="plus" />Add notice</a>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <form class="search-form">
+            <div class="input-group">
+                <input class="form-control" type="search" ng-model="searchFilter.searchTerms" ng-change="notices.filter(searchFilter)">
+                <span class="input-group-addon"><icon name="search" /></span>
+            </div>
+        </form>
+    </div>
 </div>
-<hr>
-<table class="table table-bordered table-striped table-hover">
+
+
+<table class="table table-bordered table-striped table-hover voffset-2">
     <thead>
         <th>Notice</th>
         <th>Date</th>

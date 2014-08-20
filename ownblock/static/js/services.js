@@ -63,32 +63,44 @@
             };
             return new Notifier();
         }
-    ]).factory('paginator', function() {
+    ]).factory('paginator', ['$filter',
+        function($filter) {
 
-        var Paginator = function(items, maxSize) {
-            this.items = items;
-            this.total = this.items.length;
-            this.page = 1;
-            this.maxSize = maxSize || 10;
-            this.change();
-        };
+            var Paginator = function(items, maxSize) {
+                this.items = this.filteredItems = items;
+                this.total = this.items.length;
+                this.page = 1;
+                this.maxSize = maxSize || 10;
+                this.change();
+            };
 
-        Paginator.prototype.change = function() {
-            var offset = (this.page - 1) * this.maxSize;
-            this.currentItems = this.items.slice(offset, offset + this.maxSize);
-        };
+            Paginator.prototype.change = function() {
+                var offset = (this.page - 1) * this.maxSize;
+                this.currentItems = this.filteredItems.slice(offset, offset + this.maxSize);
+            };
 
-        Paginator.prototype.remove = function(index) {
-            this.items.splice(index, 1);
-            this.items.total = this.items.length;
-            this.change();
-        };
+            Paginator.prototype.filter = function(value) {
+                if (value) {
+                    this.filteredItems = $filter('filter')(this.items, value);
+                } else {
+                    this.filteredItems = this.items;
+                }
+                this.total = this.filteredItems.length;
+                this.change();
+            };
 
-        return function(items, maxSize) {
-            return new Paginator(items, maxSize);
-        };
+            Paginator.prototype.remove = function(index) {
+                this.items.splice(index, 1);
+                this.items.total = this.items.length;
+                this.change();
+            };
 
-    }).service('api', ['$resource',
+            return function(items, maxSize) {
+                return new Paginator(items, maxSize);
+            };
+
+        }
+    ]).service('api', ['$resource',
         function($resource) {
 
             function makeEndpoint(url, actions) {

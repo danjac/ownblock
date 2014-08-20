@@ -320,8 +320,10 @@
         }
     ]).controller('notices.ListCtrl', ['$scope', '$window', 'api', 'notifier', 'paginator',
         function($scope, $window, api, notifier, paginator) {
-            $scope.notices = [];
             api.Notice.query().$promise.then(function(response) {
+                angular.forEach(response, function(item) {
+                    item.searchTerms = item.title + " " + item.details + item.author.full_name;
+                });
                 $scope.notices = paginator(response);
             });
             $scope.deleteNotice = function(notice, index) {
