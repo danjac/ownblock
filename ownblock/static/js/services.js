@@ -6,9 +6,6 @@
         function() {
 
             return {
-                authenticate: function() {
-                    return this.isAuthenticated;
-                },
                 authorize: function(state) {
                     var data = state.data || {},
                         access = data.access || null;
@@ -23,7 +20,6 @@
                 },
                 sync: function(response) {
                     this.user = response;
-                    this.isAuthenticated = true;
                 },
                 update: function(response) {
                     this.user.first_name = response.first_name;

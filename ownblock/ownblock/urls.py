@@ -1,10 +1,28 @@
+import json
+
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 
+from apps.accounts.serializers import AuthUserSerializer
+
 admin.autodiscover()
+
+
+class AppView(TemplateView):
+    template_name = 'app.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_data'] = json.dumps(
+            AuthUserSerializer(self.request.user,
+                               context={'request': self.request}).data
+        )
+        print(context)
+        return context
+
 
 urlpatterns = patterns('',
                        # Front page
@@ -13,9 +31,8 @@ urlpatterns = patterns('',
                            name='index'),
 
                        # Application container
-                       url(r'^app$', login_required(
-                           TemplateView.as_view(template_name='app.html')
-                           ), name='app'),
+                       url(r'^app$', login_required(AppView.as_view()),
+                           name='app'),
 
                        # REST API
                        url(r'^api/users/', include('apps.accounts.urls')),

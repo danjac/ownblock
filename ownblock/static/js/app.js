@@ -95,21 +95,9 @@
                 'abstract': true,
                 templateUrl: partialsUrl + 'base.html',
                 resolve: {
-                    auth: ['$q', '$location', 'api', 'auth',
-                        function($q, $location, api, auth) {
-                            if (auth.authenticate()) {
-                                return auth;
-                            }
-                            var deferred = $q.defer();
-
-                            api.Auth.get(function(response) {
-                                auth.sync(response);
-                                deferred.resolve(auth);
-                            }, function() {
-                                $location.path("/account/login/");
-                            });
-
-                            return deferred.promise;
+                    auth: ['auth',
+                        function(auth) {
+                            return auth;
                         }
                     ]
                 }
@@ -330,29 +318,18 @@
 
             $urlRouterProvider.otherwise('/apartment');
         }
-    ]).run(function($rootScope, $location, $state, api, auth) {
+    ]).run(function($rootScope, $state, auth) {
 
         // fetch the current user from the session. If the user is not logged in,
         // redirect to the external login page; otherwise sync user details with the 
         // application.
-        api.Auth.get(function(response) {
-            auth.sync(response);
-            $rootScope.$on('$stateChangeStart', function(event, toState) {
-                // on each view change, check the user is logged in and is authorized
-                // to see that particular view.
-                if (!auth.authenticate()) {
-                    event.preventDefault();
-                    $location.path("/account/login/");
-                }
-                if (!auth.authorize(toState)) {
-                    event.preventDefault();
-                    $state.transitionTo('accessdenied');
-                }
+        $rootScope.$on('$stateChangeStart', function(event, toState) {
+            if (!auth.authorize(toState)) {
+                event.preventDefault();
+                $state.transitionTo('accessdenied');
+            }
 
-            });
-
-        }, function() { // user not logged in
-            $location.path("/account/login/");
         });
+
     });
 }());

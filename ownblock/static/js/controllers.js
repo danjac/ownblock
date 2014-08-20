@@ -3,13 +3,21 @@
     angular.module('ownblock.controllers', []).
     controller('AppCtrl', [
         '$scope',
+        '$location',
         '$timeout',
         'auth',
         'notifier',
-        function($scope, $timeout, auth, notifier) {
+        function($scope, $location, $timeout, auth, notifier) {
 
             $scope.auth = auth;
             $scope.notifier = notifier;
+
+            $scope.init = function(user) {
+                if (!user) {
+                    $location.path("/account/login/");
+                }
+                auth.sync(user);
+            };
 
             $scope.$on('Notifier.new', function(event, notification) {
                 $timeout(function() {
@@ -65,8 +73,6 @@
         'staticUrl',
         function($scope, $window, $modal, api, auth, staticUrl) {
 
-            console.log("AUTH", auth.user);
-            console.log("SCOPEAUTH", $scope.auth.user);
             $scope.building = $scope.auth.user.building;
 
             function generateMap() {
