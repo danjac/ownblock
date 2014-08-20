@@ -1,6 +1,5 @@
 
 from rest_framework import status, viewsets, permissions
-from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -16,6 +15,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self, *args, **kwargs):
         return super().get_queryset(*args, **kwargs).filter(
+            is_active=True,
             apartment__building=self.request.building
         ).select_related('apartment').order_by('last_name', 'first_name')
 

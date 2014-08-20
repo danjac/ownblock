@@ -3,7 +3,7 @@
     <tab heading="Inbox">
         <table class="table table-bordered table-striped table-hover">
             <tbody>
-                <tr ng-repeat="message in receivedMessages">
+                <tr ng-repeat="message in receivedMessages.currentItems">
                     <td><a href>{{message.header}}</a>
                     </td>
                     <td>{{message.sender.full_name}}
@@ -17,11 +17,12 @@
                 </tr>
             </tbody>
         </table>
+        <pager total-items="receivedMessages.total" ng-model="receivedMessages.page" ng-change="receivedMessages.change()"></pager>
     </tab>
     <tab heading="Outbox">
         <table class="table table-bordered table-striped table-hover">
             <tbody>
-                <tr ng-repeat="message in sentMessages">
+                <tr ng-repeat="message in sentMessages.currentItems">
                     <td><a href>{{message.header}}</a>
                     </td>
                     <td>{{message.created|date:"short"}}</td>
@@ -30,5 +31,6 @@
                 </tr>
             </tbody>
         </table>
+        <pager total-items="sentMessages.total" ng-model="sentMessages.page" ng-change="sentMessages.change()"></pager>
     </tab>
 </tabset>

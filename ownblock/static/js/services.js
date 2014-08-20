@@ -63,7 +63,31 @@
             };
             return new Notifier();
         }
-    ]).service('api', ['$resource',
+    ]).factory('paginator', function() {
+
+        var Paginator = function(maxSize) {
+            this.maxSize = maxSize || 10;
+            this.page = 1;
+            this.total = 0;
+            this.items = this.currentItems = [];
+        };
+
+        Paginator.prototype.init = function(items) {
+            this.items = items;
+            this.total = this.items.length;
+            this.change();
+        };
+
+        Paginator.prototype.change = function() {
+            var offset = (this.page - 1) * this.maxSize;
+            this.currentItems = this.items.slice(offset, offset + this.maxSize);
+        };
+
+        return function(maxSize) {
+            return new Paginator(maxSize);
+        };
+
+    }).service('api', ['$resource',
         function($resource) {
 
             function makeEndpoint(url, actions) {

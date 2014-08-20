@@ -359,18 +359,25 @@
                 });
             };
         }
-    ]).controller('messages.ListCtrl', ['$scope', 'api', 'auth',
-        function($scope, api, auth) {
-            $scope.receivedMessages = [];
-            $scope.sentMessages = [];
+    ]).controller('messages.ListCtrl', ['$scope', 'api', 'auth', 'paginator',
+        function($scope, api, auth, paginator) {
+
+            $scope.receivedMessages = paginator();
+            $scope.sentMessages = paginator();
+
             api.Message.query().$promise.then(function(response) {
+                var received = [],
+                    sent = [];
                 angular.forEach(response, function(message) {
                     if (message.recipient === auth.user.id) {
-                        $scope.receivedMessages.push(message);
+                        received.push(message);
                     } else {
-                        $scope.sentMessages.push(message);
+                        sent.push(message);
                     }
                 });
+                $scope.receivedMessages.init(received);
+                $scope.sentMessages.init(sent);
+
             });
         }
     ]).controller('messages.SendCtrl', [
