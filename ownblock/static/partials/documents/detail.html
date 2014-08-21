@@ -1,0 +1,20 @@
+<div role="toolbar" class="btn-toolbar pull-right">
+    <confirm-dialog has-role="manager" class="btn btn-danger" on-confirm="deleteDocument()" text="Are you sure you want to delete this document?" header="Remove document">
+        <icon name="trash-o" text="Remove document" />
+    </confirm-dialog>
+
+    <a class="btn btn-primary" ng-href="{{document.download_url}}">
+        <icon name="download" text="Download" />
+    </a>
+</div>
+
+<h2>{{document.title}}</h2>
+<table class="table table-condensed">
+    <tbody>
+        <tr>
+            <td>Uploaded on</td>
+            <td>{{document.created|date:"short"}}</td>
+        </tr>
+    </tbody>
+</table>
+

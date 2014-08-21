@@ -25,7 +25,7 @@
     </thead>
     <tbody>
         <tr ng-repeat="document in documents.currentItems">
-            <td><a href>{{document.title}}</a>
+            <td><a ui-sref="documents.detail({id: document.id})">{{document.title}}</a>
             </td>
             <td>{{document.created|date:"fullDate"}}</td>
             <td>

@@ -611,6 +611,22 @@
             });
 
         }
+    ]).controller('documents.DetailCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+            api.Document.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.document = response;
+            });
+
+            $scope.deleteDocument = function() {
+                $scope.document.$delete(function() {
+                    notifier.success('Your document has been removed');
+                    $state.go('documents.list');
+                });
+            };
+
+        }
     ]).controller('documents.UploadCtrl', ['$scope', '$state', 'api', 'notifier',
         function($scope, $state, api, notifier) {
 

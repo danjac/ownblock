@@ -291,6 +291,11 @@
                     access: 'manager'
                 }
             }).
+            state('documents.detail', {
+                url: '/docs/:id',
+                templateUrl: partialsUrl + 'documents/detail.html',
+                controller: 'documents.DetailCtrl'
+            }).
             state('parking', {
                 templateUrl: partialsUrl + 'parking/base.html',
                 parent: 'site'
