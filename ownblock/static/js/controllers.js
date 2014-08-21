@@ -233,10 +233,17 @@
                 id: $stateParams.id
             }).$promise.then(function(response) {
                 $scope.amenity = response;
+                var now = new Date(),
+                    reservedFrom = new Date(),
+                    reservedTo = new Date();
+
+                reservedFrom.setHours(now.getHours() + 1);
+                reservedTo.setHours(now.getHours() + 2);
+
                 $scope.booking = new api.Booking({
                     amenity: $scope.amenity.id,
-                    reserved_from: new Date(),
-                    reserved_to: new Date()
+                    reserved_from: reservedFrom,
+                    reserved_to: reservedTo
                 });
             });
 
