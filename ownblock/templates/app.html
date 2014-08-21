@@ -33,47 +33,47 @@
             </div>
             <div class="collapse navbar-collapse" id="navbar-links" ng-if="auth.user">
                 <ul class="nav navbar-nav navbar-left">
-                    <li ui-sref-active="active">
+                    <li ng-class="{active: includes('notices')}">
                         <a ui-sref="notices.list">
                             <icon name="bullhorn" text="Notice board" />
                         </a>
                     </li>
-                    <li ui-sref-active="active">
+                    <li ng-class="{active: includes('messages')}">
                         <a ui-sref="messages.list">
                             <icon name="envelope" text="Messages" />
                         </a>
                     </li>
-                    <li ui-sref-active="active">
+                    <li ng-class="{active: includes('residents')}">
                         <a ui-sref="residents.list">
                             <icon name="users" text="Residents" />
                         </a>
                     </li>
-                    <li ui-sref-active="active">
+                    <li ng-class="{active: includes('documents')}">
                         <a ui-sref="documents.list">
                             <icon name="archive" text="Documents" />
                         </a>
                     </li>
-                    <li ui-sref-active="active">
+                    <li ng-class="{active: includes('amenities')}">
                         <a ui-sref="amenities.list">
                             <icon name="calendar" text="Reservations" />
                         </a>
                     </li>
-                    <li ui-sref-active="active">
+                    <li ng-class="{active: includes('contacts')}">
                         <a ui-sref="contacts.list">
                             <icon name="phone" text="Contacts" />
                         </a>
                     </li>
-                    <li ui-sref-active="active">
+                    <li ng-class="{active: includes('parking')}">
                         <a ui-sref="parking.list">
                             <icon name="automobile" text="Parking" />
                         </a>
                     </li>
-                    <li ui-sref-active="active">
+                    <li ng-class="{active: includes('storage')}">
                         <a ui-sref="storage.list">
                             <icon name="lock" text="Storage" />
                         </a>
                     </li>
-                    <li ui-sref-active="active" ng-show="auth.user.role==='resident'">
+                    <li ng-class="{active: includes('building')}" ng-show="auth.user.role==='resident'">
                         <a ui-sref="buildings.detail">
                             <icon name="building" text="My building" />
                         </a>
@@ -111,7 +111,6 @@
     </nav>
 
     <div class="container-fluid">
-
         <alert ng-repeat="msg in notifier.notifications" type="{{msg.type}}" close="notifier.dismiss($index)">{{msg.message}}</alert>
 
         <div ui-view></div>

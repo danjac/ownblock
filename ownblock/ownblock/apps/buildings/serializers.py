@@ -52,6 +52,8 @@ class BuildingSerializer(serializers.ModelSerializer):
                   'full_address',
                   'address_1',
                   'address_2',
+                  'year',
+                  'num_floors',
                   'city',
                   'postcode',
                   'latitude',
@@ -65,4 +67,8 @@ class ApartmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Apartment
-        fields = ('id', 'number', 'floor')
+        fields = ('id',
+                  'number',
+                  'floor',
+                  'area',
+                  'num_rooms')

@@ -10,13 +10,13 @@
                             <td>Full address</td>
                             <td>{{building.full_address}}</td>
                         </tr>
-                        <tr>
+                        <tr ng-show="building.year">
                             <td>Year</td>
-                            <td>2002</td>
+                            <td>{{building.year}}</td>
                         </tr>
-                        <tr>
+                        <tr ng-show="building.num_floors">
                             <td>Floors</td>
-                            <td>6</td>
+                            <td>{{building.num_floors}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -52,13 +52,13 @@
                         <td>Floor</td>
                         <td>{{currentApartment.floor}}</td>
                     </tr>
-                    <tr>
+                    <tr ng-show="currentApartment.area">
                         <td>Size</td>
-                        <td>100 sq m</td>
+                        <td>{{currentApartment.area}} sq m</td>
                     </tr>
-                    <tr>
+                    <tr ng-show="currentApartment.num_rooms">
                         <td>Rooms</td>
-                        <td>3</td>
+                        <td>{{currentApartment.num_rooms}}</td>
                     </tr>
                 </tbody>
             </table>

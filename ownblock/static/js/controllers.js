@@ -4,13 +4,18 @@
     controller('AppCtrl', [
         '$scope',
         '$location',
+        '$state',
         '$timeout',
         'auth',
         'notifier',
-        function($scope, $location, $timeout, auth, notifier) {
+        function($scope, $location, $state, $timeout, auth, notifier) {
 
             $scope.auth = auth;
             $scope.notifier = notifier;
+
+            $scope.includes = function(name) {
+                return $state.includes(name);
+            };
 
             $scope.init = function(user) {
                 if (!user) {
