@@ -104,6 +104,7 @@ class User(AbstractBaseUser):
             'documents.add_document',
             'documents.change_document',
             'documents.delete_document',
+            'messaging.add_message',
             'notices.add_notice',
             'notices.change_notice',
             'notices.delete_notice',
