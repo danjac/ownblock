@@ -24,11 +24,6 @@
                     <td>{{message.sender.full_name}}
                     </td>
                     <td>{{message.created|date:"short"}}</td>
-                    <td>
-                        <a ui-sref="messages.reply({parent: message.id})" class="btn btn-primary btn-sm">
-                            <icon name="share-alt" text="Reply" />
-                        </a>
-                    </td>
                 </tr>
             </tbody>
         </table>

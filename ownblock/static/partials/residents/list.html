@@ -8,7 +8,7 @@
         </form>
     </div>
     <div class="col-md-6" has-role="manager">
-        <div class="btn-toolbar" role="toolbar">
+        <div class="btn-toolbar pull-right" role="toolbar">
             <a class="btn btn-primary" href>
                 <icon name="plus" text="Add resident">
             </a>
@@ -21,12 +21,12 @@
         <tr>
             <th>Resident</th>
             <th>Apartment</th>
-            <th>Actions</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         <tr ng-repeat="resident in residents.currentItems">
-            <td><a href>{{resident.first_name}} {{resident.last_name}}</a>
+            <td><a ui-sref="residents.detail({id: resident.id})">{{resident.first_name}} {{resident.last_name}}</a>
             </td>
             <td><a ui-sref="buildings.apartment({id: resident.apartment.id})">{{resident.apartment.number}} / Floor {{ resident.apartment.floor}}</a>
             </td>

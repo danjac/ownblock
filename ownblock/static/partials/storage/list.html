@@ -8,7 +8,7 @@
         </form>
     </div>
     <div class="col-md-6" has-role="manager">
-        <div class="btn-toolbar" role="toolbar">
+        <div class="btn-toolbar pull-right" role="toolbar">
             <a ui-sref="storage.newItem" class="btn btn-primary" has-role="resident">
                 <icon name="plus" />Add new item
             </a>
@@ -27,25 +27,15 @@
             <th>Item</th>
             <th>Place</th>
             <th>Owner/Apartment</th>
-            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         <tr ng-repeat="item in items.currentItems">
-            <td>{{item.description}}</td>
-            <td>{{item.place_name}}</td>
-            <td><a ui-sref="buildings.apartment({id: item.apartment.id})">{{item.resident.full_name}} / {{item.apartment.number}}</a>
+            <td><a href>{{item.description}}</a>
             </td>
-            <td>
-                <a ui-sref="storage.editItem({id: item.id})" class="btn btn-default btn-sm" ng-show="item.is_editable">
-                    <icon name="edit" />Edit
-                </a>
-                <button class="btn btn-danger btn-sm" ng-show="item.is_editable" ng-click="deleteItem(item, $index)">
-                    <icon name="trash" />Remove
-                </button>
-                <button send-message="{{item.resident}}" class="btn btn-default btn-sm" ng-show="item.resident.id != auth.user.id">
-                    <icon name="send" />Send message
-                </button>
+            <td><a href>{{item.place_name}}</a>
+            </td>
+            <td><a ui-sref="buildings.apartment({id: item.apartment.id})">{{item.resident.full_name}} / {{item.apartment.number}}</a>
             </td>
         </tr>
     </tbody>

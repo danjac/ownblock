@@ -33,18 +33,21 @@
             $httpProvider.defaults.xsrfCookieName = 'csrftoken';
             $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 
-            $httpProvider.interceptors.push(function($q, notifier) {
+            $httpProvider.interceptors.push(function($q, $location, notifier) {
                 return {
                     'responseError': function(response) {
                         var warning = "Sorry, an error has occurred";
                         switch (response.status) {
                             case 401:
                                 // we're out of sync with server, logout 
-                                warning = "Please sign in again";
-                                break;
+                                $location.path("/account/login/");
+                                return;
                             case 403:
                                 warning = "Sorry, you're not allowed to do this";
                                 break;
+                            case 404:
+                                $location.path("notfound");
+                                return;
                             case 400:
                                 warning = "Sorry, your form appears to have some errors";
                                 break;
@@ -105,7 +108,10 @@
             state('accessdenied', {
                 url: '/accessdenied',
                 templateUrl: partialsUrl + 'accessDenied.html',
-                parent: 'site',
+            }).
+            state('notfound', {
+                url: '/notfound',
+                templateUrl: partialsUrl + 'notfound.html',
             }).
             state('account', {
                 templateUrl: partialsUrl + 'account/base.html',
@@ -129,6 +135,11 @@
                 url: '/residents',
                 templateUrl: partialsUrl + 'residents/list.html',
                 controller: 'residents.ListCtrl'
+            }).
+            state('residents.detail', {
+                url: '/residents/:id',
+                templateUrl: partialsUrl + 'residents/detail.html',
+                controller: 'residents.DetailCtrl'
             }).
             state('messages', {
                 templateUrl: partialsUrl + 'messages/base.html',

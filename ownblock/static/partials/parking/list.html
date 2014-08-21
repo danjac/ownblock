@@ -8,47 +8,35 @@
         </form>
     </div>
     <div class="col-md-6" has-role="resident">
-        <div role="toolbar" class="btn-toolbar">
+        <div role="toolbar" class="btn-toolbar pull-right">
             <a ui-sref="parking.new" class="btn btn-primary">
-                <icon name="plus" text="Add vehicle" />
+                <icon name="plus" text="Add vehicle " />
             </a>
         </div>
     </div>
 </div>
 
 
-<table class="table table-bordered table-striped table-hover voffset-2">
+<table class="table table-bordered table-striped table-hover voffset-2 ">
     <thead>
         <tr>
             <th>Description</th>
             <th>Registration no.</th>
             <th>Owner/Apartment</th>
             <th>Reserved space</th>
-            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="vehicle in vehicles.currentItems">
-            <td>{{vehicle.description}}</td>
+        <tr ng-repeat="vehicle in vehicles.currentItems ">
+            <td><a href>{{vehicle.description}}</a>
+            </td>
             <td>{{vehicle.registration_number}}</td>
-            <td><a ui-sref="buildings.apartment({id: vehicle.resident.apartment.id})">{{vehicle.resident.full_name}}/{{vehicle.resident.apartment.number}}</a>
+            <td><a ui-sref="buildings.apartment({id: vehicle.resident.apartment.id}) ">{{vehicle.resident.full_name}}/{{vehicle.resident.apartment.number}}</a>
             </td>
             <td>{{vebicle.reserved_space || 'No' }}</td>
-            <td>
-                <a ui-sref="parking.edit({id: vehicle.id})" class="btn btn-default btn-sm" ng-show="vehicle.is_editable">
-                    <icon name="edit" text="Edit" />
-                </a>
-                <button class="btn btn-danger btn-sm" ng-show="vehicle.is_editable" ng-click="deleteVehicle(vehicle, $index)">
-                    <icon name="trash" text="Remove" />
-                </button>
-                <button send-message="{{vehicle.resident}}" class="btn btn-default btn-sm" ng-show="vehicle.resident.id != auth.user.id">
-                    <icon name="send" text="Send message" />
-                </button>
-
-            </td>
         </tr>
     </tbody>
 
 </table>
 
-<pager total-items="vehicles.total" ng-model="vehicles.page" ng-change="vehicles.change()"></pager>
+<pager total-items="vehicles.total " ng-model="vehicles.page " ng-change="vehicles.change() "></pager>

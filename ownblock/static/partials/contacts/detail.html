@@ -1,11 +1,32 @@
+<div class="btn-toolbar pull-right" role="toolbar" has-role="manager">
+    <a ui-sref="contacts.edit({id: contact.id})" class="btn btn-default btn-sm">
+        <icon name="edit" text="Edit" />
+    </a>
+    <button class="btn btn-danger btn-sm" ng-click="deleteContact(contact, $index)">
+        <icon name="trash" text="Delete" />
+    </button>
+
+</div>
+
 <h2>{{contact.name}}</h2>
 
-<p>{{contact.description}}</p>
 
-<dl>
-    <dt>Email</dt>
-    <dd>{{contact.email}}</dd>
-    <dt>Phone</dt>
-    <dd>{{contact.phone}}</dd>
-</dl>
-<address>{{contact.address}}</address>
+<table class="table table-condensed">
+    <tr ng-show="contact.email">
+        <td>Email</td>
+        <td><a href="mailto:{{contact.email}}">{{contact.email}}</a> 
+        </td>
+    </tr>
+    <tr ng-show="contact.phone">
+        <td>Phone</td>
+        <td>{{contact.phone}}</td>
+    </tr>
+    <tr ng-show="contact.address">
+        <td>Address</td>
+        <td><address>{{contact.address}}</address>
+        </td>
+    </tr>
+</table>
+
+
+<pre>{{contact.description}}</pre>

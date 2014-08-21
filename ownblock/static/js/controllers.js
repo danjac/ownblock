@@ -172,6 +172,14 @@
                 $scope.residents = paginator(response);
             });
         }
+    ]).controller('residents.DetailCtrl', ['$scope', '$state', 'api',
+        function($scope, $state, api) {
+            api.Resident.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.resident = response;
+            });
+        }
     ]).controller('amenities.ListCtrl', ['$scope', '$window', 'api', 'notifier', 'paginator',
         function($scope, $window, api, notifier, paginator) {
             api.Amenity.query().$promise.then(function(response) {

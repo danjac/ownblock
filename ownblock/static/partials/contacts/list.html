@@ -8,7 +8,7 @@
         </form>
     </div>
     <div class="col-md-6" has-role="manager">
-        <div role="toolbar" class="btn-toolbar">
+        <div role="toolbar" class="btn-toolbar pull-right">
             <a ui-sref="contacts.new" class="btn btn-primary">
                 <icon name="plus" text="Add contact" />
             </a>
@@ -25,7 +25,6 @@
             <th>Description</th>
             <th>Phone</th>
             <th>Email</th>
-            <th has-role="manager">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -35,14 +34,6 @@
             <td>{{contact.description}}</td>
             <td>{{contact.phone}}</td>
             <td><a href="mailto:{{contact.email}}">{{contact.email}}</a>
-            </td>
-            <td has-role="manager">
-                <a ui-sref="contacts.edit({id: contact.id})" class="btn btn-default btn-sm">
-                    <icon name="edit" text="Edit" />
-                </a>
-                <button class="btn btn-danger btn-sm" ng-click="deleteContact(contact, $index)">
-                    <icon name="trash" text="Delete" />
-                </button>
             </td>
         </tr>
     </tbody>

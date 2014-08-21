@@ -1,12 +1,27 @@
+<div class="btn-toolbar pull-right" role="toolbar">
+    <button class="btn btn-default" ng-show="notice.author.id != auth.user.id" send-message="{{notice.author}}">
+        <icon name="send" text="Send message to author" />
+    </button>
+    <button ng-click="deleteNotice()" ng-show="notice.is_removable" class="btn btn-danger">
+        <icon name="trash-o" text="Delete notice"></icon>
+    </button>
+
+</div>
 <h2>{{notice.title}}</h2>
 
+
+<table class="table table-condensed">
+    <tr>
+        <td>Posted by</td>
+        <td><a ui-sref="residents.detail({id: notice.author.id})">{{notice.author.full_name}}</a> 
+        </td>
+    </tr>
+    <tr>
+        <td>Date</td>
+        <td>{{notice.created|date:"short"}}</td>
+    </tr>
+</table>
+
+
+
 <pre>{{notice.details}}</pre>
-
-<p>{{notice.author.full_name}}
-    <a ng-show="notice.author.id !== session.user.id" ui-sref="messages.send({recipient:notice.author.id})" class="btn btn-default">
-        <span class="glyphicon glyphicon-send"></span> Send message</a>
-</p>
-
-<button ng-click="deleteNotice()" ng-show="notice.can_edit_or_delete" class="btn btn-danger">
-    <span class="glyphicon glyphicon-trash"></span> Delete</button>
-

@@ -8,7 +8,7 @@
         </form>
     </div>
     <div class="col-md-6" has-role="manager">
-        <div class="btn-toolbar" role="toolbar">
+        <div class="btn-toolbar pull-right" role="toolbar">
             <a class="btn btn-primary" ui-sref="documents.upload">
                 <icon name="upload" text="Upload document">
             </a>
@@ -21,23 +21,17 @@
     <thead>
         <th>Title</th>
         <th>Uploaded on</th>
-        <th>Actions</th>
+        <th></th>
     </thead>
     <tbody>
         <tr ng-repeat="document in documents.currentItems">
-            <td>{{document.title}}
+            <td><a href>{{document.title}}</a>
             </td>
             <td>{{document.created|date:"fullDate"}}</td>
             <td>
-                <a class="btn btn-primary btn-sm" ng-href="{{document.download_url}}">
+                <a class="btn btn-primary" ng-href="{{document.download_url}}">
                     <icon name="download" text="Download" />
                 </a>
-                <a class="btn btn-default btn-sm" href has-role="manager">
-                    <icon name="edit" text="Edit" />
-                </a>
-                <button has-role="manager" class="btn btn-danger btn-sm" ng-click="deleteDocument(document, $index)">
-                    <icon name="trash" text="Delete" />
-                </button>
             </td>
         </tr>
     </tbody>

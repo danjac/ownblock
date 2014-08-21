@@ -1,0 +1,25 @@
+<div class="btn-toolbar pull-right" role="toolbar" ng-show="message.sender.id !== auth.user.id">
+    <a class="btn btn-primary" ui-sref="messages.reply({parent: message.id})">
+        <icon name="reply" text="Reply">
+    </a>
+</div>
+<h2>{{message.header}}</h2>
+
+<table class="table table-condensed">
+    <tr ng-show="message.sender.id !== auth.user.id">
+        <td>From</td>
+        <td><a href>{{message.sender.full_name}}</a> 
+        </td>
+    </tr>
+    <tr ng-show="message.recipient !== auth.user.id">
+        <td>To</td>
+        <td><a href>{{message.recipient_detail.full_name}}</a> 
+        </td>
+    </tr>
+    <tr>
+        <td>Date</td>
+        <td>{{message.created|date:"short"}}</td>
+    </tr>
+</table>
+
+<pre>{{message.details}}</pre>

@@ -8,7 +8,7 @@
         </form>
     </div>
     <div class="col-md-6" has-role="manager">
-        <div class="btn-toolbar" role="toolbar">
+        <div class="btn-toolbar pull-right" role="toolbar">
             <a class="btn btn-primary" ui-sref="amenities.newAmenity">
                 <icon name="plus" />Add new amenity</a>
         </div>
@@ -22,7 +22,7 @@
         <tr>
             <th>Amenity</th>
             <th>Status</th>
-            <th>Actions</th>
+            <th has-role="resident"></th>
         </tr>
     </thead>
     <tbody>
@@ -33,16 +33,10 @@
                 <span class="label label-success" ng-show="amenity.is_available">Available</span>
                 <span class="label label-danger" ng-show="!amenity.is_available">Not Available</span>
             </td>
-            <td>
-                <a has-role="resident" class="btn btn-primary btn-sm" ng-show="amenity.is_available" ui-sref="amenities.newBooking({id: amenity.id})">
+            <td has-role="resident">
+                <a class="btn btn-primary btn-sm" ng-show="amenity.is_available" ui-sref="amenities.newBooking({id: amenity.id})">
                     <icon name="calendar" text="Reserve" />
                 </a>
-                <a has-role="manager" class="btn btn-default btn-sm" ui-sref="amenities.edit({id: amenity.id})">
-                    <icon name="edit" text="Edit" />
-                </a>
-                <button class="btn btn-danger btn-sm" ng-click="deleteAmenity(amenity, $index)" has-role="manager">
-                    <icon name="trash" text="Remove" />
-                </button>
             </td>
         </tr>
     </tbody>

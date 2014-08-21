@@ -77,7 +77,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="resident in currentApartment.user_set">
-                        <td>{{resident.full_name}}
+                        <td><a ui-sref="residents.detail({id: resident.id})">{{resident.full_name}}</a>
                         </td>
                         <td>
                             <a send-message="{{resident}}" ng-show="auth.user.id !== resident.id" class="btn btn-default btn-sm">

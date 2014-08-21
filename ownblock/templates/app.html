@@ -8,9 +8,9 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap-theme.min.css' %}">
+    <!--<link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap-theme.min.css' %}">-->
     <link rel="stylesheet" href="{% static 'bower_components/fullcalendar/fullcalendar.css' %}">
-    <link rel="stylesheet" href="{% static 'bower_components/bootswatch/flatly/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bower_components/bootswatch/cerulean/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'bower_components/fontawesome/css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/app.css' %}" />
 </head>
@@ -40,8 +40,7 @@
                     </li>
                     <li ui-sref-active="active">
                         <a ui-sref="messages.list">
-                            <icon name="send" text="Messages" />
-                            <!-- <span class="badge">42</span>-->
+                            <icon name="envelope" text="Messages" />
                         </a>
                     </li>
                     <li ui-sref-active="active">
@@ -116,7 +115,6 @@
         <alert ng-repeat="msg in notifier.notifications" type="{{msg.type}}" close="notifier.dismiss($index)">{{msg.message}}</alert>
 
         <div ui-view></div>
-
     </div>
     {% endverbatim %}
     <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
