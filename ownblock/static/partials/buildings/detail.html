@@ -70,7 +70,7 @@
             </div>
 
             <h3 class="voffset-2">Residents</h3>
-            <table class="table table-condensed table-striped table-hover table-bordered voffset-2">
+            <table class="table table-condensed table-striped table-hover table-bordered voffset-2" ng-show="currentApartment.users.length">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -92,7 +92,7 @@
             </table>
             <h3 ng-show="currentApartment.vehicles.length">Vehicles</h3>
 
-            <table class="table table-condensed table-striped table-hover table-bordered voffset-2">
+            <table class="table table-condensed table-striped table-hover table-bordered voffset-2" ng-show="currentApartment.vehicles.length">
                 <thead>
                     <tr>
                         <th>Registration</th>
@@ -112,7 +112,7 @@
 
             <h3 ng-show="currentApartment.items.length">Storage</h3>
 
-            <table class="table table-condensed table-striped table-hover table-bordered voffset-2">
+            <table class="table table-condensed table-striped table-hover table-bordered voffset-2" ng-show="currentApartment.items.length">
                 <thead>
                     <tr>
                         <th>Item</th>

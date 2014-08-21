@@ -102,4 +102,4 @@ class ApartmentViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         return super().get_queryset().filter(
             building=self.request.building
-        ).prefetch_related('user_set').order_by('number')
+        ).prefetch_related('user_set').order_by('floor', 'number')

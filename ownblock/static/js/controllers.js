@@ -165,7 +165,7 @@
                         id: apartment.id
                     }, resident).$promise.then(
                         function(response) {
-                            $scope.apartment.user_set.push(response);
+                            $scope.currentApartment.users.push(response);
                         });
                 });
             };
