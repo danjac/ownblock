@@ -534,13 +534,19 @@
             };
 
         }
-    ]).controller('contacts.DetailCtrl', ['$scope', '$state', 'api',
-        function($scope, $state, api) {
+    ]).controller('contacts.DetailCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
             api.Contact.get({
                 id: $state.params.id
             }, function(response) {
                 $scope.contact = response;
             });
+            $scope.deleteContact = function() {
+                $scope.contact.$delete(function() {
+                    notifier.success('The contact has been deleted');
+                    $state.go('contacts.list');
+                });
+            };
         }
     ]).controller('contacts.NewCtrl', ['$scope', '$state', 'api', 'notifier',
         function($scope, $state, api, notifier) {
@@ -562,7 +568,9 @@
             $scope.save = function() {
                 $scope.contact.$update(function() {
                     notifier.success('Your contact has been saved');
-                    $state.go('contacts.list');
+                    $state.go('contacts.detail', {
+                        id: $scope.contact.id
+                    });
                 });
             };
         }

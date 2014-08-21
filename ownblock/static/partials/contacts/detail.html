@@ -1,10 +1,10 @@
 <div class="btn-toolbar pull-right" role="toolbar" has-role="manager">
-    <a ui-sref="contacts.edit({id: contact.id})" class="btn btn-default btn-sm">
+    <a ui-sref="contacts.edit({id: contact.id})" class="btn btn-default">
         <icon name="edit" text="Edit" />
     </a>
-    <button class="btn btn-danger btn-sm" ng-click="deleteContact(contact, $index)">
-        <icon name="trash" text="Delete" />
-    </button>
+    <confirm-dialog class="btn btn-danger" on-confirm="deleteContact()" header="Remove contact" text="Are you sure you want to remove this contact?">
+        <icon name="trash-o" text="Delete" />
+    </confirm-dialog>
 
 </div>
 

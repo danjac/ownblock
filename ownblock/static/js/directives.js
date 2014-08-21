@@ -89,7 +89,6 @@
                 transclude: true,
                 template: '<button><ng-transclude></ng-transclude></button>',
                 link: function(scope, element, attrs) {
-                    console.log(attrs);
                     element.bind('click', function(event) {
                         event.preventDefault();
                         openModal(attrs.header, attrs.text, scope.onConfirm);
