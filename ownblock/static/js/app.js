@@ -290,8 +290,13 @@
                 templateUrl: partialsUrl + 'parking/vehicleForm.html',
                 controller: 'parking.NewCtrl'
             }).
+            state('parking.detail', {
+                url: '/parking/:id',
+                templateUrl: partialsUrl + 'parking/detail.html',
+                controller: 'parking.DetailCtrl'
+            }).
             state('parking.edit', {
-                url: '/parking/edit/:id',
+                url: '/parking/:id/edit',
                 templateUrl: partialsUrl + 'parking/vehicleForm.html',
                 controller: 'parking.EditCtrl'
             }).

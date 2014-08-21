@@ -182,15 +182,12 @@
                 $scope.resident = response;
             });
         }
-    ]).controller('amenities.ListCtrl', ['$scope', '$window', 'api', 'notifier', 'paginator',
-        function($scope, $window, api, notifier, paginator) {
+    ]).controller('amenities.ListCtrl', ['$scope', 'api', 'notifier', 'paginator',
+        function($scope, api, notifier, paginator) {
             api.Amenity.query().$promise.then(function(response) {
                 $scope.amenities = paginator(response);
             });
             $scope.deleteAmenity = function(amenity, index) {
-                if (!$window.confirm('This will remove the amenity and ALL its bookings. Continue?')) {
-                    return;
-                }
                 $scope.amenities.remove(index);
                 amenity.$delete(function() {
                     notifier.success('The amenity has been removed');
@@ -270,8 +267,8 @@
                 });
             };
         }
-    ]).controller('amenities.BookingDetailCtrl', ['$scope', '$window', '$state', 'api', 'notifier',
-        function($scope, $window, $state, api, notifier) {
+    ]).controller('amenities.BookingDetailCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
             api.Booking.get({
                 id: $state.params.id
             }, function(response) {
@@ -279,9 +276,6 @@
             });
 
             $scope.cancelBooking = function() {
-                if (!$window.confirm("Are you sure you want to cancel this booking?")) {
-                    return;
-                }
                 $scope.booking.$delete(function() {
                     notifier.success("The booking has been canceled");
                     $state.go('amenities.detail', {
@@ -354,23 +348,14 @@
                 });
             };
         }
-    ]).controller('notices.ListCtrl', ['$scope', '$window', 'api', 'notifier', 'paginator',
-        function($scope, $window, api, notifier, paginator) {
+    ]).controller('notices.ListCtrl', ['$scope', 'api', 'notifier', 'paginator',
+        function($scope, api, notifier, paginator) {
             api.Notice.query().$promise.then(function(response) {
                 angular.forEach(response, function(item) {
                     item.searchTerms = item.title + " " + item.details + item.author.full_name;
                 });
                 $scope.notices = paginator(response);
             });
-            $scope.deleteNotice = function(notice, index) {
-                if (!$window.confirm('You sure you want to delete this notice?')) {
-                    return;
-                }
-                $scope.notices.remove(index);
-                notice.$delete(function() {
-                    notifier.success('Your notice has been deleted');
-                });
-            };
         }
     ]).controller('notices.DetailCtrl', [
         '$scope',
@@ -468,17 +453,14 @@
                 });
             };
         }
-    ]).controller('storage.ListCtrl', ['$scope', '$window', 'api', 'paginator',
-        function($scope, $window, api, paginator) {
+    ]).controller('storage.ListCtrl', ['$scope', 'api', 'paginator',
+        function($scope, api, paginator) {
 
             api.StorageItem.query().$promise.then(function(response) {
                 $scope.items = paginator(response);
             });
 
             $scope.deleteItem = function(item, index) {
-                if (!$window.confirm('Are you sure you want to remove this item?')) {
-                    return;
-                }
                 $scope.items.remove(index);
                 item.$delete();
             };
@@ -533,16 +515,12 @@
                 });
             };
         }
-    ]).controller('contacts.ListCtrl', ['$scope', '$window', 'api', 'notifier', 'paginator',
-
-        function($scope, $window, api, notifier, paginator) {
+    ]).controller('contacts.ListCtrl', ['$scope', 'api', 'notifier', 'paginator',
+        function($scope, api, notifier, paginator) {
             api.Contact.query().$promise.then(function(response) {
                 $scope.contacts = paginator(response);
             });
             $scope.deleteContact = function(contact, index) {
-                if (!$window.confirm('Are you sure')) {
-                    return;
-                }
                 $scope.contacts.remove(index);
                 contact.$delete(function() {
                     notifier.success('Contact has been removed');
@@ -582,20 +560,11 @@
                 });
             };
         }
-    ]).controller('documents.ListCtrl', ['$scope', '$window', 'api', 'notifier', 'paginator',
-        function($scope, $window, api, notifier, paginator) {
+    ]).controller('documents.ListCtrl', ['$scope', 'api', 'paginator',
+        function($scope, api, paginator) {
             api.Document.query().$promise.then(function(response) {
                 $scope.documents = paginator(response);
             });
-            $scope.deleteDocument = function(doc, index) {
-                if (!$window.confirm("Are you sure?")) {
-                    return;
-                }
-                $scope.documents.remove(index);
-                doc.$delete(function() {
-                    notifier.success('Your document has been removed');
-                });
-            };
 
         }
     ]).controller('documents.UploadCtrl', ['$scope', '$state', 'api', 'notifier',
@@ -609,8 +578,8 @@
                 });
             };
         }
-    ]).controller('parking.ListCtrl', ['$scope', '$window', 'api', 'notifier', 'paginator',
-        function($scope, $window, api, notifier, paginator) {
+    ]).controller('parking.ListCtrl', ['$scope', 'api', 'paginator',
+        function($scope, api, paginator) {
             api.Vehicle.query().$promise.then(function(response) {
                 angular.forEach(response, function(item) {
                     item.searchTerms = item.description + " " + item.registration_number + item.resident.full_name;
@@ -618,15 +587,6 @@
                 $scope.vehicles = paginator(response);
             });
 
-            $scope.deleteVehicle = function(vehicle, index) {
-                if (!$window.confirm('Are you sure you want to remove this vehicle?')) {
-                    return;
-                }
-                vehicle.$delete(function() {
-                    notifier.success('Your vehicle has been removed');
-                });
-                $scope.vehicles.remove(index);
-            };
         }
     ]).controller('parking.NewCtrl', ['$scope', '$state', 'api', 'notifier',
         function($scope, $state, api, notifier) {
@@ -648,6 +608,20 @@
             $scope.save = function() {
                 $scope.vehicle.$update(function() {
                     notifier.success('Your vehicle has been updated');
+                    $state.go('parking.list');
+                });
+            };
+        }
+    ]).controller('parking.DetailCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+            api.Vehicle.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.vehicle = response;
+            });
+            $scope.deleteVehicle = function() {
+                $scope.vehicle.$delete(function() {
+                    notifier.success('Your vehicle has been removed');
                     $state.go('parking.list');
                 });
             };

@@ -30,7 +30,6 @@
         return {
             controller: function($parse, $element, $attrs, $scope, $window) {
                 var exp = $parse($attrs.filesModel);
-                console.log("filesModel")
                 $element.on('change', function() {
                     exp.assign($scope, this.files);
                     if ($window.FileReader !== null) {
@@ -50,7 +49,56 @@
             }
         };
     }).
-    directive('sendMessage', ['$modal', 'api', 'notifier', 'staticUrl',
+    directive('confirmDialog', ['$modal', 'staticUrl',
+        function($modal, staticUrl) {
+            var modalInstanceCtrl = function($scope, $modalInstance, header, text) {
+                    $scope.header = header;
+                    $scope.text = text;
+                    $scope.confirm = function() {
+                        $modalInstance.close(true);
+                    };
+                    $scope.cancel = function() {
+                        $modalInstance.dismiss('cancel');
+                    };
+                },
+                openModal = function(header, text, onConfirm) {
+                    var modalInstance = $modal.open({
+                        templateUrl: staticUrl + '/partials/confirmDialog.html',
+                        controller: modalInstanceCtrl,
+                        resolve: {
+                            header: function() {
+                                return header;
+                            },
+                            text: function() {
+                                return text;
+                            }
+                        }
+                    });
+                    modalInstance.result.then(function(result) {
+                        if (result) {
+                            onConfirm();
+                        }
+                    });
+                };
+            return {
+                restrict: 'E',
+                scope: {
+                    onConfirm: '&'
+                },
+                replace: true,
+                transclude: true,
+                template: '<button><ng-transclude></ng-transclude></button>',
+                link: function(scope, element, attrs) {
+                    console.log(attrs);
+                    element.bind('click', function(event) {
+                        event.preventDefault();
+                        openModal(attrs.header, attrs.text, scope.onConfirm);
+                    });
+                }
+            };
+
+        }
+    ]).directive('sendMessage', ['$modal', 'api', 'notifier', 'staticUrl',
         function($modal, api, notifier, staticUrl) {
             var modalInstanceCtrl = function($scope, $modalInstance, recipient) {
 

@@ -29,7 +29,7 @@
     </thead>
     <tbody>
         <tr ng-repeat="vehicle in vehicles.currentItems ">
-            <td><a href>{{vehicle.registration_number}}</a>
+            <td><a ui-sref="parking.detail({id: vehicle.id})">{{vehicle.registration_number}}</a>
             </td>
             <td>{{vehicle.description}}
             </td>
