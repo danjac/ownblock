@@ -17,7 +17,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs).select_related(
             'apartment'
-        ).order_by('last_name', 'first_name')
+        ).filter(is_active=True).order_by('last_name', 'first_name')
 
         if self.request.GET.get('residents'):
             return qs.filter(apartment__building=self.request.building)
@@ -27,7 +27,6 @@ class UserViewSet(viewsets.ModelViewSet):
                 Q(apartment__building=self.request.building) |
                 Q(organization=self.request.building.organization)
             ),
-            is_active=True,
         )
 
 

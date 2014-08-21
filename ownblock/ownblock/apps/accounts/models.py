@@ -15,11 +15,15 @@ from django.contrib.auth.models import (
 )
 
 
+from factory.fuzzy import FuzzyText
+
 from model_utils import Choices
 
 
 from apps.organizations.models import Organization
 from apps.buildings.models import Apartment
+
+_fuzzier = FuzzyText()
 
 
 class UserManager(BaseUserManager):
@@ -52,6 +56,7 @@ class User(AbstractBaseUser):
     ROLES = Choices('resident', 'manager')
 
     email = models.EmailField(unique=True, max_length=160)
+    original_email = models.EmailField(max_length=160, blank=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     is_active = models.BooleanField(default=True)
@@ -86,6 +91,7 @@ class User(AbstractBaseUser):
         },
         'manager': {
             'accounts.add_user',
+            'accounts.delete_user',
             'amenities.add_amenity',
             'amenities.change_booking',
             'amenities.delete_booking',
@@ -108,11 +114,39 @@ class User(AbstractBaseUser):
     def get_short_name(self):
         return self.first_name
 
-    # Hook for custom auth backend
+    def delete(self, **kwargs):
+        """Set active to False, and obfuscate email address to allow re-use."""
 
+        # keep original email address in case we need to re-activate later
+
+        self.original_email = self.email
+
+        self.email = "%s@%s" % (_fuzzier.fuzz(), _fuzzier.fuzz())
+
+        self.set_unusable_password()
+        self.is_active = False
+        self.save()
+
+    def real_delete(self, **kwargs):
+        """Actually deletes the user."""
+        return super().delete(**kwargs)
+
+    # Hook for custom auth backend
     def has_model_permission(self, perm):
         """Provides model-scpe permissions"""
         return perm in self.MODEL_PERMISSIONS.get(self.role, {})
+
+    # Permission on object itself
+    def has_permission(self, user, perm):
+        if perm == 'accounts.change_user':
+            return user.id == self.id
+        if perm == 'accounts.delete_user':
+            return (user.role == 'manager' and
+                    self.role == 'resident' and
+                    self.apartment and
+                    self.apartment.building.organization_id ==
+                    user.organization_id)
+        return False
 
     # Hooks for Django admin and Rest Framework
 

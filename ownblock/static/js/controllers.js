@@ -174,13 +174,19 @@
                 $scope.residents = paginator(response);
             });
         }
-    ]).controller('residents.DetailCtrl', ['$scope', '$state', 'api',
-        function($scope, $state, api) {
+    ]).controller('residents.DetailCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
             api.Resident.get({
                 id: $state.params.id
             }, function(response) {
                 $scope.resident = response;
             });
+            $scope.deleteUser = function() {
+                $scope.resident.$delete(function() {
+                    notifier.success($scope.resident.full_name + " has been removed.");
+                    $state.go('residents.list');
+                });
+            };
         }
     ]).controller('amenities.ListCtrl', ['$scope', 'api', 'notifier', 'paginator',
         function($scope, api, notifier, paginator) {

@@ -1,10 +1,13 @@
 <div class="btn-toolbar pull-right">
     <button send-message="{{resident}}" class="btn btn-primary" ng-show="resident.id !== auth.user.id">
-        <icon name="send" text="Send message">
+        <icon name="send" text="Send message"></icon>
     </button>
     <a ui-sref="account.edit" class="btn btn-default" ng-show="auth.user.id === resident.id">
-        <icon name="edit" text="Edit">
+        <icon name="edit" text="Edit"></icon>
     </a>
+    <confirm-dialog has-role="manager" class="btn btn-warning" ng-show="resident.role === 'resident' && resident.id !== auth.user.id" header="Remove {{resident.full_name}}" text="Are you sure you want to remove this user from the system?" on-confirm="deleteUser()">
+        <icon name="trash-o" text="Remove this user"></icon>
+    </confirm-dialog>
 </div>
 
 <h2>{{resident.full_name}}</h2>
