@@ -21,6 +21,9 @@ class Building(models.Model):
     postcode = models.CharField(max_length=12)
     country = CountryField(default='FI')
 
+    year = models.PositiveIntegerField(null=True, blank=True)
+    num_floors = models.PositiveIntegerField(null=True, blank=True)
+
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
 
@@ -68,6 +71,9 @@ class Apartment(models.Model):
     building = models.ForeignKey(Building)
     number = models.CharField(max_length=3)
     floor = models.PositiveIntegerField()
+
+    area = models.FloatField(null=True, blank=True)
+    num_rooms = models.PositiveIntegerField(null=True, blank=True)
 
     owner_name = models.CharField(max_length=60, blank=True)
     owner_phone = models.CharField(max_length=12, blank=True)

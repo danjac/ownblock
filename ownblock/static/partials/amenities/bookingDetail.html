@@ -5,7 +5,9 @@
     <button class="btn btn-danger" ng-show="booking.is_removable" ng-click="cancelBooking()">
         <icon name="trash-o" text="Cancel reservation" />
     </button>
-    <button class="btn btn-default" send-message="{{booking.resident}}" ng-show="booking.resident.id !== auth.user.id">Send message to resident</button>
+    <button class="btn btn-default" send-message="{{booking.resident}}" ng-show="booking.resident.id !== auth.user.id">
+        <icon name="send" text="Send message to resident" />
+    </button>
 </div>
 
 <h2><a ui-sref="amenities.detail({id: booking.amenity})">{{booking.amenity_detail.name}}</a></h2>
