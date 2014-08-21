@@ -31,6 +31,7 @@ class ResidentSerializer(serializers.ModelSerializer):
             'last_name',
             'email',
             'full_name',
+            'is_active',
         )
 
     def __init__(self, apartment, *args, **kwargs):
@@ -62,8 +63,6 @@ class BuildingSerializer(serializers.ModelSerializer):
 
 class ApartmentSerializer(serializers.ModelSerializer):
 
-    user_set = UserRelatedField(many=True)
-
     class Meta:
         model = Apartment
-        fields = ('id', 'number', 'floor', 'user_set')
+        fields = ('id', 'number', 'floor')

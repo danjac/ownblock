@@ -23,6 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
             'role',
             'apartment',
             'full_name',
+            'is_active',
         )
 
         read_only_fields = ('role', )

@@ -13,7 +13,8 @@
     </tr>
     <tr ng-show="message.recipient !== auth.user.id">
         <td>To</td>
-        <td><a href>{{message.recipient_detail.full_name}}</a> 
+        <td>
+            <user-link user="message.recipient_detail" />
         </td>
     </tr>
     <tr>
@@ -22,4 +23,4 @@
     </tr>
 </table>
 
-<pre>{{message.details}}</pre>
+<pre ng-show="message.details">{{message.details}}</pre>

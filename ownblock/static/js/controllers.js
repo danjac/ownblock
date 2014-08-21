@@ -131,15 +131,16 @@
             }
 
             api.Apartment.query().$promise.then(function(response) {
-
                 $scope.apartments = response;
-                angular.forEach($scope.apartments, function(apt) {
-                    if (apartmentId && apt.id === parseInt(apartmentId, 10)) {
-                        $scope.currentApartment = apt;
-                        return;
-                    }
-                });
             });
+
+            if (apartmentId) {
+                api.Apartment.get({
+                    id: apartmentId
+                }, function(response) {
+                    $scope.currentApartment = response;
+                });
+            }
             $scope.addResident = function(apartment) {
                 var modalInstanceCtrl = function($scope, $modalInstance) {
                         $scope.resident = {};

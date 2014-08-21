@@ -13,7 +13,8 @@
 <table class="table table-condensed">
     <tr>
         <td>Posted by</td>
-        <td><a ui-sref="residents.detail({id: notice.author.id})">{{notice.author.full_name}}</a> 
+        <td>
+            <user-link user="notice.author" />
         </td>
     </tr>
     <tr>

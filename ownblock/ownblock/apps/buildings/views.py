@@ -3,6 +3,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from apps.accounts.permissions import IsManager
+from apps.storage.models import Item
+from apps.parking.models import Vehicle
 
 from .models import Apartment, Building
 
@@ -39,7 +41,46 @@ class ApartmentViewSet(viewsets.ReadOnlyModelViewSet):
     def send_new_resident_email(self, resident):
         token = default_token_generator.make_token(resident)
         uid = urlsafe_base64_encode
+        """TBD"""
         pass
+
+    def retrieve(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        data = self.get_serializer(self.object).data
+
+        users = self.object.user_set.filter(is_active=True)
+
+        data['users'] = ResidentSerializer(
+            self.object,
+            users,
+            many=True).data
+
+        items = Item.objects.filter(
+            resident__apartment=self.object
+        )
+
+        data['items'] = []
+
+        for item in items.iterator():
+            data['items'].append({
+                'id': item.id,
+                'description': item.description,
+            })
+
+        vehicles = Vehicle.objects.filter(
+            resident__apartment=self.object
+        )
+
+        data['vehicles'] = []
+
+        for vehicle in vehicles.iterator():
+            data['vehicles'].append({
+                'id': vehicle.id,
+                'description': vehicle.description,
+                'registration_number': vehicle.registration_number,
+            })
+
+        return Response(data)
 
     @action(permission_classes=(IsManager,))
     def add_resident(self, request, pk=None):
