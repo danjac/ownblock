@@ -11,25 +11,129 @@
 </div>
 
 <h2>{{resident.full_name}}</h2>
+<h3 ng-show="resident.apartment"><a ui-sref="buildings.apartment({id : resident.apartment.id })">Apartment {{resident.apartment.number}}</a></h3>
 
-<table class="table table-condensed" ng-show="resident.apartment">
-    <tbody>
+<h3 ng-show="resident.items.length">Storage</h3>
+
+<table class="table table-bordered table-hover table-striped table-condensed" ng-show="resident.items.length">
+    <thead>
         <tr>
-            <td>Apartment</td>
-            <td><a ui-sref="buildings.apartment({id : resident.apartment.id })">{{resident.apartment.number}}</a>
+            <th>Item</th>
+            <th>Serial number</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in resident.items">
+            <td>
+                <a ui-sref="storage.detail({id: item.id})">{{item.description}}</a>
+            </td>
+            <td>
+                {{item.serial_no || "-"}}
             </td>
         </tr>
     </tbody>
 </table>
 
-<h3 ng-show="resident.role==='resident'">Storage</h3>
+<h3 ng-show="resident.vehicles.length">Vehicles</h3>
 
-<h3 ng-show="resident.role==='resident'">Vehicles</h3>
+<table class="table table-bordered table-hover table-striped table-condensed" ng-show="resident.vehicles.length">
+    <thead>
+        <tr>
+            <th>Registration</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="vehicle in resident.vehicles">
+            <td>
+                <a ui-sref="parking.detail({id: vehicle.id})">{{vehicle.registration_number}}</a>
+            </td>
+            <td>{{vehicle.description}}</td>
+        </tr>
+    </tbody>
+</table>
 
-<h3 ng-show="resident.role==='resident'">Bookings</h3>
 
-<h3>Notice board</h3>
+<h3 ng-show="resident.bookings.length">Reservations</h3>
 
-<h3>Messages to {{resident.full_name}}</h3>
+<table class="table table-bordered table-hover table-striped table-condensed" ng-show="resident.bookings.length">
+    <thead>
+        <tr>
+            <th>Reservation</th>
+            <th>From</th>
+            <th>To</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="booking in resident.bookings">
+            <td>
+                <a ui-sref="amenities.bookingDetail({id: booking.id})">{{booking.amenity.name}}</a>
+            </td>
+            <td>{{booking.reserved_from|date:"short"}}</td>
+            <td>{{booking.reserved_to|date:"short"}}</td>
+        </tr>
+    </tbody>
+</table>
 
-<h3>Messages from {{resident.full_name}}</h3>
+
+<h3 ng-show="resident.notices.length">Notice board</h3>
+
+<table class="table table-bordered table-hover table-striped table-condensed" ng-show="resident.notices.length">
+    <thead>
+        <tr>
+            <th>Notice</th>
+            <th>Created</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="notice in resident.notices">
+            <td>
+                <a ui-sref="notices.detail({id: notice.id})">{{notice.title}}</a>
+            </td>
+            <td>{{notice.created|date:"short"}}</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<h3 ng-show="resident.sent_messages.length">Messages from {{resident.full_name}}</h3>
+<table class="table table-bordered table-hover table-striped table-condensed" ng-show="resident.sent_messages.length">
+    <thead>
+        <tr>
+            <th>Message</th>
+            <th>Sent</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="message in resident.sent_messages">
+            <td>
+                <a ui-sref="messages.detail({id: message.id})">{{message.header}}</a>
+            </td>
+            <td>
+                {{message.created|date:"short"}}
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 ng-show="resident.received_messages.length">Messages to {{resident.full_name}}</h3>
+
+<table class="table table-bordered table-hover table-striped table-condensed" ng-show="resident.received_messages.length">
+    <thead>
+        <tr>
+            <th>Message</th>
+            <th>Received</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="message in resident.received_messages">
+            <td>
+                <a ui-sref="messages.detail({id: message.id})">{{message.header}}</a>
+            </td>
+            <td>
+                {{message.created|date:"short"}}
+            </td>
+        </tr>
+    </tbody>
+</table>
+
