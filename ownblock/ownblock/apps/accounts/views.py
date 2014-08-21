@@ -59,13 +59,17 @@ class UserViewSet(viewsets.ModelViewSet):
                     data['received_messages'].append(message_data)
 
         if self.object.role == 'resident':
-            items = Item.objects.filter(resident=self.object)
+            items = Item.objects.filter(
+                resident=self.object
+            ).select_related('place')
 
             data['items'] = []
 
             for item in items.iterator():
                 data['items'].append({
                     'id': item.id,
+                    'place_id': item.place_id,
+                    'place_name': item.place.name,
                     'description': item.description,
                 })
 

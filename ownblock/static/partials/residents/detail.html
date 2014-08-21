@@ -19,16 +19,16 @@
     <thead>
         <tr>
             <th>Item</th>
-            <th>Serial number</th>
+            <th>Stored in</th>
         </tr>
     </thead>
     <tbody>
         <tr ng-repeat="item in resident.items">
             <td>
-                <a ui-sref="storage.detail({id: item.id})">{{item.description}}</a>
+                <a ui-sref="storage.itemDetail({id: item.id})">{{item.description}}</a>
             </td>
             <td>
-                {{item.serial_no || "-"}}
+                {{item.place_name}}
             </td>
         </tr>
     </tbody>

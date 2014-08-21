@@ -529,6 +529,28 @@
                 });
             };
         }
+    ]).controller('storage.ItemDetailCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+            api.StorageItem.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.item = response;
+            });
+            $scope.deleteItem = function() {
+                $scope.item.$delete(function() {
+                    notifier.success('Your item has been removed');
+                    $state.go('storage.list');
+                });
+            };
+        }
+    ]).controller('storage.PlaceDetailCtrl', ['$scope', '$state', 'api',
+        function($scope, $state, api) {
+            api.Place.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.place = response;
+            });
+        }
     ]).controller('contacts.ListCtrl', ['$scope', 'api', 'notifier', 'paginator',
         function($scope, api, notifier, paginator) {
             api.Contact.query().$promise.then(function(response) {

@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework.response import Response
 
 
 from .models import Place, Item
@@ -12,6 +13,23 @@ class PlaceViewSet(viewsets.ModelViewSet):
 
     def pre_save(self, obj):
         obj.building = self.request.building
+
+    def retrieve(self, *args, **kwargs):
+
+        self.object = self.get_object()
+        context = {'request': self.request}
+        data = PlaceSerializer(self.object, context=context).data
+        items = self.object.item_set.select_related(
+            'place',
+            'resident',
+            'resident__apartment',
+        )
+        data['items'] = ItemSerializer(
+            items,
+            many=True,
+            context=context,
+        ).data
+        return Response(data)
 
     def get_queryset(self):
         return super().get_queryset().filter(

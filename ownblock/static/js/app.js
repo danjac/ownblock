@@ -254,10 +254,25 @@
                     access: 'manager'
                 }
             }).
+            state('storage.itemDetail', {
+                url: '/storage/:id',
+                templateUrl: partialsUrl + 'storage/itemDetail.html',
+                controller: 'storage.ItemDetailCtrl'
+            }).
+            state('storage.placeDetail', {
+                url: '/storage/places/:id',
+                templateUrl: partialsUrl + 'storage/placeDetail.html',
+                controller: 'storage.PlaceDetailCtrl'
+            }).
             state('storage.editItem', {
-                url: '/storage/edit/:id',
+                url: '/storage/:id/edit',
                 templateUrl: partialsUrl + 'storage/itemForm.html',
                 controller: 'storage.EditItemCtrl'
+            }).
+            state('storage.editPlace', {
+                url: '/storage/places/:id/edit',
+                templateUrl: partialsUrl + 'storage/placeForm.html',
+                controller: 'storage.EditPlaceCtrl'
             }).
             state('documents', {
                 templateUrl: partialsUrl + 'documents/base.html',

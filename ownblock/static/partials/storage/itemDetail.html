@@ -1,0 +1,38 @@
+<div role="toolbar" class="btn-toolbar pull-right">
+    <a ui-sref="storage.editItem({id: item.id})" ng-show="item.is_editable" class="btn btn-default">
+        <icon name="edit" text="Edit details" />
+    </a>
+    <confirm-dialog class="btn btn-danger" header="Remove item" text="Are you sure you want to remove this item?" on-confirm="deleteItem()" ng-show="item.is_removable">
+        <icon name="trash-o" text="Remove item" />
+    </confirm-dialog>
+    <button class="btn btn-default" send-message="{{item.resident}}" ng-show="item.resident.id !== auth.user.id">
+        <icon name="send" text="Send message" />
+    </button>
+
+</div>
+<h2>{{item.description}}</h2>
+<table class="table table-condensed">
+    <tbody>
+        <tr>
+            <td>Serial number</td>
+            <td>{{item.serial_no}}</td>
+        </tr>
+        <tr>
+            <td>Owner</td>
+            <td>
+                <user-link user="item.resident" />
+            </td>
+        </tr>
+        <tr>
+            <td>Apartment</td>
+            <td>
+                <a ui-sref="buildings.apartment({id: item.apartment.id})">{{item.apartment.number}}</a>
+            </td>
+        </tr>
+        <tr>
+            <td>Stored in</td>
+            <td><a ui-sref="storage.placeDetail({id: item.place})">{{item.place_name}}</a>
+            </td>
+        </tr>
+    </tbody>
+</table>

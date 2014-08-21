@@ -32,9 +32,9 @@
     </thead>
     <tbody>
         <tr ng-repeat="item in items.currentItems">
-            <td><a href>{{item.description}}</a>
+            <td><a ui-sref="storage.itemDetail({id: item.id})">{{item.description}}</a>
             </td>
-            <td><a href>{{item.place_name}}</a>
+            <td><a ui-sref="storage.placeDetail({id: item.place})">{{item.place_name}}</a>
             </td>
             <td><a ui-sref="residents.detail({id: item.resident.id})">{{item.resident.full_name}}</a>
             </td>

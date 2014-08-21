@@ -1,0 +1,23 @@
+<h2>{{place.name}}</h2>
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Owner</th>
+            <th>Apartment</th>
+            <th>Serial number</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in place.items">
+            <td><a ui-sref="storage.itemDetail({id: item.id})">{{item.description}}</a>
+            </td>
+            <td>
+                <user-link user="item.resident" />
+            </td>
+            <td><a ui-sref="buildings.apartment({id: item.apartment.id})">{{item.apartment.number}}</a>
+            </td>
+            <td>{{item.serial_no}}</td>
+        </tr>
+    </tbody>
+</table>

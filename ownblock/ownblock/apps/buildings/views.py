@@ -57,7 +57,7 @@ class ApartmentViewSet(viewsets.ReadOnlyModelViewSet):
 
         items = Item.objects.filter(
             resident__apartment=self.object
-        )
+        ).select_related('place')
 
         data['items'] = []
 
@@ -65,6 +65,10 @@ class ApartmentViewSet(viewsets.ReadOnlyModelViewSet):
             data['items'].append({
                 'id': item.id,
                 'description': item.description,
+                'place': {
+                    'id': item.place.id,
+                    'name': item.place.name,
+                }
             })
 
         vehicles = Vehicle.objects.filter(
