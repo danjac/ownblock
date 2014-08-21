@@ -70,6 +70,7 @@ class User(AbstractBaseUser):
     MODEL_PERMISSIONS = {
         'resident': {
             'amenities.add_booking',
+            'amenities.change_booking',
             'amenities.delete_booking',
             'messaging.add_message',
             'notices.add_notice',
@@ -86,6 +87,7 @@ class User(AbstractBaseUser):
         'manager': {
             'accounts.add_user',
             'amenities.add_amenity',
+            'amenities.change_booking',
             'amenities.delete_booking',
             'documents.add_document',
             'documents.change_document',

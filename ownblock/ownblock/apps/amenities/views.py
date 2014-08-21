@@ -31,4 +31,6 @@ class BookingViewSet(viewsets.ModelViewSet):
             amenity__building=self.request.building).select_related(
             'amenity',
             'resident',
+            'resident__apartment',
+            'resident__apartment__building',
         )

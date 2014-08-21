@@ -26,7 +26,8 @@
         <tr>
             <th>Item</th>
             <th>Place</th>
-            <th>Owner/Apartment</th>
+            <th>Owner</th>
+            <th>Apartment</th>
         </tr>
     </thead>
     <tbody>
@@ -35,7 +36,9 @@
             </td>
             <td><a href>{{item.place_name}}</a>
             </td>
-            <td><a ui-sref="buildings.apartment({id: item.apartment.id})">{{item.resident.full_name}} / {{item.apartment.number}}</a>
+            <td><a ui-sref="residents.detail({id: item.resident.id})">{{item.resident.full_name}}</a>
+            </td>
+            <td><a ui-sref="buildings.apartment({id: item.apartment.id})">{{item.apartment.number}}</a>
             </td>
         </tr>
     </tbody>

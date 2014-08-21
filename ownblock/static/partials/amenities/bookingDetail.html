@@ -1,15 +1,15 @@
 <div class="btn-toolbar pull-right" role="toolbar">
-    <a class="btn btn-default" ng-show="booking.is_editable" ui-sref="">
+    <a class="btn btn-default" ng-show="booking.is_editable" ui-sref="amenities.editBooking({id: booking.id})">
         <icon name="edit" text="Edit" />
     </a>
-    <button class="btn btn-primary" ng-show="booking.is_removable" ng-click="cancelBooking()">
+    <button class="btn btn-danger" ng-show="booking.is_removable" ng-click="cancelBooking()">
         <icon name="trash-o" text="Cancel reservation" />
     </button>
-    <button class="btn btn-default" send-message="{{booking.resident}}" ng-show="booking.resident.id != auth.user.id">Send message to resident</button>
+    <button class="btn btn-default" send-message="{{booking.resident}}" ng-show="booking.resident.id !== auth.user.id">Send message to resident</button>
 </div>
 
+<h2><a ui-sref="amenities.detail({id: booking.amenity})">{{booking.amenity_detail.name}}</a></h2>
 
-<h2><a ui-sref="amenities.detail({id: booking.amenity.id})">{{booking.amenity.name}}</a></h2>
 
 <table class="table table-condensed">
     <tr>

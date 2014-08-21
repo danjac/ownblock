@@ -250,13 +250,30 @@
                     $state.go('amenities.detail', {
                         id: $stateParams.id
                     });
-                }, function(response) {});
+                });
+            };
+        }
+    ]).controller('amenities.EditBookingCtrl', ['$scope', '$state', 'api', 'notifier',
+
+        function($scope, $state, api, notifier) {
+            api.Booking.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.booking = response;
+            });
+            $scope.save = function() {
+                $scope.booking.$update(function() {
+                    $state.go('amenities.detail', {
+                        id: $scope.booking.amenity.id
+                    });
+                    notifier.success('Your booking has been updated');
+                });
             };
         }
     ]).controller('amenities.BookingDetailCtrl', ['$scope', '$state', 'api',
         function($scope, $state, api) {
             api.Booking.get({
-                id: $state.id
+                id: $state.params.id
             }, function(response) {
                 $scope.booking = response;
             });
@@ -280,7 +297,7 @@
                         reservedTo = new Date(booking.reserved_to),
                         title = reservedFrom.getHours() + ":" + reservedFrom.getMinutes() +
                         " - " + reservedTo.getHours() + ":" + reservedTo.getMinutes(),
-                        color = auth.user.id === booking.resident ? '#800' : '#008';
+                        color = auth.user.id === booking.resident.id ? '#800' : '#008';
 
                     bookings.push({
                         start: reservedFrom,

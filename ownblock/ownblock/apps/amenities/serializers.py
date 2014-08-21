@@ -3,19 +3,45 @@ from django.utils import timezone
 
 from rest_framework import serializers
 
+from apps.accounts.serializers import UserSerializer
+
 from .models import Amenity, Booking
 
 
+class AmenityRelatedField(serializers.RelatedField):
+
+    def to_native(self, value):
+        return {
+            'id': value.id,
+            'name': value.name,
+        }
+
+
 class BookingSerializer(serializers.ModelSerializer):
+    resident = UserSerializer(read_only=True)
+    amenity_detail = AmenityRelatedField('amenity', read_only=True)
+
+    is_editable = serializers.SerializerMethodField('is_obj_editable')
+    is_removable = serializers.SerializerMethodField('is_obj_removable')
 
     class Meta:
         model = Booking
         fields = ('id',
                   'resident',
                   'amenity',
+                  'amenity_detail',
                   'reserved_from',
-                  'reserved_to')
-        read_only_fields = ('resident',)
+                  'reserved_to',
+                  'is_editable',
+                  'is_removable')
+
+    def is_obj_editable(self, obj):
+        return obj.has_permission(self.context['request'].user,
+                                  'amenities.change_booking')
+
+    def is_obj_removable(self, obj):
+        return obj.has_permission(self.context['request'].user,
+                                  'amenities.delete_booking')
 
     def validate_amenity(self, attrs, source):
         value = attrs[source]
@@ -36,9 +62,14 @@ class BookingSerializer(serializers.ModelSerializer):
             raise serializers.ValdiationError("Start after end")
         bookings = attrs['amenity'].booking_set.all()
         date_range = (attrs['reserved_from'], attrs['reserved_to'])
-        if bookings.filter(
+        qs = bookings.filter(
             Q(reserved_from__range=date_range) |
-                Q(reserved_to__range=date_range)).exists():
+            Q(reserved_to__range=date_range))
+
+        booking_id = self.init_data.get('id')
+        if booking_id:
+            qs = qs.exclude(pk=booking_id)
+        if qs.exists():
             raise serializers.ValidationError("Booking conflict")
 
         return attrs
