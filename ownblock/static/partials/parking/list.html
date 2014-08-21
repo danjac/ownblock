@@ -20,20 +20,23 @@
 <table class="table table-bordered table-striped table-hover voffset-2 ">
     <thead>
         <tr>
+            <th>Registration</th>
             <th>Description</th>
-            <th>Registration no.</th>
-            <th>Owner/Apartment</th>
             <th>Reserved space</th>
+            <th>Owner</th>
+            <th>Apartment</th>
         </tr>
     </thead>
     <tbody>
         <tr ng-repeat="vehicle in vehicles.currentItems ">
-            <td><a href>{{vehicle.description}}</a>
+            <td><a href>{{vehicle.registration_number}}</a>
             </td>
-            <td>{{vehicle.registration_number}}</td>
-            <td><a ui-sref="buildings.apartment({id: vehicle.resident.apartment.id}) ">{{vehicle.resident.full_name}}/{{vehicle.resident.apartment.number}}</a>
+            <td>{{vehicle.description}}
             </td>
             <td>{{vebicle.reserved_space || 'No' }}</td>
+            <td><a ui-sref="residents.detail({id: vehicle.resident.id}) ">{{vehicle.resident.full_name}}</a>
+                <td><a ui-sref="buildings.apartment({id: vehicle.resident.apartment.id}) ">{{vehicle.resident.apartment.number}}</a>
+                </td>
         </tr>
     </tbody>
 

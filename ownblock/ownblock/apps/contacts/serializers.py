@@ -14,4 +14,5 @@ class ContactSerializer(serializers.ModelSerializer):
             'email',
             'phone',
             'address',
+            'available_hours',
         )
