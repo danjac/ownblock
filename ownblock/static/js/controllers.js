@@ -264,19 +264,31 @@
             $scope.save = function() {
                 $scope.booking.$update(function() {
                     $state.go('amenities.detail', {
-                        id: $scope.booking.amenity.id
+                        id: $scope.booking.amenity
                     });
                     notifier.success('Your booking has been updated');
                 });
             };
         }
-    ]).controller('amenities.BookingDetailCtrl', ['$scope', '$state', 'api',
-        function($scope, $state, api) {
+    ]).controller('amenities.BookingDetailCtrl', ['$scope', '$window', '$state', 'api', 'notifier',
+        function($scope, $window, $state, api, notifier) {
             api.Booking.get({
                 id: $state.params.id
             }, function(response) {
                 $scope.booking = response;
             });
+
+            $scope.cancelBooking = function() {
+                if (!$window.confirm("Are you sure you want to cancel this booking?")) {
+                    return;
+                }
+                $scope.booking.$delete(function() {
+                    notifier.success("The booking has been canceled");
+                    $state.go('amenities.detail', {
+                        id: $scope.booking.amenity
+                    });
+                });
+            };
         }
     ]).controller('amenities.DetailCtrl', ['$scope',
         '$state',
