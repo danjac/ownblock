@@ -55,7 +55,7 @@
                     </li>
                     <li ui-sref-active="active">
                         <a ui-sref="amenities.list">
-                            <icon name="calendar" text="Amenities" />
+                            <icon name="calendar" text="Reservations" />
                         </a>
                     </li>
                     <li ui-sref-active="active">
@@ -99,7 +99,7 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a ui-sref="account.edit">My account</a>
+                            <li><a ui-sref="residents.detail({id: auth.user.id})">My account</a>
                             </li>
                             <li><a href="/account/logout/">Logout</a>
                             </li>

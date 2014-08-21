@@ -28,7 +28,8 @@
             <td><a ui-sref="notices.detail({id: notice.id})">{{notice.title}}</a>
             </td>
             <td>{{notice.created|date}}</td>
-            <td>{{notice.author.full_name}}</td>
+            <td><a ui-sref="residents.detail({id: notice.author.id})">{{notice.author.full_name}}</a>
+            </td>
         </tr>
     </tbody>
 </table>

@@ -15,13 +15,20 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
     def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args, **kwargs).filter(
+        qs = super().get_queryset(*args, **kwargs).select_related(
+            'apartment'
+        ).order_by('last_name', 'first_name')
+
+        if self.request.GET.get('residents'):
+            return qs.filter(apartment__building=self.request.building)
+
+        return qs.filter(
             Q(
                 Q(apartment__building=self.request.building) |
                 Q(organization=self.request.building.organization)
             ),
             is_active=True,
-        ).select_related('apartment').order_by('last_name', 'first_name')
+        )
 
 
 class AuthView(APIView):

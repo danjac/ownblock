@@ -168,7 +168,9 @@
         function($scope, api, auth, paginator) {
             $scope.residents = [];
             $scope.user = auth.user;
-            api.Resident.query().$promise.then(function(response) {
+            api.Resident.query({
+                residents: true
+            }).$promise.then(function(response) {
                 $scope.residents = paginator(response);
             });
         }
@@ -251,18 +253,24 @@
                 }, function(response) {});
             };
         }
+    ]).controller('amenities.BookingDetailCtrl', ['$scope', '$state', 'api',
+        function($scope, $state, api) {
+            api.Booking.get({
+                id: $state.id
+            }, function(response) {
+                $scope.booking = response;
+            });
+        }
     ]).controller('amenities.DetailCtrl', ['$scope',
-        '$window',
-        '$stateParams',
+        '$state',
         'api',
-        'notifier',
         'auth',
-        function($scope, $window, $stateParams, api, notifier, auth) {
+        function($scope, $state, api, auth) {
             var bookings = [];
             $scope.eventSources = [bookings];
 
             api.Amenity.get({
-                id: $stateParams.id
+                id: $state.params.id
             }).$promise.then(function(response) {
                 $scope.amenity = response;
                 $scope.bookings = [];
@@ -285,18 +293,10 @@
                 });
             });
 
-            function cancelBooking(booking, counter) {
-                if (booking.resident !== auth.user.id && !auth.hasRole('manager')) {
-                    return;
-                }
-                if (!$window.confirm("You want to cancel this booking?")) {
-                    return;
-                }
-                api.Booking.remove({
+            function showBooking(booking) {
+                $state.go('amenities.bookingDetail', {
                     id: booking.id
                 });
-                bookings.splice(counter, 1);
-                notifier.success('Your booking has been canceled');
             }
 
             $scope.uiConfig = {
@@ -309,7 +309,7 @@
                         right: 'today prev,next'
                     },
                     eventClick: function(calEvent) {
-                        cancelBooking(calEvent.data, calEvent.index);
+                        showBooking(calEvent.data);
                     }
                 }
             };
@@ -623,12 +623,15 @@
                 });
             };
         }
-    ]).controller('account.EditCtrl', ['$scope', 'auth', 'api', 'notifier',
-        function($scope, auth, api, notifier) {
+    ]).controller('account.EditCtrl', ['$scope', '$state', 'auth', 'api', 'notifier',
+        function($scope, $state, auth, api, notifier) {
             $scope.save = function() {
                 api.Auth.update(auth.user, function(response) {
                     auth.update(response);
                     notifier.success('Your account has been updated');
+                    $state.go('residents.detail', {
+                        id: auth.user.id
+                    });
                 });
             };
         }

@@ -21,7 +21,7 @@
                 <tr ng-repeat="message in receivedMessages.currentItems">
                     <td><a ui-sref="messages.detail({id: message.id})">{{message.header}}</a>
                     </td>
-                    <td>{{message.sender.full_name}}
+                    <td><a ui-sref="residents.detail({id: message.sender.id})">{{message.sender.full_name}}</a>
                     </td>
                     <td>{{message.created|date:"short"}}</td>
                 </tr>
@@ -49,7 +49,8 @@
                 <tr ng-repeat="message in sentMessages.currentItems">
                     <td><a ui-sref="messages.detail({id: message.id})">{{message.header}}</a>
                     </td>
-                    <td>{{message.recipient_detail.full_name}}</td>
+                    <td><a ui-sref="residents.detail({id: message.resident})">{{message.recipient_detail.full_name}}</a>
+                    </td>
                     <td>{{message.created|date:"short"}}</td>
                 </tr>
             </tbody>

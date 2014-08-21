@@ -1,0 +1,28 @@
+<div class="btn-toolbar pull-right" role="toolbar">
+    <a class="btn btn-default" ng-show="booking.is_editable" ui-sref="">
+        <icon name="edit" text="Edit" />
+    </a>
+    <button class="btn btn-primary" ng-show="booking.is_removable" ng-click="cancelBooking()">
+        <icon name="trash-o" text="Cancel reservation" />
+    </button>
+    <button class="btn btn-default" send-message="{{booking.resident}}" ng-show="booking.resident.id != auth.user.id">Send message to resident</button>
+</div>
+
+
+<h2><a ui-sref="amenities.detail({id: booking.amenity.id})">{{booking.amenity.name}}</a></h2>
+
+<table class="table table-condensed">
+    <tr>
+        <td>Reserved by</td>
+        <td><a ui-sref="residents.detail({id: booking.resident.id})">{{booking.resident.full_name}}</a>
+        </td>
+    </tr>
+    <tr>
+        <td>From</td>
+        <td>{{booking.reserved_from|date:"short"}}</td>
+    </tr>
+    <tr>
+        <td>To</td>
+        <td>{{booking.reserved_to|date:"short"}}</td>
+    </tr>
+</table>
