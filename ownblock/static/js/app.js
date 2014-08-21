@@ -39,12 +39,10 @@
                         var warning = "Sorry, an error has occurred";
                         switch (response.status) {
                             case 401:
+                            case 403:
                                 // we're out of sync with server, logout 
                                 $location.path("/account/login/");
                                 return;
-                            case 403:
-                                warning = "Sorry, you're not allowed to do this";
-                                break;
                             case 404:
                                 $location.path("notfound");
                                 return;

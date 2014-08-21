@@ -1,0 +1,20 @@
+{% extends "registration/registration_base.html" %} {% block content %} {% if form.errors %}
+<div class="alert alert-warning">Sorry, we were unable to set your password.</div>
+{% endif %}
+<p class="well">
+    Please enter your password below so you can sign in and start using the site.
+</p>
+<form method="post" action="{{ request.path }}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="" class="label-control">Your password</label>
+        <input type="password" name="new_password1" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="" class="label-control">Confirm this password</label>
+        <input type="password" name="new_password2" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Continue &raquo;</button>
+</form>
+{% endblock %}
+

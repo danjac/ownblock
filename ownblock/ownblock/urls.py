@@ -63,6 +63,12 @@ urlpatterns += patterns(
         kwargs={
             'post_reset_redirect': settings.LOGIN_URL,
         }, name='password_reset_confirm'),
+    url(r'^account/invite/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        'password_reset_confirm',
+        kwargs={
+            'template_name': 'registration/invitation_confirm.html',
+            'post_reset_redirect': settings.LOGIN_URL,
+        }, name='invitation_confirm'),
 )
 
 if settings.DEBUG:

@@ -38,12 +38,6 @@ class ApartmentViewSet(viewsets.ReadOnlyModelViewSet):
     model = Apartment
     serializer_class = ApartmentSerializer
 
-    def send_new_resident_email(self, resident):
-        token = default_token_generator.make_token(resident)
-        uid = urlsafe_base64_encode
-        """TBD"""
-        pass
-
     def retrieve(self, request, *args, **kwargs):
         self.object = self.get_object()
         data = self.get_serializer(self.object).data

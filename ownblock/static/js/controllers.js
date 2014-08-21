@@ -703,13 +703,15 @@
                 });
             };
         }
-    ]).controller('account.ChangePasswordCtrl', ['$scope', '$state', 'api', 'notifier',
-        function($scope, $state, api, notifier) {
+    ]).controller('account.ChangePasswordCtrl', ['$scope', '$state', 'api', 'auth', 'notifier',
+        function($scope, $state, api, auth, notifier) {
             $scope.user = {};
             $scope.save = function() {
                 api.Auth.changePassword($scope.user, function() {
                     notifier.success('Your password has been updated');
-                    $state.go('account.edit');
+                    $state.go('residents.detail', {
+                        id: auth.user.id
+                    });
                 });
             };
         }
