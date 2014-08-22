@@ -1,10 +1,13 @@
-<div class="row">
-    <div class="col-md-6">
-        <h2>{{building.address_1}}</h2>
+ <h2>{{building.address_1}}</h2>
 
-        <tabset>
-            <tab heading="Building details" active="tabs.building.active">
-                <table class="table table-condensed table-striped table-hover table-bordered voffset-2">
+<tabset>
+    <tab heading="Building details" active="tabs.building.active" select="generateMap()">
+        <div class="row voffset-2">
+            <div class="col-md-6">
+                <div id="map"></div>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-condensed table-striped table-hover table-bordered">
                     <tbody>
                         <tr>
                             <td>Full address</td>
@@ -20,31 +23,16 @@
                         </tr>
                     </tbody>
                 </table>
-            </tab>
-            <tab heading="Apartments" active="tabs.apartments.active">
-                <table class="table table-striped table-bordered table-hover voffset-2">
-                    <thead>
-                        <tr>
-                            <th>Apartment</th>
-                            <th>Floor</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="apartment in apartments">
-                            <td>
-                                <a ui-sref="buildings.apartment({id: apartment.id})">{{apartment.number}}</a>
-                            </td>
-                            <td>{{apartment.floor}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </tab>
-        </tabset>
+            </div>
+        </div>
+    </tab>
+    <tab heading="Apartments" active="tabs.apartments.active">
 
-    </div>
-    <div class="col-md-6">
-        <div id="map" style="height:500px" ng-show="!currentApartment||tabs.building.active"></div>
-        <div ng-show="currentApartment && !tabs.building.active">
+        <form class="voffset-2">
+            <select class="form-control" ng-change="selectApartment()" ng-model="selectedApartment.id" ng-options="apartment.id as apartment.number for apartment in apartments">
+            </select>
+        </form>
+        <div ng-show="currentApartment">
             <h2>Apartment {{currentApartment.number}}</h2>
             <table class="table table-condensed table-striped table-hover table-bordered">
                 <tbody>
@@ -133,6 +121,5 @@
             </table>
 
 
-        </div>
-
-    </div>
+    </tab>
+</tabset>

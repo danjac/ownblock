@@ -118,3 +118,12 @@ input.form-control[type="file"] {
     background-color: #eee;
 }
 
+div.olMap
+{
+  cursor: default;
+  height: 500px;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+  z-index: 0;
+}

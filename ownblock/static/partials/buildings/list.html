@@ -10,7 +10,7 @@
     <ul class="list-unstyled">
         <li ng-repeat="building in city.buildings|filter:search">
             <a href ng-click="selectBuilding(building)">{{building.address_1}}, {{building.postcode}}</a>
-            <icon name="ok" ng-show="auth.user.building.id === building.id" />
+            <icon name="check" ng-show="auth.user.building.id === building.id" />
         </li>
     </ul>
 </div>

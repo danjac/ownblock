@@ -2,9 +2,9 @@
     <a class="btn btn-default" ng-show="booking.is_editable" ui-sref="amenities.editBooking({id: booking.id})">
         <icon name="edit" text="Edit" />
     </a>
-    <button class="btn btn-danger" ng-show="booking.is_removable" ng-click="cancelBooking()">
+    <confirm-dialog class="btn btn-danger" ng-show="booking.is_removable" header="Cancel booking" text="Are you sure you want to cancel this booking?" on-confirm="cancelBooking()">
         <icon name="trash-o" text="Cancel reservation" />
-    </button>
+    </confirm-dialog>
     <button class="btn btn-default" send-message="{{booking.resident}}" ng-show="booking.resident.id !== auth.user.id">
         <icon name="send" text="Send message to resident" />
     </button>

@@ -79,10 +79,21 @@
         'staticUrl',
         function($scope, $state, $window, $modal, api, auth, staticUrl) {
 
-            var apartmentId = $state.params.id;
+            var apartmentId = null;
+            if ($state.params.id) {
+                apartmentId = parseInt($state.params.id, 10);
+            }
+            $scope.selectedApartment = {
+                id: apartmentId
+            };
             $scope.building = $scope.auth.user.building;
 
-            function generateMap() {
+            var mapCreated = false;
+
+            $scope.generateMap = function() {
+                if (mapCreated) {
+                    return;
+                }
                 var OL = $window.OpenLayers,
                     map = new OL.Map("map", {
                         controls: [new OL.Control.Navigation(),
@@ -109,9 +120,8 @@
                 map.addLayer(markers);
                 map.setCenter(point, 15);
                 markers.addMarker(new OL.Marker(point, icon));
-            }
-
-            generateMap();
+                mapCreated = true;
+            };
 
             $scope.apartments = [];
 
@@ -125,27 +135,29 @@
                 }
             };
 
-            console.log(apartmentId);
-
-            if (apartmentId) {
+            if ($scope.selectedApartment.id) {
                 $scope.tabs.apartments.active = true;
-            }
-
-            if (!apartmentId && auth.user.apartment) {
-                apartmentId = auth.user.apartment.id;
+            } else if (auth.user.apartment) {
+                $scope.selectedApartment.id = auth.user.apartment.id;
             }
 
             api.Apartment.query().$promise.then(function(response) {
                 $scope.apartments = response;
             });
 
-            if (apartmentId) {
+            $scope.selectApartment = function() {
+                if (!$scope.selectedApartment.id) {
+                    return;
+                }
                 api.Apartment.get({
-                    id: apartmentId
+                    id: $scope.selectedApartment.id
                 }, function(response) {
                     $scope.currentApartment = response;
                 });
-            }
+            };
+
+            $scope.selectApartment();
+
             $scope.addResident = function(apartment) {
                 var modalInstanceCtrl = function($scope, $modalInstance) {
                         $scope.resident = {};
