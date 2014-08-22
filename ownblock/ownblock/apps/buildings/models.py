@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.sites.models import Site
 
 from geopy.geocoders import Nominatim
 from geopy.exc import GeopyError
@@ -7,14 +8,12 @@ from model_utils import FieldTracker
 
 from django_countries.fields import CountryField
 
-from apps.organizations.models import Organization
-
 _geolocator = Nominatim()
 
 
 class Building(models.Model):
 
-    organization = models.ForeignKey(Organization)
+    site = models.ForeignKey(Site)
     address_1 = models.CharField(max_length=100)
     address_2 = models.CharField(max_length=100, blank=True)
     city = models.CharField(max_length=50)

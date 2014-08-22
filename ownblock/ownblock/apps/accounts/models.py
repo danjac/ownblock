@@ -19,8 +19,6 @@ from factory.fuzzy import FuzzyText
 
 from model_utils import Choices
 
-
-from apps.organizations.models import Organization
 from apps.buildings.models import Apartment
 
 _fuzzier = FuzzyText()
@@ -67,7 +65,8 @@ class User(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
-    organization = models.ForeignKey(Organization, null=True, blank=True)
+    site = models.ForeignKey(Site, null=True, blank=True)
+
     apartment = models.ForeignKey(Apartment, null=True, blank=True)
 
     role = models.CharField(choices=ROLES, default='resident', max_length=10)

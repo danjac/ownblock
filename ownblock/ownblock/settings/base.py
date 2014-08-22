@@ -227,7 +227,6 @@ LOCAL_APPS = (
     'apps.documents',
     'apps.messaging',
     'apps.notices',
-    'apps.organizations',
     'apps.parking',
     'apps.storage',
 )

@@ -31,4 +31,4 @@ class Document(TimeStampedModel):
 
     def has_permission(self, user, perm):
         return (user.role == 'manager' and
-                self.building.organization_id == user.organization_id)
+                self.building.site_id == user.site_id)

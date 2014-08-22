@@ -15,7 +15,7 @@ class Place(models.Model):
 
     def has_permission(self, user, perm):
         return (user.role == 'manager' and
-                user.organization_id == self.building.organization_id)
+                user.site_id == self.building.site_id)
 
 
 class Item(models.Model):
@@ -32,5 +32,5 @@ class Item(models.Model):
         if user.role == 'resident':
             return self.resident == user
         if user.role == 'manager':
-            return self.place.building.organization_id == user.organization_id
+            return self.place.building.site_id == user.site_id
         return False

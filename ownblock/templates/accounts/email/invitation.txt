@@ -7,7 +7,7 @@ You can use this site to keep track of news at your block, stay in touch with ne
 
 {% else %}
 
-As a member of {{ user.organization.name }} you have been invited to {{ site.name }}/
+As an employee of {{ site.name }} you have been invited to join the site.
 
 You can use this site to help manage your properties, communicate with residents and keep track of facilities.
 
@@ -15,4 +15,4 @@ You can use this site to help manage your properties, communicate with residents
 
 Please click on the link below to enter your password and set up your account. You have been registered with the email address {{ user.email }}.
 
-https://{{ site.domain }}/{% url 'invitation_confirm' uidb64=uid token=token %}
+https://{{ site.domain }}{% url 'invitation_confirm' uidb64=uid token=token %}

@@ -17,4 +17,4 @@ class Contact(models.Model):
         return self.name
 
     def has_permission(self, user, perm):
-        return self.building.organization_id == user.organization_id
+        return self.building.site_id == user.site_id

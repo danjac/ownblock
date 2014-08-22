@@ -17,12 +17,12 @@ class Vehicle(models.Model):
 
     def get_groups(self):
         return [self.resident,
-                self.resident.apartment.building.organization.group]
+                self.resident.apartment.building.site.group]
 
     def has_permission(self, user, perm):
         if user.role == 'resident':
             return user == self.resident
         if user.role == 'manager':
-            return (self.resident.apartment.building.organization_id ==
-                    user.organization_id)
+            return (self.resident.apartment.building.site_id ==
+                    user.site_id)
         return False

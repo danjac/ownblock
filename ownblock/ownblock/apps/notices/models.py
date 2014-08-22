@@ -19,7 +19,7 @@ class Notice(TimeStampedModel):
     def has_permission(self, user, perm):
 
         if (user.role == 'manager' and
-                user.organization == self.building.organization):
+                user.site_id == self.building.site_id):
             return True
 
         if (user.role == 'resident' and user == self.author):
