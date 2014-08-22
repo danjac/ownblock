@@ -170,7 +170,7 @@ class User(AbstractBaseUser):
 
 
 def send_invitation_email(sender, instance, created, **kwargs):
-    if not created:
+    if not created or instance.is_staff:
         return
 
     uid = urlsafe_base64_encode(force_bytes(instance.pk))
