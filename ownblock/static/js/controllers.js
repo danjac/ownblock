@@ -209,6 +209,31 @@
                 $state.go('residents.list');
             };
         }
+    ]).controller('residents.EditCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+            api.Resident.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.resident = response;
+            });
+            api.Apartment.query().$promise.then(function(response) {
+                $scope.apartments = response;
+            });
+
+            $scope.save = function() {
+                $scope.resident.$update(function() {
+                    notifier.success('The resident has been updated');
+                    $state.go('residents.detail', {
+                        id: $scope.resident.id
+                    });
+                });
+            };
+            $scope.cancel = function() {
+                $state.go('residents.detail', {
+                    id: $scope.resident.id
+                });
+            };
+        }
     ]).controller('residents.DetailCtrl', ['$scope', '$state', 'api', 'notifier',
         function($scope, $state, api, notifier) {
             api.Resident.get({

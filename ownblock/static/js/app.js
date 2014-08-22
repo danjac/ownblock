@@ -138,7 +138,18 @@
             state('residents.new', {
                 url: '/residents/new',
                 templateUrl: partialsUrl + 'residents/form.html',
-                controller: 'residents.NewCtrl'
+                controller: 'residents.NewCtrl',
+                data: {
+                    access: 'manager'
+                }
+            }).
+            state('residents.edit', {
+                url: '/residents/:id/edit',
+                templateUrl: partialsUrl + 'residents/form.html',
+                controller: 'residents.EditCtrl',
+                data: {
+                    access: 'manager'
+                }
             }).
             state('residents.detail', {
                 url: '/residents/:id',

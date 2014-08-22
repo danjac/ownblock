@@ -94,6 +94,7 @@ class User(AbstractBaseUser):
         },
         'manager': {
             'accounts.add_user',
+            'accounts.change_user',
             'accounts.delete_user',
             'amenities.add_amenity',
             'amenities.change_booking',
@@ -145,18 +146,14 @@ class User(AbstractBaseUser):
 
     # Permission on object itself
     def has_permission(self, user, perm):
-        if perm == 'accounts.change_user':
-            return user.id == self.id
-        if perm == 'accounts.delete_user':
-            return (user.role == 'manager' and
-                    self.role == 'resident' and
+        if user.role == 'manager':
+            return (self.role == 'resident' and
                     self.apartment and
                     self.apartment.building.organization_id ==
                     user.organization_id)
-        return False
+        return perm == 'accounts.change_user' and user.id == self.id
 
     # Hooks for Django admin and Rest Framework
-
     def has_perm(self, perm, obj=None):
         return _user_has_perm(self, perm, obj=obj)
 
