@@ -2,9 +2,9 @@
     <button class="btn btn-default" ng-show="notice.author.id != auth.user.id" send-message="{{notice.author}}">
         <icon name="send" text="Send message to author" />
     </button>
-    <button ng-click="deleteNotice()" ng-show="notice.is_removable" class="btn btn-danger">
+    <confirm-dialog on-confirm="deleteNotice()" ng-show="notice.is_removable" class="btn btn-danger" text="Are you sure you want to delete this notice?" header="Delete notice">
         <icon name="trash-o" text="Delete notice"></icon>
-    </button>
+    </confirm-dialog>
 
 </div>
 <h2>{{notice.title}}</h2>

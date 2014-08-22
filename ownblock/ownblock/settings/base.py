@@ -1,8 +1,22 @@
 """Common settings and globals."""
 
 
+from __future__ import absolute_import
+
+from os import environ
 from os.path import abspath, basename, dirname, join, normpath
 from sys import path
+
+from django.core.exceptions import ImproperlyConfigured
+
+
+def get_env_setting(setting):
+    """ Get the environment setting or return exception """
+    try:
+        return environ[setting]
+    except KeyError:
+        error_msg = "Set the %s env variable" % setting
+        raise ImproperlyConfigured(error_msg)
 
 
 # PATH CONFIGURATION

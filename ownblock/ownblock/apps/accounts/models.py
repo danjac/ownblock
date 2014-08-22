@@ -28,7 +28,8 @@ _fuzzier = FuzzyText()
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, email, first_name, last_name, role, password=None):
+    def create_user(self, email, first_name, last_name, role,
+                    password=None, **kwargs):
 
         if not email:
             raise ValueError("Email required")
@@ -37,16 +38,17 @@ class UserManager(BaseUserManager):
             email=self.normalize_email(email),
             first_name=first_name,
             last_name=last_name,
-            role=role)
+            role=role,
+            **kwargs)
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, first_name, last_name, role, password):
+    def create_superuser(self, email, first_name, last_name, password=None):
         return self.create_user(email, first_name,
                                 last_name,
-                                role=role,
+                                role='manager',
                                 password=password,
                                 is_staff=True)
 
