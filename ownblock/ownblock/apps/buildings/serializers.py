@@ -2,8 +2,6 @@ from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
 
-from apps.accounts.serializers.related import UserRelatedField
-
 from .models import Apartment, Building
 
 
@@ -14,6 +12,7 @@ class ApartmentRelatedField(serializers.RelatedField):
             'id': value.id,
             'floor': value.floor,
             'number': value.number,
+            'name': "%s / Floor %d" % (value.number, value.floor),
         }
 
 
@@ -65,10 +64,16 @@ class BuildingSerializer(serializers.ModelSerializer):
 
 class ApartmentSerializer(serializers.ModelSerializer):
 
+    name = serializers.SerializerMethodField('get_name')
+
     class Meta:
         model = Apartment
         fields = ('id',
                   'number',
                   'floor',
                   'area',
+                  'name',
                   'num_rooms')
+
+    def get_name(self, obj):
+        return "%s / Floor %d" % (obj.number, obj.floor)

@@ -11,13 +11,22 @@ from apps.notices.models import Notice
 from apps.amenities.models import Booking
 
 from .models import User
-from .serializers import UserSerializer, AuthUserSerializer
+
+from .serializers import (
+    UserSerializer,
+    RestrictedUserSerializer,
+    AuthUserSerializer,
+)
 
 
 class UserViewSet(viewsets.ModelViewSet):
 
     model = User
-    serializer_class = UserSerializer
+
+    def get_serializer_class(self):
+        if self.request.user.role == 'manager':
+            return RestrictedUserSerializer
+        return UserSerializer
 
     def retrieve(self, request, *args, **kwargs):
         self.object = self.get_object()

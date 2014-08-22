@@ -36,16 +36,17 @@
             $httpProvider.interceptors.push(function($q, $location, notifier) {
                 return {
                     'responseError': function(response) {
-                        var warning = "Sorry, an error has occurred";
+                        var warning = "Sorry, an error has occurred",
+                            result = $q.reject(response);
                         switch (response.status) {
                             case 401:
                             case 403:
                                 // we're out of sync with server, logout 
                                 $location.path("/account/login/");
-                                return;
+                                return result;
                             case 404:
                                 $location.path("notfound");
-                                return;
+                                return result;
                             case 400:
                                 warning = "Sorry, your form appears to have some errors";
                                 break;
@@ -133,6 +134,11 @@
                 url: '/residents',
                 templateUrl: partialsUrl + 'residents/list.html',
                 controller: 'residents.ListCtrl'
+            }).
+            state('residents.new', {
+                url: '/residents/new',
+                templateUrl: partialsUrl + 'residents/form.html',
+                controller: 'residents.NewCtrl'
             }).
             state('residents.detail', {
                 url: '/residents/:id',

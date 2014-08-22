@@ -1,0 +1,26 @@
+<form role="form" name="residentForm" novalidate>
+
+    <div class="form-group">
+        <label for="" class="label-control">First name</label>
+        <input class="form-control" type="text" ng-model="resident.first_name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="" class="label-control">Last name</label>
+        <input class="form-control" type="text" ng-model="resident.last_name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="" class="label-control">Email address</label>
+        <input class="form-control" type="email" ng-model="resident.email" required>
+    </div>
+
+    <div class="form-group">
+        <label for="" class="label-control">Apartment</label>
+        <select required id="" name="" class="form-control" ng-model="resident.apartment" ng-options="apartment.id as apartment.name for apartment in apartments">
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary" ng-disabled="residentForm.$invalid" ng-click="save()">Save</button>
+    <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+</form>

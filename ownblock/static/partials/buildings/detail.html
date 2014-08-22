@@ -10,8 +10,16 @@
                 <table class="table table-condensed table-striped table-hover table-bordered">
                     <tbody>
                         <tr>
-                            <td>Full address</td>
-                            <td>{{building.full_address}}</td>
+                            <td>Street</td>
+                            <td>{{building.address_1}} {{building.address_2}}</td>
+                        </tr>
+                        <tr>
+                            <td>City</td>
+                            <td>{{building.city}}</td>
+                        </tr>
+                        <tr>
+                            <td>Postcode</td>
+                            <td>{{building.postcode}}</td>
                         </tr>
                         <tr ng-show="building.year">
                             <td>Year</td>
@@ -29,7 +37,8 @@
     <tab heading="Apartments" active="tabs.apartments.active">
 
         <form class="voffset-2">
-            <select class="form-control" ng-change="selectApartment()" ng-model="selectedApartment.id" ng-options="apartment.id as apartment.number for apartment in apartments">
+            <select class="form-control" ng-change="selectApartment()" ng-model="apartmentSelector.id" ng-options="apartment.id as apartment.number for apartment in apartments">
+                <option value="">Please select an apartment....</option>
             </select>
         </form>
         <div ng-show="currentApartment">

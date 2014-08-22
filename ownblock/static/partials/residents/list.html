@@ -9,7 +9,7 @@
     </div>
     <div class="col-md-6" has-role="manager">
         <div class="btn-toolbar pull-right" role="toolbar">
-            <a class="btn btn-primary" href>
+            <a class="btn btn-primary" ui-sref="residents.new">
                 <icon name="plus" text="Add resident">
             </a>
         </div>
@@ -29,7 +29,7 @@
             <td>
                 <user-link user="resident" />
             </td>
-            <td><a ui-sref="buildings.apartment({id: resident.apartment.id})">{{resident.apartment.number}} / Floor {{ resident.apartment.floor}}</a>
+            <td><a ui-sref="buildings.apartment({id: resident.apartment})">{{resident.apartment_detail.number}} / Floor {{ resident.apartment_detail.floor}}</a>
             </td>
             <td>
                 <button send-message="{{resident}}" class="btn btn-primary btn-sm" ng-show="resident.id !== user.id">

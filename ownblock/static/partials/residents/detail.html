@@ -11,7 +11,7 @@
 </div>
 
 <h2>{{resident.full_name}}</h2>
-<h3 ng-show="resident.apartment"><a ui-sref="buildings.apartment({id : resident.apartment.id })">Apartment {{resident.apartment.number}}</a></h3>
+<h3 ng-show="resident.apartment_detail"><a ui-sref="buildings.apartment({id : resident.apartment })">Apartment {{resident.apartment_detail.name}}</a></h3>
 
 <h3 ng-show="resident.items.length">Storage</h3>
 

@@ -20,6 +20,11 @@
         </td>
     </tr>
     <tr>
+        <td>Apartment</td>
+        <td><a ui-sref="buildings.apartment({id: booking.resident.apartment})">{{booking.resident.apartment_detail.name}}</a>
+        </td>
+    </tr>
+    <tr>
         <td>From</td>
         <td>{{booking.reserved_from|date:"short"}}</td>
     </tr>

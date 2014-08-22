@@ -10,7 +10,7 @@ from ..models import User
 
 class UserSerializer(serializers.ModelSerializer):
 
-    apartment = ApartmentRelatedField()
+    apartment_detail = ApartmentRelatedField(source='apartment')
     full_name = serializers.SerializerMethodField('get_full_name')
 
     class Meta:
@@ -22,6 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
             'last_name',
             'role',
             'apartment',
+            'apartment_detail',
             'full_name',
             'is_active',
         )
@@ -30,6 +31,17 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_full_name(self, obj):
         return obj.get_full_name()
+
+
+class RestrictedUserSerializer(UserSerializer):
+
+    """Accessible only to managers"""
+
+    class Meta(UserSerializer.Meta):
+        fields = UserSerializer.Meta.fields + (
+            'email',
+            'phone',
+        )
 
 
 class AuthUserSerializer(UserSerializer):

@@ -83,7 +83,7 @@
             if ($state.params.id) {
                 apartmentId = parseInt($state.params.id, 10);
             }
-            $scope.selectedApartment = {
+            $scope.apartmentSelector = {
                 id: apartmentId
             };
             $scope.building = $scope.auth.user.building;
@@ -135,10 +135,10 @@
                 }
             };
 
-            if ($scope.selectedApartment.id) {
+            if ($scope.apartmentSelector.id) {
                 $scope.tabs.apartments.active = true;
             } else if (auth.user.apartment) {
-                $scope.selectedApartment.id = auth.user.apartment.id;
+                $scope.apartmentSelector.id = auth.user.apartment.id;
             }
 
             api.Apartment.query().$promise.then(function(response) {
@@ -146,11 +146,12 @@
             });
 
             $scope.selectApartment = function() {
-                if (!$scope.selectedApartment.id) {
+                if (!$scope.apartmentSelector.id) {
+                    $scope.currentApartment = null;
                     return;
                 }
                 api.Apartment.get({
-                    id: $scope.selectedApartment.id
+                    id: $scope.apartmentSelector.id
                 }, function(response) {
                     $scope.currentApartment = response;
                 });
@@ -191,6 +192,22 @@
             }).$promise.then(function(response) {
                 $scope.residents = paginator(response);
             });
+        }
+    ]).controller('residents.NewCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+            $scope.resident = new api.Resident();
+            api.Apartment.query().$promise.then(function(response) {
+                $scope.apartments = response;
+            });
+            $scope.save = function() {
+                $scope.resident.$save(function() {
+                    notifier.success('The resident has been added');
+                    $state.go('residents.list');
+                });
+            };
+            $scope.cancel = function() {
+                $state.go('residents.list');
+            };
         }
     ]).controller('residents.DetailCtrl', ['$scope', '$state', 'api', 'notifier',
         function($scope, $state, api, notifier) {
