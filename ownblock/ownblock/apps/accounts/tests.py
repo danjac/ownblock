@@ -7,14 +7,13 @@ from factory.django import DjangoModelFactory
 
 
 from apps.buildings.tests import (
-    OrganizationFactory,
-    BuildingFactory,
+    SiteFactory,
     ApartmentFactory,
 )
 
-from apps.buildings.models import Building
 
 from .models import User
+from .backends import ObjectPermissionBackend
 
 
 class ResidentFactory(DjangoModelFactory):
@@ -34,7 +33,7 @@ class ManagerFactory(DjangoModelFactory):
 
     role = 'manager'
     email = 'manager@gmail.com'
-    organization = factory.SubFactory(OrganizationFactory)
+    site = factory.SubFactory(SiteFactory)
 
 
 class UserTests(TestCase):
@@ -60,3 +59,44 @@ class UserTests(TestCase):
         self.assertFalse(resident.is_active)
         self.assertNotEqual(resident.email, 'resident@gmail.com')
         self.assertEqual(resident.original_email, 'resident@gmail.com')
+
+    def test_real_delete(self):
+
+        resident = ResidentFactory.create()
+        resident.real_delete()
+
+        self.assertEqual(User.objects.count(), 0)
+
+
+class ObjectPermissionBackendTests(TestCase):
+
+    def test_model_permission(self):
+
+        user = ManagerFactory.create()
+        backend = ObjectPermissionBackend().has_perm(
+            user, 'notices.add_notice'
+        )
+
+    def test_has_perms(self):
+
+        user = ManagerFactory.create()
+
+        self.assertTrue(user.has_perms(['notices.add_notice',
+                                        'notices.change_notice']))
+
+    def test_object_permission(self):
+
+        class SomeModel(object):
+
+            def has_permission(self, user, perm):
+                if perm == 'somemodel_change':
+                    return True
+                return False
+
+        user = User()
+
+        obj = SomeModel()
+        backend = ObjectPermissionBackend()
+
+        self.assertTrue(backend.has_perm(user, 'somemodel_change', obj))
+        self.assertFalse(backend.has_perm(user, 'somemodel_delete', obj))

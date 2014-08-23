@@ -5,6 +5,7 @@ from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
+from django.contrib.sites.models import get_current_site
 
 from apps.accounts.serializers import AuthUserSerializer
 
@@ -21,6 +22,7 @@ class AppView(TemplateView):
             AuthUserSerializer(self.request.user,
                                context={'request': self.request}).data
         )
+        context['site'] = get_current_site(self.request)
         return context
 
 

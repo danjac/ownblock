@@ -9,12 +9,12 @@ def get_building(request):
     if request.user.apartment:
         return request.user.apartment.building
 
-    if request.user.organization:
+    if request.user.site:
         if 'building_id' in request.session:
-            return request.user.organization.building_set.get(
+            return request.user.site.building_set.get(
                 pk=request.session['building_id']
             )
-        buildings = request.user.organization.building_set.all()
+        buildings = request.user.site.building_set.all()
         if buildings:
             # by default, just pick the first one
             building = buildings[0]

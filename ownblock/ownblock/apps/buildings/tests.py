@@ -2,21 +2,17 @@
 import factory
 
 from django.test import TestCase
+from django.contrib.sites.models import Site
 
-from factory import fuzzy
 from factory.django import DjangoModelFactory
-
-from apps.organizations.models import Organization
 
 from .models import Building, Apartment
 
 
-class OrganizationFactory(DjangoModelFactory):
+class SiteFactory(DjangoModelFactory):
 
     class Meta:
-        model = Organization
-
-    name = fuzzy.FuzzyText()
+        model = Site
 
 
 class BuildingFactory(DjangoModelFactory):
@@ -29,7 +25,7 @@ class BuildingFactory(DjangoModelFactory):
     postcode = '53900'
     country = 'FI'
 
-    organization = factory.SubFactory(OrganizationFactory)
+    site = factory.SubFactory(SiteFactory)
 
 
 class ApartmentFactory(DjangoModelFactory):
