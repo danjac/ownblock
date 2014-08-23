@@ -43,7 +43,7 @@ class ItemViewSet(viewsets.ModelViewSet):
     serializer_class = ItemSerializer
 
     def pre_save(self, obj):
-        if obj.resident is None:
+        if obj.resident_id is None:
             obj.resident = self.request.user
 
     def get_queryset(self):

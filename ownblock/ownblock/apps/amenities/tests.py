@@ -8,11 +8,10 @@ from rest_framework import serializers
 
 from factory.django import DjangoModelFactory
 
-from apps.buildings.tests import (
-    BuildingFactory
-)
+from apps.accounts.tests import ResidentFactory
+from apps.buildings.tests import BuildingFactory
 
-from .models import Amenity
+from .models import Amenity, Booking
 from .serializers import BookingSerializer
 
 
@@ -24,6 +23,15 @@ class AmenityFactory(DjangoModelFactory):
     name = "Sauna"
     building = factory.SubFactory(BuildingFactory)
     is_available = True
+
+
+class BookingFactory(DjangoModelFactory):
+
+    class Meta:
+        model = Booking
+
+    resident = factory.SubFactory(ResidentFactory)
+    amenity = factory.SubFactory(AmenityFactory)
 
 
 class BookingSerializerTests(TestCase):
@@ -66,3 +74,8 @@ class BookingSerializerTests(TestCase):
         self.assertRaises(
             serializers.ValidationError,
             serializer.validate_amenity, attrs, source)
+
+    def test_validate_amenity_if_conflicting_dates(self):
+
+        booking = BookingFactory.create(reserved_from=date_from,
+                                        reserved_to=date_to)
