@@ -11,7 +11,7 @@ class Amenity(models.Model):
     is_available = models.BooleanField(default=True)
 
     def get_groups(self):
-        return [self.building.organization.group]
+        return [self.building.site.group]
 
     class Meta:
         verbose_name_plural = 'amenities'
@@ -21,7 +21,7 @@ class Amenity(models.Model):
 
     def has_permission(self, user, perm):
         return (user.role == 'manager' and
-                user.organization_id == self.building.organization_id)
+                user.site_id == self.building.site_id)
 
 
 class Booking(models.Model):
@@ -35,6 +35,6 @@ class Booking(models.Model):
         if user.role == 'resident':
             return user == self.resident
         if user.role == 'manager':
-            return (self.amenity.building.organization_id ==
-                    user.organization_id)
+            return (self.amenity.building.site_id ==
+                    user.site_id)
         return False

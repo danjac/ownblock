@@ -23,7 +23,7 @@ class BuildingViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         return super().get_queryset().filter(
-            organization=self.request.user.organization
+            site=self.request.user.site_id
         ).order_by('city', 'address_1', 'postcode')
 
     def retrieve(self, request, *args, **kwargs):

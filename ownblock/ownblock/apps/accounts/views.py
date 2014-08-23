@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.contrib.sites.models import get_current_site
 
 from rest_framework import status, viewsets, permissions
 from rest_framework.response import Response
@@ -125,7 +126,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return qs.filter(
             Q(
                 Q(apartment__building=self.request.building) |
-                Q(organization=self.request.building.organization)
+                Q(site=get_current_site(self.request))
             ),
         )
 

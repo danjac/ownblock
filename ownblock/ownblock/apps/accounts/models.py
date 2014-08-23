@@ -150,8 +150,8 @@ class User(AbstractBaseUser):
         if user.role == 'manager':
             return (self.role == 'resident' and
                     self.apartment and
-                    self.apartment.building.organization_id ==
-                    user.organization_id)
+                    self.apartment.building.site_id ==
+                    user.site_id)
         return perm == 'accounts.change_user' and user.id == self.id
 
     # Hooks for Django admin and Rest Framework
