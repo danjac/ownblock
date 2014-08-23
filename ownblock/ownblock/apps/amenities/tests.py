@@ -1,3 +1,4 @@
+import datetime
 import factory
 
 from unittest.mock import Mock
@@ -77,5 +78,23 @@ class BookingSerializerTests(TestCase):
 
     def test_validate_amenity_if_conflicting_dates(self):
 
+        date_from = datetime.datetime.now() + datetime.timedelta(hours=4)
+        date_to = datetime.datetime.now() + datetime.timedelta(hours=5)
+
+        resident = ResidentFactory.create()
+        amenity = AmenityFactory.create(building=resident.apartment.building)
+
         booking = BookingFactory.create(reserved_from=date_from,
-                                        reserved_to=date_to)
+                                        reserved_to=date_to,
+                                        resident=resident,
+                                        amenity=amenity)
+
+        attrs = {
+            'reserved_from': date_from,
+            'reserved_to': date_to,
+            'amenity': booking.amenity
+        }
+        serializer = BookingSerializer()
+        serializer.init_data = {}
+        self.assertRaises(serializers.ValidationError,
+                          serializer.validate, attrs)
