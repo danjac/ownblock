@@ -1,14 +1,14 @@
 <form role="form" name="itemForm" action="" novalidate>
     <div class="form-group">
-        <label for="" class="label-control">Description</label>
+        <label for="" class="control-label">Description</label>
         <input type="" class="form-control" ng-model="item.description" required />
     </div>
     <div class="form-group">
-        <label for="" class="label-control">Serial no.</label>
+        <label for="" class="control-label">Serial no.</label>
         <input type="" class="form-control" ng-model="item.serial_no" />
     </div>
     <div class="form-group">
-        <label for="" class="label-control">Stored in</label>
+        <label for="" class="control-label">Stored in</label>
         <select id="" ng-model="item.place" ng-options="place.id as place.name for place in places" required>
         </select>
     </div>
