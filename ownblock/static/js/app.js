@@ -200,6 +200,11 @@
                 templateUrl: partialsUrl + 'notices/detail.html',
                 controller: 'notices.DetailCtrl'
             }).
+            state('notices.edit', {
+                url: '/notices/:id/edit',
+                templateUrl: partialsUrl + 'notices/form.html',
+                controller: 'notices.EditCtrl'
+            }).
             state('amenities', {
                 templateUrl: partialsUrl + 'amenities/base.html',
                 parent: 'site'

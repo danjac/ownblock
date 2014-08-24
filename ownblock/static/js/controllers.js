@@ -372,8 +372,16 @@
         'api',
         'auth',
         function($scope, $state, api, auth) {
-            var bookings = [];
+            var bookings = [],
+                today = new Date();
             $scope.eventSources = [bookings];
+
+            function getColor(residentId, isPast) {
+                if (isPast) {
+                    return '#555';
+                }
+                return auth.user.id === residentId ? '#800' : '#008';
+            }
 
             api.Amenity.get({
                 id: $state.params.id
@@ -386,7 +394,8 @@
                         reservedTo = new Date(booking.reserved_to),
                         title = reservedFrom.getHours() + ":" + reservedFrom.getMinutes() +
                         " - " + reservedTo.getHours() + ":" + reservedTo.getMinutes(),
-                        color = auth.user.id === booking.resident.id ? '#800' : '#008';
+                        isPast = reservedFrom < today,
+                        color = getColor(booking.resident.id, isPast);
 
                     bookings.push({
                         start: reservedFrom,
@@ -442,25 +451,39 @@
         }
     ]).controller('notices.DetailCtrl', [
         '$scope',
-        '$stateParams',
         '$state',
         'notifier',
-        'auth',
         'api',
 
-        function($scope, $stateParams, $state, notifier, auth, api) {
+        function($scope, $state, notifier, api) {
             api.Notice.get({
-                id: $stateParams.id
-            }).$promise.then(function(response) {
+                id: $state.params.id
+            }, function(response) {
                 $scope.notice = response;
             });
-
-            $scope.auth = auth;
 
             $scope.deleteNotice = function() {
                 $scope.notice.$delete(function() {
                     notifier.success('Your notice has been removed');
                     $state.go('notices.list');
+                });
+            };
+        }
+    ]).controller('notices.EditCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+            api.Notice.get({
+                    id: $state.params.id
+                },
+                function(response) {
+                    $scope.notice = response;
+                });
+
+            $scope.save = function() {
+                $scope.notice.$update(function() {
+                    notifier.success('Your notice has been updated');
+                    $state.go('notices.detail', {
+                        id: $scope.notice.id
+                    });
                 });
             };
         }
