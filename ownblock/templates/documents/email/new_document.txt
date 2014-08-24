@@ -1,0 +1,5 @@
+Hi, {{ resident.get_short_name }}
+
+A document '{{ document.title }}' has been uploaded to {{ site.name }}. You can see the document here:
+
+https://{{ site.domain }}/app#/documents

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
 
 from geopy.geocoders import Nominatim
@@ -47,6 +48,11 @@ class Building(models.Model):
                           self.city,
                           self.postcode,
                           str(self.country.name)))
+
+    def get_residents(self):
+        return get_user_model()._default_manager.filter(
+            apartment__building=self
+        )
 
     def save(self, *args, **kwargs):
         has_changed = any([self.tracker.has_changed(field) for
