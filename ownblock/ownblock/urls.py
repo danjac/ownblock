@@ -2,6 +2,8 @@ import json
 
 from django.conf import settings
 from django.conf.urls import patterns, include, url
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
@@ -15,6 +17,37 @@ admin.autodiscover()
 class AppView(TemplateView):
     template_name = 'app.html'
 
+    def get(self, request, *args, **kwargs):
+        """Ensure the user has access here"""
+
+        self.site = get_current_site(request)
+
+        user_site = None
+
+        if self.request.user.role == 'manager':
+            user_site = self.request.user.site
+
+        elif self.request.user.apartment:
+            user_site = self.request.user.apartment.building.site
+
+        redirect_url = None
+
+        if user_site is None:
+            if self.request.user.is_staff:
+                redirect_url = reverse('admin:index')
+            else:
+                redirect_url = reverse('index')
+        elif user_site != self.site:
+            scheme = 'https' if request.is_secure() else 'http'
+            redirect_url = '%s://%s/%s' % (scheme,
+                                           user_site.domain,
+                                           request.path)
+
+        if redirect_url:
+            return HttpResponseRedirect(redirect_url)
+
+        return super().get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # bootstrap data
@@ -22,7 +55,7 @@ class AppView(TemplateView):
             AuthUserSerializer(self.request.user,
                                context={'request': self.request}).data
         )
-        context['site'] = get_current_site(self.request)
+        context['site'] = self.site
         return context
 
 

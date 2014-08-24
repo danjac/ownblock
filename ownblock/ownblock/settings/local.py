@@ -22,21 +22,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # END EMAIL CONFIGURATION
 
 
-# DATABASE CONFIGURATION
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': get_env_setting('DB_NAME'),
-        'USER': get_env_setting('DB_USER'),
-        'PASSWORD': get_env_setting('DB_PASSWORD'),
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
-# END DATABASE CONFIGURATION
-
-
 # CACHE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#caches
 CACHES = {
