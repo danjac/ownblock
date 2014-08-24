@@ -1,23 +1,23 @@
 <form role="form" name="residentForm" novalidate>
 
     <div class="form-group">
-        <label for="" class="label-control">First name</label>
+        <label for="" class="control-label">First name</label>
         <input class="form-control" type="text" ng-model="resident.first_name" required>
     </div>
 
     <div class="form-group">
-        <label for="" class="label-control">Last name</label>
+        <label for="" class="control-label">Last name</label>
         <input class="form-control" type="text" ng-model="resident.last_name" required>
     </div>
 
     <div class="form-group" ng-class="{'has-error': serverErrors.email}">
-        <label for="" class="label-control">Email address</label>
+        <label for="" class="control-label">Email address</label>
         <input class="form-control" type="email" ng-model="resident.email" required>
-        <div class="help-inline" ng-repeat="error in serverErrors.email">{{error}}</div>
+        <span class="help-block" ng-repeat="error in serverErrors.email">{{error}}</span>
     </div>
 
     <div class="form-group">
-        <label for="" class="label-control">Apartment</label>
+        <label for="" class="control-label">Apartment</label>
         <select required id="" name="" class="form-control" ng-model="resident.apartment" ng-options="apartment.id as apartment.name for apartment in apartments">
         </select>
     </div>

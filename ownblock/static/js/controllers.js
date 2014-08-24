@@ -206,7 +206,6 @@
                     notifier.success('The resident has been added');
                     $state.go('residents.list');
                 }, function(response) {
-                    $scope.residentForm.$setValidity(false);
                     $scope.serverErrors = response.data;
                 });
             };
@@ -231,6 +230,8 @@
                     $state.go('residents.detail', {
                         id: $scope.resident.id
                     });
+                }, function(response) {
+                    $scope.serverErrors = response.data;
                 });
             };
             $scope.cancel = function() {
@@ -326,7 +327,6 @@
                         id: $stateParams.id
                     });
                 }, function(response) {
-                    $scope.bookingForm.$setValidity(false);
                     $scope.serverErrors = response.data;
                 });
             };
@@ -765,7 +765,6 @@
                         id: auth.user.id
                     });
                 }, function(response) {
-                    $scope.form.$setValidity(false);
                     $scope.serverErrors = response.data;
                 });
             };

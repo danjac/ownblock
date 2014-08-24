@@ -1,16 +1,16 @@
 <form role="form" name="form" novalidate>
     <div class="form-group">
-        <label for="" class="label-control">First name</label>
+        <label for="" class="control-label">First name</label>
         <input type="text" class="form-control" ng-model="auth.user.first_name" required />
     </div>
 
     <div class="form-group">
-        <label for="" class="label-control">Last name</label>
+        <label for="" class="control-label">Last name</label>
         <input type="text" class="form-control" ng-model="auth.user.last_name" required />
     </div>
 
     <div class="form-group" ng-class="{'has-error': serverErrors.email}">
-        <label for="" class="label-control">Email address</label>
+        <label for="" class="control-label">Email address</label>
         <input type="email" class="form-control" ng-model="auth.user.email" required/>
         <span class="help-block" ng-repeat="error in serverErrors.email">{{error}}</span>
     </div>
