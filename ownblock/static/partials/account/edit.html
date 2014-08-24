@@ -1,5 +1,4 @@
 <form role="form" name="form" novalidate>
-
     <div class="form-group">
         <label for="" class="label-control">First name</label>
         <input type="text" class="form-control" ng-model="auth.user.first_name" required />
@@ -10,9 +9,10 @@
         <input type="text" class="form-control" ng-model="auth.user.last_name" required />
     </div>
 
-    <div class="form-group">
+    <div class="form-group" ng-class="{'has-error': serverErrors.email}">
         <label for="" class="label-control">Email address</label>
         <input type="email" class="form-control" ng-model="auth.user.email" required/>
+        <span class="help-block" ng-repeat="error in serverErrors.email">{{error}}</span>
     </div>
 
     <button type="submit" class="btn btn-primary" ng-click="save()" ng-disabled="form.$invalid">Save</button>

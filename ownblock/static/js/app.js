@@ -4,6 +4,7 @@
         'ngResource',
         'ngSanitize',
         'ngCookies',
+        'ngMessages',
         'ui.router',
         'ui.calendar',
         'ui.bootstrap',

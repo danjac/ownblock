@@ -54,12 +54,13 @@ class BookingSerializer(serializers.ModelSerializer):
     def validate_reserved_from(self, attrs, source):
         value = attrs[source]
         if value < timezone.now():
-            raise serializers.ValidationError("Start date before present")
+            raise serializers.ValidationError("'From' date must be in future")
         return attrs
 
     def validate(self, attrs):
         if attrs['reserved_from'] > attrs['reserved_to']:
-            raise serializers.ValdiationError("Start after end")
+            raise serializers.ValidationError(
+                "The 'from' date is after the 'to' date")
         bookings = attrs['amenity'].booking_set.all()
         date_range = (attrs['reserved_from'], attrs['reserved_to'])
         qs = bookings.filter(

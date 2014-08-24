@@ -82,6 +82,8 @@
             var apartmentId = null;
             if ($state.params.id) {
                 apartmentId = parseInt($state.params.id, 10);
+            } else if (auth.user.apartment) {
+                apartmentId = auth.user.apartment;
             }
             $scope.apartmentSelector = {
                 id: apartmentId
@@ -203,6 +205,9 @@
                 $scope.resident.$save(function() {
                     notifier.success('The resident has been added');
                     $state.go('residents.list');
+                }, function(response) {
+                    $scope.residentForm.$setValidity(false);
+                    $scope.serverErrors = response.data;
                 });
             };
             $scope.cancel = function() {
@@ -320,6 +325,9 @@
                     $state.go('amenities.detail', {
                         id: $stateParams.id
                     });
+                }, function(response) {
+                    $scope.bookingForm.$setValidity(false);
+                    $scope.serverErrors = response.data;
                 });
             };
         }
@@ -337,6 +345,8 @@
                         id: $scope.booking.amenity
                     });
                     notifier.success('Your booking has been updated');
+                }, function(response) {
+                    $scope.serverErrors = response.data;
                 });
             };
         }
@@ -754,6 +764,9 @@
                     $state.go('residents.detail', {
                         id: auth.user.id
                     });
+                }, function(response) {
+                    $scope.form.$setValidity(false);
+                    $scope.serverErrors = response.data;
                 });
             };
         }
