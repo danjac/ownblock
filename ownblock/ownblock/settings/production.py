@@ -45,6 +45,7 @@ SERVER_EMAIL = EMAIL_HOST_USER
 
 # CACHE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#caches
+# memcached will go here, just a placeholder for now
 {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',

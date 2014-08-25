@@ -1,6 +1,7 @@
 ownblock/static/bower_components
 ownblock/uploads
 ownblock/media
+ownblock/logs
 node_modules
 *.pyc
 *.swp
