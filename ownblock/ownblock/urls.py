@@ -1,5 +1,4 @@
 import json
-import logging
 
 from django.conf import settings
 from django.conf.urls import patterns, include, url
@@ -17,18 +16,17 @@ admin.autodiscover()
 
 class AppView(TemplateView):
     template_name = 'app.html'
-	
+
     def get_current_site(self):
         try:
-           return Site.objects.get(domain=self.request.get_host())
+            return Site.objects.get(domain=self.request.get_host())
         except Site.DoesNotExist:
-           return get_current_site(self.request)
+            return get_current_site(self.request)
 
     def get(self, request, *args, **kwargs):
         """Ensure the user has access here"""
 
         self.site = self.get_current_site()
-        logging.error("SITE %s", self.site)
 
         user_site = None
 
@@ -59,10 +57,11 @@ class AppView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # bootstrap data
-        context['user_data'] = json.dumps(
-            AuthUserSerializer(self.request.user,
-                               context={'request': self.request}).data
-        )
+        user_data = AuthUserSerializer(self.request.user,
+                                       context={'request': self.request}).data
+
+        user_data['site_name'] = self.site.name
+        context['user_data'] = json.dumps(user_data)
         context['site'] = self.site
         return context
 
