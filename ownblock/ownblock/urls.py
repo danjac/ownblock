@@ -1,4 +1,5 @@
 import json
+import logging
 
 from django.conf import settings
 from django.conf.urls import patterns, include, url
@@ -7,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
-from django.contrib.sites.models import get_current_site
+from django.contrib.sites.models import Site, get_current_site
 
 from apps.accounts.serializers import AuthUserSerializer
 
@@ -16,11 +17,18 @@ admin.autodiscover()
 
 class AppView(TemplateView):
     template_name = 'app.html'
+	
+    def get_current_site(self):
+        try:
+           return Site.objects.get(domain=self.request.get_host())
+        except Site.DoesNotExist:
+           return get_current_site(self.request)
 
     def get(self, request, *args, **kwargs):
         """Ensure the user has access here"""
 
-        self.site = get_current_site(request)
+        self.site = self.get_current_site()
+        logging.error("SITE %s", self.site)
 
         user_site = None
 
@@ -39,9 +47,9 @@ class AppView(TemplateView):
                 redirect_url = reverse('index')
         elif user_site != self.site:
             scheme = 'https' if request.is_secure() else 'http'
-            redirect_url = '%s://%s/%s' % (scheme,
-                                           user_site.domain,
-                                           request.path)
+            redirect_url = '%s://%s%s' % (scheme,
+                                          user_site.domain,
+                                          request.path)
 
         if redirect_url:
             return HttpResponseRedirect(redirect_url)
