@@ -2,7 +2,6 @@ from django.conf import settings
 from django.http import HttpResponse, Http404
 from django.core.mail import send_mail
 from django.template import Context, loader
-from django.contrib.sites.models import get_current_site
 
 from rest_framework import viewsets, parsers
 from rest_framework.decorators import link
@@ -35,7 +34,7 @@ class DocumentViewSet(viewsets.ModelViewSet):
     def post_save(self, obj, created):
         if not created:
             return
-        site = get_current_site(self.request)
+        site = self.request.building.site
         template = loader.get_template('documents/email/new_document.txt')
         for resident in self.request.building.get_residents():
             send_mail('%s: a document has been uploaded',

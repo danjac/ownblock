@@ -2,7 +2,6 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.template import Context, loader
 from django.contrib.auth import get_user_model
-from django.contrib.sites.models import get_current_site
 
 from rest_framework import viewsets
 
@@ -28,7 +27,7 @@ class NoticeViewSet(viewsets.ModelViewSet):
             apartment__building=obj.building
         )
 
-        site = get_current_site(self.request)
+        site = self.request.building.site
 
         template = loader.get_template('notices/emails/new_notice.txt')
 

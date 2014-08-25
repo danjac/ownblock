@@ -2,7 +2,6 @@ from django.conf import settings
 from django.db.models.query import Q
 from django.core.mail import send_mail
 from django.template import Context, loader
-from django.contrib.sites.models import get_current_site
 
 from rest_framework import viewsets
 
@@ -21,7 +20,7 @@ class MessageViewSet(viewsets.ModelViewSet):
             return
 
         template = loader.get_template("messaging/emails/new_message.txt")
-        site = get_current_site(self.request)
+        site = self.request.building.site
 
         send_mail(
             '%s: You have received a new message' % site.name,
