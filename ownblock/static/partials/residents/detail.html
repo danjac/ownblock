@@ -3,7 +3,7 @@
         <icon name="send" text="Send message"></icon>
     </button>
 
-    <a ui-sref="residents.edit({id: resident.id})" class="btn btn-default" has-role="manager">
+    <a ui-sref="residents.edit({id: resident.id})" class="btn btn-default" has-role="manager" ng-show="resident.id !== auth.user.id && resident.role === 'resident'">
         <icon name="edit" text="Edit"></icon>
     </a>
     <a ui-sref="account.edit" class="btn btn-default" ng-show="auth.user.id === resident.id">
@@ -14,7 +14,7 @@
     </confirm-dialog>
 </div>
 
-<h2>{{resident.full_name}}</h2>
+<h2>{{resident.full_name}} <span ng-show="resident.role === 'manager'" class="label label-info">Help team</span></h2>
 <h3 ng-show="resident.apartment_detail"><a ui-sref="buildings.apartment({id : resident.apartment })">Apartment {{resident.apartment_detail.name}}</a></h3>
 
 <h3 ng-show="resident.items.length">Storage</h3>

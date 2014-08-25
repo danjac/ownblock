@@ -1,7 +1,7 @@
 Hi, {{ message.recipient.first_name }}
 
 {% with sender=message.sender %}
-You have received a message from {{ sender.get_full_name }} {% if sender.apartment %} at {{ sender.apartment.building.get_full_address }}{% else %} at {{ sender.organization.name }}{% endif %}:
+You have received a message from {{ sender.get_full_name }} {% if sender.apartment %} at {{ sender.apartment.building.get_full_address }}{% else %} at {{ sender.site.name }}{% endif %}:
 {% endwith %}
 
 {{ message.header }}
