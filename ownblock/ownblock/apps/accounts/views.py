@@ -122,6 +122,8 @@ class UserViewSet(viewsets.ModelViewSet):
 
         if self.request.GET.get('residents'):
             return qs.filter(apartment__building=self.request.building)
+        elif self.request.GET.get('managers'):
+            return qs.filter(role='manager', site=self.request.building.site)
 
         return qs.filter(
             Q(

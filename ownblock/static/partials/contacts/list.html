@@ -1,42 +1,68 @@
-<div class="row">
-    <div class="col-md-6">
-        <form class="search-form">
-            <div class="input-group">
-                <input class="form-control" type="search" ng-model="searchFilter" ng-change="contacts.filter(searchFilter)">
-                <span class="input-group-addon"><icon name="search" /></span>
+<tabset>
+    <tab heading="Contacts">
+        <div class="row voffset-2">
+            <div class="col-md-6">
+                <form class="search-form">
+                    <div class="input-group">
+                        <input class="form-control" type="search" ng-model="searchFilter" ng-change="contacts.filter(searchFilter)">
+                        <span class="input-group-addon"><icon name="search" /></span>
+                    </div>
+                </form>
             </div>
-        </form>
-    </div>
-    <div class="col-md-6" has-role="manager">
-        <div role="toolbar" class="btn-toolbar pull-right">
-            <a ui-sref="contacts.new" class="btn btn-primary">
-                <icon name="plus" text="Add contact" />
-            </a>
+            <div class="col-md-6" has-role="manager">
+                <div role="toolbar" class="btn-toolbar pull-right">
+                    <a ui-sref="contacts.new" class="btn btn-primary">
+                        <icon name="plus" text="Add contact" />
+                    </a>
+                </div>
+            </div>
+
         </div>
-    </div>
-
-</div>
 
 
-<table class="table table-bordered table-striped table-hover voffset-2">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Phone</th>
-            <th>Email</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="contact in contacts.currentItems">
-            <td><a ui-sref="contacts.detail({id: contact.id})">{{contact.name}}</a>
-            </td>
-            <td>{{contact.description}}</td>
-            <td>{{contact.phone}}</td>
-            <td><a href="mailto:{{contact.email}}">{{contact.email}}</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
+        <table class="table table-bordered table-striped table-hover voffset-2">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="contact in contacts.currentItems">
+                    <td><a ui-sref="contacts.detail({id: contact.id})">{{contact.name}}</a>
+                    </td>
+                    <td>{{contact.description}}</td>
+                    <td>{{contact.phone}}</td>
+                    <td><a href="mailto:{{contact.email}}">{{contact.email}}</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-<pager total-items="contacts.total" ng-model="contacts.page" ng-change="contacts.change()"></pager>
+        <pager total-items="contacts.total" ng-model="contacts.page" ng-change="contacts.change()"></pager>
+    </tab>
+    <tab heading="Help team">
+        <table class="table table-striped table-hover table-bordered voffset-2">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="manager in managers">
+                    <td>{{manager.full_name}}</td>
+                    <td>
+                        <button ng-show="auth.user.id !== manager.id" send-message="{{manager}}">
+                            <icon name="send" text="Send message" />
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+    </tab>
+</tabset>

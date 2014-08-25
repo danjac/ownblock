@@ -648,6 +648,11 @@
             api.Contact.query().$promise.then(function(response) {
                 $scope.contacts = paginator(response);
             });
+            api.Resident.query({
+                managers: true
+            }).$promise.then(function(response) {
+                $scope.managers = response;
+            });
             $scope.deleteContact = function(contact, index) {
                 $scope.contacts.remove(index);
                 contact.$delete(function() {

@@ -24,10 +24,10 @@ class AppView(TemplateView):
 
         user_site = None
 
-        if self.request.user.role == 'manager':
+        if self.request.user.site_id:
             user_site = self.request.user.site
 
-        elif self.request.user.apartment:
+        elif self.request.user.apartment_id:
             user_site = self.request.user.apartment.building.site
 
         redirect_url = None
