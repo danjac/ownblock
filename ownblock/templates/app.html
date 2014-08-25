@@ -32,7 +32,47 @@
                 </a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-links" ng-if="auth.user">
-                <ul class="nav navbar-nav navbar-left">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown" ng-show="auth.user.role==='manager'">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            {{auth.user.building.address_1}}, {{auth.user.building.city}}
+                        <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a ui-sref="buildings.detail">Building details</a>
+                            </li>
+                            <li><a ui-sref="buildings.list">Change building</a>
+                            </li>
+                    </li>
+                    </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <icon name="user" text="{{auth.user.full_name}}"></icon>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a ui-sref="residents.detail({id: auth.user.id})">My account</a>
+                            </li>
+                            <li><a href="/account/logout/">Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-2">
+                <ul class="nav nav-pills nav-stacked">
+                    <li ng-class="{active: includes('buildings')}" has-role="resident">
+                        <a ui-sref="buildings.detail">
+                            <icon name="building" text="My building" />
+                        </a>
+                    </li>
                     <li ng-class="{active: includes('notices')}">
                         <a ui-sref="notices.list">
                             <icon name="bullhorn" text="Notice board" />
@@ -73,47 +113,15 @@
                             <icon name="lock" text="Storage" />
                         </a>
                     </li>
-                    <li ng-class="{active: includes('building')}" ng-show="auth.user.role==='resident'">
-                        <a ui-sref="buildings.detail">
-                            <icon name="building" text="My building" />
-                        </a>
-                    </li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown" ng-show="auth.user.role==='manager'">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                            {{auth.user.building.address_1}}, {{auth.user.building.city}}
-                        <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a ui-sref="buildings.detail">Building details</a>
-                            </li>
-                            <li><a ui-sref="buildings.list">Change building</a>
-                            </li>
-                    </li>
-                    </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                            <icon name="user" text="{{auth.user.full_name}}"></icon>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a ui-sref="residents.detail({id: auth.user.id})">My account</a>
-                            </li>
-                            <li><a href="/account/logout/">Logout</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+
+            </div>
+            <div class="col-md-10">
+                <alert ng-repeat="msg in notifier.notifications" type="{{msg.type}}" close="notifier.dismiss($index)">{{msg.message}}</alert>
+
+                <div ui-view></div>
             </div>
         </div>
-    </nav>
-
-    <div class="container-fluid">
-        <alert ng-repeat="msg in notifier.notifications" type="{{msg.type}}" close="notifier.dismiss($index)">{{msg.message}}</alert>
-
-        <div ui-view></div>
     </div>
     {% endverbatim %}
     <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
