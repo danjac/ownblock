@@ -64,7 +64,7 @@ DATABASES = {
         'NAME': get_env_setting('DB_NAME'),
         'USER': get_env_setting('DB_USER'),
         'PASSWORD': get_env_setting('DB_PASSWORD'),
-        'HOST': 'localhost',
+        'HOST': '127.0.0.1',
         'PORT': '',
     }
 }
