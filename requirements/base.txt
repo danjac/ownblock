@@ -4,6 +4,7 @@ django-model-utils==2.2
 logutils==0.3.3
 ipython==2.2.0
 django-extensions==1.3.10
+django-dotenv==1.2
 django-countries==2.1.2
 djangorestframework==2.3.14
 factory-boy==2.4.1

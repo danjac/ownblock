@@ -1,4 +1,4 @@
-ownblock/static/bower_components
+ownblock/assets
 ownblock/uploads
 ownblock/media
 ownblock/logs
@@ -7,7 +7,7 @@ node_modules
 *.swp
 *.swo
 *.db
-.env
+ownbloc/.env
 logs
 *.sublime-project
 *.sublime-workspace
