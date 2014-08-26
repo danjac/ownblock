@@ -21,7 +21,7 @@ class AppView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         if request.building:
-            return super().get(*args, **kwargs)
+            return super().get(request, *args, **kwargs)
         if request.user.is_staff:
             redirect_url = reverse('admin:index')
         else:
