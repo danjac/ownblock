@@ -1,5 +1,5 @@
 <div class="btn-toolbar pull-right">
-    <button send-message="{{resident}}" class="btn btn-primary" ng-show="resident.id !== auth.user.id">
+    <button send-message="{{resident}}" role="button" class="btn btn-primary" ng-show="resident.id !== auth.user.id">
         <icon name="send" text="Send message"></icon>
     </button>
 
@@ -16,6 +16,17 @@
 
 <h2>{{resident.full_name}} <span ng-show="resident.role === 'manager'" class="label label-info">Help team</span></h2>
 <h3 ng-show="resident.apartment_detail"><a ui-sref="buildings.apartment({id : resident.apartment })">Apartment {{resident.apartment_detail.name}}</a></h3>
+
+<table class="table table-condensed" has-role="manager">
+    <tr>
+        <td>Email address</td>
+        <td ng-href="mailto:{{resident.email}}">{{resident.email}}</td>
+    </tr>
+    <tr>
+        <td>Phone</td>
+        <td>{{resident.phone}}</td>
+    </tr>
+</table>
 
 <h3 ng-show="resident.items.length">Storage</h3>
 

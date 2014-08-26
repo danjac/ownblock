@@ -15,6 +15,11 @@
         <span class="help-block" ng-repeat="error in serverErrors.email">{{error}}</span>
     </div>
 
-    <button type="submit" class="btn btn-primary" ng-click="save()" ng-disabled="form.$invalid">Save</button>
+    <div class="form-group">
+        <label for="" class="control-label">Phone</label>
+        <input type="text" class="form-control" ng-model="auth.user.phone" />
+    </div>
+
+    <button type="submit" class="btn btn-primary" role="button" ng-click="save()" ng-disabled="form.$invalid">Save</button>
     <a ui-sref="account.password">Change your password</a>
 </form>

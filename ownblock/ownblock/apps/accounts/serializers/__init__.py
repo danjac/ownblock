@@ -51,7 +51,11 @@ class AuthUserSerializer(UserSerializer):
     building = serializers.SerializerMethodField('get_building')
 
     class Meta(UserSerializer.Meta):
-        fields = UserSerializer.Meta.fields + ('building', 'email')
+        fields = UserSerializer.Meta.fields + (
+            'building',
+            'email',
+            'phone'
+        )
 
     def get_building(self, obj):
         if 'request' in self.context:

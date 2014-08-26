@@ -29,6 +29,7 @@ class ResidentSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'email',
+            'phone',
             'full_name',
             'is_active',
         )
