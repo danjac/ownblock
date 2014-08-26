@@ -1,0 +1,67 @@
+{% extends "base.html" %} {% load static %}{% block content %}
+<div class="container">
+    <h1>About ownblock</h1>
+    <div class="panel panel-info" id="communicate">
+        <div class="panel-heading"><h3>Keep in touch with your residents</h3></div>
+        <div class="panel-body">
+            <div class="row">
+
+                <div class="col-md-4">
+                    <a href="{% static 'img/screenshot3.png' %}"><img src="{% static 'img/screenshot3.png' %}" height="225" width="300"></a>
+                </div>
+                <div class="col-md-8">
+                    <p class="larger-text">Keep residents in your blocks informed with a public notice board.</p>
+                    <p class="larger-text">Upload and share documents on block meetings, rules and regulations, safety notices and more.</p>
+                    <p class="larger-text">Share important contact details such as maintenance and emergency numbers.</p>
+                    <p class="larger-text">Secure, one-to-one private messages can be sent when discretion is required.</p>
+                    <p class="larger-text">Residents can keep in touch with one another using the notice board and messaging app.</p>
+                    <p class="larger-text">Mobile and tablet-friendly interface and email notifications keep you in the loop when you are on the move.</p>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-info" id="manage">
+        <div class="panel-heading"><h3>Organize communal facilities</h3></div>
+        <div class="panel-body">
+            <div class="row">
+
+                <div class="col-md-4">
+                    <a href="{% static 'img/screenshot2.png' %}"><img src="{% static 'img/screenshot2.png' %}" height="225" width="300"></a>
+                </div>
+                <div class="col-md-8">
+                    <p class="larger-text">Use our reservations calendar to book communal amenities such as the sauna, swimming pool, gym or laundromat.</p>
+                    <p class="larger-text">With our parking app, residents can register their vehicles and reserve spaces.</p>
+                    <p class="larger-text">Residents can list their possessions in common storage areas such as bike sheds and basements. </p>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-info" id="users">
+        <div class="panel-heading"><h3>Suitable for all kinds of block management</h3></div>
+        <div class="panel-body">
+            <div class="row">
+
+                <div class="col-md-4">
+                    <a href="{% static 'img/screenshot4.png' %}"><img src="{% static 'img/screenshot4.png' %}" height="225" width="300"></a>
+                </div>
+                <div class="col-md-8">
+                    <p class="larger-text">
+                    <b>Ownblock</b> can manage individual blocks and multiple buildings. </p>
+                    <p class="larger-text"><b>Ownblock</b> is suitable for:</p>
+                    <ul class="larger-text">
+                        <li>Individual block commmittees</li>
+                        <li>Student housing organizations</li>
+                        <li>Municipal housing organizations</li>
+                        <li>Property management companies</li>
+                    </ul>
+                    </p>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

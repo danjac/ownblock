@@ -1,10 +1,13 @@
 import json
 
+from django import forms
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.http import HttpResponseRedirect
+from django.core.mail import mail_admins
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
+from django.views.generic.edit import FormView
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.models import Site, get_current_site
@@ -66,11 +69,49 @@ class AppView(TemplateView):
         return context
 
 
+class ContactForm(forms.Form):
+    name = forms.CharField()
+    question = forms.CharField(required=False)
+    email = forms.EmailField()
+
+
+class ContactView(FormView):
+
+    form_class = ContactForm
+    template_name = "contact.html"
+
+    def form_valid(self, form):
+
+        message = """
+        Someone has asked a question:
+
+        Name: %(name)s
+        Email: %(email)s
+        Question:
+        %(question)s
+        """ % form.cleaned_data
+        mail_admins("Contact message", message)
+
+        return HttpResponseRedirect(self.request.path + "?sent=1")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['sent'] = 'sent' in self.request.GET
+        return context
+
+
 urlpatterns = patterns('',
                        # Front page
                        url(r'^$', TemplateView.as_view(
                            template_name='index.html'),
                            name='index'),
+
+                       url(r'^about$', TemplateView.as_view(
+                           template_name='about.html'),
+                           name='about'),
+
+                       url(r'^contact$',
+                           ContactView.as_view(), name='contact'),
 
                        # Application container
                        url(r'^app$', login_required(AppView.as_view()),
