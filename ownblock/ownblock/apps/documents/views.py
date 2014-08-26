@@ -34,7 +34,7 @@ class DocumentViewSet(viewsets.ModelViewSet):
     def post_save(self, obj, created):
         if not created:
             return
-        site = self.request.building.site
+        site = self.request.site
         template = loader.get_template('documents/email/new_document.txt')
         for resident in self.request.building.get_residents():
             send_mail('%s: a document has been uploaded',

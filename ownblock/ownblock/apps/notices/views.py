@@ -27,7 +27,7 @@ class NoticeViewSet(viewsets.ModelViewSet):
             apartment__building=obj.building
         )
 
-        site = self.request.building.site
+        site = self.request.site
 
         template = loader.get_template('notices/emails/new_notice.txt')
 

@@ -10,7 +10,6 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
-from django.contrib.sites.models import Site, get_current_site
 
 from apps.accounts.serializers import AuthUserSerializer
 
@@ -20,52 +19,14 @@ admin.autodiscover()
 class AppView(TemplateView):
     template_name = 'app.html'
 
-    def get_current_site(self):
-        try:
-            return Site.objects.get(domain=self.request.get_host())
-        except Site.DoesNotExist:
-            return get_current_site(self.request)
-
-    def get(self, request, *args, **kwargs):
-        """Ensure the user has access here"""
-
-        self.site = self.get_current_site()
-
-        user_site = None
-
-        if self.request.user.site_id:
-            user_site = self.request.user.site
-
-        elif self.request.user.apartment_id:
-            user_site = self.request.user.apartment.building.site
-
-        redirect_url = None
-
-        if user_site is None:
-            if self.request.user.is_staff:
-                redirect_url = reverse('admin:index')
-            else:
-                redirect_url = reverse('index')
-        elif user_site != self.site:
-            scheme = 'https' if request.is_secure() else 'http'
-            redirect_url = '%s://%s%s' % (scheme,
-                                          user_site.domain,
-                                          request.path)
-
-        if redirect_url:
-            return HttpResponseRedirect(redirect_url)
-
-        return super().get(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # bootstrap data
         user_data = AuthUserSerializer(self.request.user,
                                        context={'request': self.request}).data
 
-        user_data['site_name'] = self.site.name
+        user_data['site_name'] = self.request.site.name
         context['user_data'] = json.dumps(user_data)
-        context['site'] = self.site
         return context
 
 

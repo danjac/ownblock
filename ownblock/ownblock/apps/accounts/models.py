@@ -167,6 +167,13 @@ class User(AbstractBaseUser):
     def has_module_perms(self, module):
         return self.is_staff
 
+    def get_site(self):
+        if self.site_id:
+            return self.site
+        elif self.apartment_id:
+            return self.apartment.building.site
+        return Site.objects.get_current()
+
 
 def send_invitation_email(sender, instance, created, **kwargs):
     if not created or instance.is_staff:
@@ -174,9 +181,10 @@ def send_invitation_email(sender, instance, created, **kwargs):
 
     uid = urlsafe_base64_encode(force_bytes(instance.pk))
     token = default_token_generator.make_token(instance)
-    site = Site.objects.get_current()
 
     template = loader.get_template('accounts/email/invitation.txt')
+
+    site = instance.get_site()
 
     message = template.render(Context({
         'uid': uid,

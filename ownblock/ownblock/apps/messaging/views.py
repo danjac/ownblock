@@ -20,15 +20,14 @@ class MessageViewSet(viewsets.ModelViewSet):
             return
 
         template = loader.get_template("messaging/emails/new_message.txt")
-        site = self.request.building.site
 
         send_mail(
-            '%s: You have received a new message' % site.name,
+            '%s: You have received a new message' % self.request.site.name,
             template.render(
                 Context(
                     {
                         'message': obj,
-                        'site': site,
+                        'site': self.request.site,
                     })),
             settings.DEFAULT_FROM_EMAIL,
             [obj.recipient.email],

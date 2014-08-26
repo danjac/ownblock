@@ -184,6 +184,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'apps.buildings.middleware.CurrentBuildingMiddleware',
+    'apps.buildings.middleware.CurrentSiteMiddleware',
 )
 # END MIDDLEWARE CONFIGURATION
 
