@@ -31,17 +31,7 @@
         ga('create', 'UA-54154668-1', 'auto');
         ga('send', 'pageview');
     </script>
-    {% block content %} {% endblock %}
-    <footer class="voffset-3">
-        <div class="container">
-            <ul class="nav">
-                <li><a href="/about">About ownblock.com</a>
-                </li>
-                <li><a href="{% url 'contact' %}">Contact us</a>
-                </li>
-            </ul>
-        </div>
-    </footer>
+    {% block content %} {% endblock %} {% include "footer.html" %}
 </body>
 
 </html>
