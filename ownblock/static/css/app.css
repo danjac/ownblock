@@ -131,3 +131,7 @@ div.olMap
   width: 100%;
   z-index: 0;
 }
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
