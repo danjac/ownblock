@@ -8,7 +8,7 @@ body { padding-top: 70px; }
     margin-bottom: 2em;
     padding: 0 0 0.5em;
 }
-
+ class="btn btn-primary"
 .menu:before {
   content: "[";
 }
@@ -107,7 +107,7 @@ input.form-control[type="file"] {
 }
 
 #index-page {
-    background-image:url('../img/background.jpg');
+    background: url('../img/background.jpg') no-repeat center center;
 }
 #index-page .jumbotron, #index-page .container {
     zoom: 1;
