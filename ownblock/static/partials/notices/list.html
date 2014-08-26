@@ -5,6 +5,9 @@
                 <input class="form-control" type="search" ng-model="searchFilter.searchTerms" ng-change="notices.filter(searchFilter)">
                 <span class="input-group-addon"><icon name="search" /></span>
             </div>
+            <span class="help-block" ng-show="!notices.currentItems.length && searchFilter.searchTerms">
+                Sorry, no notices found for your search.
+            </span>
         </form>
     </div>
     <div class="col-md-6">
@@ -17,7 +20,7 @@
 </div>
 
 
-<table class="table table-bordered table-striped table-hover voffset-2">
+<table class="table table-bordered table-striped table-hover voffset-2" ng-show="notices.currentItems.length">
     <thead>
         <th>Notice</th>
         <th>Date</th>

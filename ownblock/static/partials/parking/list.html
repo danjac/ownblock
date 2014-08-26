@@ -5,6 +5,10 @@
                 <input class="form-control" type="search" ng-model="searchFilter.searchTerms" ng-change="vehicles.filter(searchFilter)">
                 <span class="input-group-addon"><icon name="search" /></span>
             </div>
+            <span class="help-block" ng-show="!vehicles.currentItems.length && searchFilter.searchTerms">
+Sorry, no messages found for your search.
+</span>
+
         </form>
     </div>
     <div class="col-md-6" has-role="resident">
@@ -17,7 +21,7 @@
 </div>
 
 
-<table class="table table-bordered table-striped table-hover voffset-2 ">
+<table class="table table-bordered table-striped table-hover voffset-2" ng-show="vehicles.currentItems.length">
     <thead>
         <tr>
             <th>Registration</th>
