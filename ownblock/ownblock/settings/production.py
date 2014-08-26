@@ -18,11 +18,7 @@ ALLOWED_HOSTS = ['.ownblock.com']
 
 # EMAIL CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-
-EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-host
 EMAIL_HOST = environ.get('EMAIL_HOST', 'smtp.gmail.com')
