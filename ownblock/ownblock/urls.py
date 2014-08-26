@@ -19,6 +19,15 @@ admin.autodiscover()
 class AppView(TemplateView):
     template_name = 'app.html'
 
+    def get(self, request, *args, **kwargs):
+        if request.building:
+            return super().get(*args, **kwargs)
+        if request.is_staff:
+            redirect_url = reverse('admin:index')
+        else:
+            redirect_url = reverse('index')
+        return HttpResponseRedirect(redirect_url)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # bootstrap data
