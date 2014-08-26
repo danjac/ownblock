@@ -1,14 +1,25 @@
-{% extends "base.html" %} {% block body-attrs %} id="index-page"{% endblock %} {% block content %}
+{% extends "base.html" %}{% load static %} {% block body-attrs %} id="index-page"{% endblock %} {% block content %}
 <div class="jumbotron">
     <div class="container">
         <h1>Ownblock</h1>
-        <p>Keeping neighbors in the loop</p>
-        <p>
-            <a href="http://demo.ownblock.com{% url 'app' %}" class="btn btn-primary btn-lg" role="button">Try our demo &raquo;</a>
-            <a href="{% url 'contact' %} " class="btn btn-primary btn-lg" role="button">Contact us &raquo;</a>
-            <a href="{% url 'about' %}" class="btn btn-primary btn-lg" role="button">More info &raquo;</a>
-        </p>
+        <div class="row">
+            <div class="col-md-6">
+                <p>Keeping neighbors in the loop</p>
+                <p>
+                    <a href="http://demo.ownblock.com{% url 'app' %}" class="btn btn-primary btn-lg" role="button">Try our demo &raquo;</a>
+                    <a href="{% url 'contact' %} " class="btn btn-primary btn-lg" role="button">Contact us &raquo;</a>
+                    <a href="{% url 'about' %}" class="btn btn-primary btn-lg" role="button">More info &raquo;</a>
+                </p>
+            </div>
+
+            <div class="col-md-6">
+                <a href="{% static 'img/screenshot4.png' %}">
+                    <img src="{% static 'img/screenshot4.png' %}" height="450" width="600">
+                </a>
+            </div>
+        </div>
     </div>
+
 </div>
 
 <div class="container">
@@ -17,8 +28,8 @@
             <h2>Keep residents up to date</h2>
             <p>Our <b>Notice board</b> gives each block its own news room. Rules and regulations, minutes of AGMs and other important information can be uploaded to our document store.
             </p>
-            <!--<p><a class="btn btn-default" href="#" role="button">View details &raquo;</a>
-                </p>-->
+            <p><a class="btn btn-default" href="{% url 'about' %}#communicate" role="button">View details &raquo;</a>
+            </p>
         </div>
         <div class="col-md-4">
             <h2>Track amenities, parking, storage</h2>
@@ -29,14 +40,14 @@
                     <li>Register cars and vehicles in the block parking lot.</li>
                 </ul>
             </p>
-            <!--<p><a class="btn btn-default" href="#" role="button">View details &raquo;</a>
-                </p>-->
+            <p><a class="btn btn-default" href="{% url 'about' %}#manage" role="button">View details &raquo;</a>
+            </p>
         </div>
         <div class="col-md-4">
-            <h2>Let neighbors keep in touch</h2>
-            <p>Our safe, easy-to-use, simple messaging system lets residents communicate. Email notifications keep them in the loop.</p>
-            <!--<p><a class="btn btn-default" href="#" role="button">View details &raquo;</a>
-                </p>-->
+            <h2>Suitable for all residential building managers</h2>
+            <p>From individual block committees to municipal and large commercial property management companies.</p>
+            <p><a class="btn btn-default" href="{% url 'about' %}#users" role="button">View details &raquo;</a>
+            </p>
         </div>
     </div>
 </div>
