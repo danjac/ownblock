@@ -65,7 +65,7 @@ LOGGING['handlers']['file'] = {
     'level': 'ERROR',
     'filters': ['require_debug_false'],
     'class': 'logging.RotatingFileHandler',
-    'filename': normpath(join(SITE_ROOT, 'logs'), 'error.log'),
+    'filename': normpath(join(SITE_ROOT, 'logs', 'error.log')),
 }
 LOGGING['loggers']['django.request']['handlers'].append('file')
 # END LOGGING CONFIGURATION
