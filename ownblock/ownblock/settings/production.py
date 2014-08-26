@@ -64,7 +64,7 @@ SECRET_KEY = get_env_setting('SECRET_KEY')
 LOGGING['handlers']['file'] = {
     'level': 'ERROR',
     'filters': ['require_debug_false'],
-    'class': 'logging.RotatingFileHandler',
+    'class': 'logging.FileHandler',
     'filename': normpath(join(SITE_ROOT, 'logs', 'error.log')),
 }
 LOGGING['loggers']['django.request']['handlers'].append('file')
