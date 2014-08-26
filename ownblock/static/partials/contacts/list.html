@@ -7,6 +7,9 @@
                         <input class="form-control" type="search" ng-model="searchFilter" ng-change="contacts.filter(searchFilter)">
                         <span class="input-group-addon"><icon name="search" /></span>
                     </div>
+                    <span class="help-block" ng-show="!contacts.currentItems.length && searchFilter">
+                Sorry, no contacts found for your search.
+            </span>
                 </form>
             </div>
             <div class="col-md-6" has-role="manager">
@@ -20,7 +23,7 @@
         </div>
 
 
-        <table class="table table-bordered table-striped table-hover voffset-2">
+        <table class="table table-bordered table-striped table-hover voffset-2" ng-show="contacts.currentItems.length">
             <thead>
                 <tr>
                     <th>Name</th>
