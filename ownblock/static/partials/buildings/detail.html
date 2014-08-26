@@ -37,7 +37,8 @@
     <tab heading="Apartments" active="tabs.apartments.active">
 
         <form class="voffset-2">
-            <select class="form-control" ng-change="selectApartment()" ng-model="apartmentSelector.id" ng-options="apartment.id as apartment.number for apartment in apartments">
+            <label for="apartmentSelector" class="control-label">Select apartment</label>
+            <select id="apartmentSelector" class="form-control" ng-change="selectApartment()" ng-model="apartmentSelector.id" ng-options="apartment.id as apartment.number for apartment in apartments">
                 <option value="">Please select an apartment....</option>
             </select>
         </form>
