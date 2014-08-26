@@ -49,7 +49,7 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = (
     ('Dan Jacob', 'danjac354@gmail.com'),
 )
-DEFAULT_FROM_EMAIL = 'noreply@' + SITE_NAME
+DEFAULT_FROM_EMAIL = 'noreply@ownblock.com'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
