@@ -5,6 +5,10 @@
                 <input class="form-control" type="search" ng-model="searchFilter.full_name" ng-change="residents.filter(searchFilter)">
                 <span class="input-group-addon"><icon name="search" /></span>
             </div>
+
+            <span class="help-block" ng-show="!residents.currentItems.length && searchFilter.full_name">
+                Sorry, no residents found for your search.
+            </span>
         </form>
     </div>
     <div class="col-md-6" has-role="manager">
@@ -17,7 +21,7 @@
 </div>
 
 
-<table class="table table-striped table-hover table-bordered voffset-2">
+<table class="table table-striped table-hover table-bordered voffset-2" ng-show="residents.currentItems.length">
     <thead>
         <tr>
             <th>Resident</th>
