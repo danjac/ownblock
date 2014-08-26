@@ -22,7 +22,7 @@ class AppView(TemplateView):
     def get(self, request, *args, **kwargs):
         if request.building:
             return super().get(*args, **kwargs)
-        if request.is_staff:
+        if request.user.is_staff:
             redirect_url = reverse('admin:index')
         else:
             redirect_url = reverse('index')
