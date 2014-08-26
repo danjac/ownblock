@@ -51,6 +51,9 @@
                             case 400:
                                 warning = "Sorry, your form appears to have some errors";
                                 break;
+                            case 413:
+                                warning = "Sorry, your upload was too large";
+                                break;
                         }
                         if (warning) {
                             notifier.warning(warning);
