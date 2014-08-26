@@ -386,6 +386,12 @@
                 return auth.user.id === residentId ? '#800' : '#008';
             }
 
+            function formatTime(dt) {
+                var hours = dt.getHours(),
+                    mins = dt.getMinutes();
+                return (hours < 10 ? "0" + hours : hours) + ":" + (mins < 10 ? "0" + mins : mins);
+            }
+
             api.Amenity.get({
                 id: $state.params.id
             }).$promise.then(function(response) {
@@ -395,8 +401,7 @@
                 angular.forEach($scope.amenity.booking_set, function(booking, counter) {
                     var reservedFrom = new Date(booking.reserved_from),
                         reservedTo = new Date(booking.reserved_to),
-                        title = reservedFrom.getHours() + ":" + reservedFrom.getMinutes() +
-                        " - " + reservedTo.getHours() + ":" + reservedTo.getMinutes(),
+                        title = formatTime(reservedFrom) + " - " + formatTime(reservedTo),
                         isPast = reservedFrom < today,
                         color = getColor(booking.resident.id, isPast);
 
