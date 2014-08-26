@@ -117,9 +117,9 @@
 
             </div>
             <div class="col-md-10">
-                <alert ng-repeat="msg in notifier.notifications" type="{{msg.type}}" close="notifier.dismiss($index)">{{msg.message}}</alert>
+                <alert ng-cloak ng-repeat="msg in notifier.notifications" type="{{msg.type}}" close="notifier.dismiss($index)">{{msg.message}}</alert>
 
-                <div ui-view></div>
+                <div ng-cloak ui-view></div>
             </div>
         </div>
     </div>
