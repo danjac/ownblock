@@ -40,7 +40,7 @@ EMAIL_SUBJECT_PREFIX = '[%s] ' % SITE_NAME
 EMAIL_USE_TLS = True
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#server-email
-SERVER_EMAIL = DEFAULT_FROM_EMAIL
+SERVER_EMAIL = "errors@ownblock.com"
 # END EMAIL CONFIGURATION
 
 
@@ -58,3 +58,14 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = get_env_setting('SECRET_KEY')
 # END SECRET CONFIGURATION
+
+
+# LOGGING CONFIGURATION
+LOGGING['handlers']['file'] = {
+    'level': 'ERROR',
+    'filters': ['require_debug_false'],
+    'class': 'logging.RotatingFileHandler',
+    'filename': normpath(join(SITE_ROOT, 'logs'), 'error.log'),
+}
+LOGGING['loggers']['django.request']['handlers'].append('file')
+# END LOGGING CONFIGURATION
