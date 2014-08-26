@@ -23,6 +23,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-host
 EMAIL_HOST = environ.get('EMAIL_HOST', 'smtp.gmail.com')
 
+
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-host-password
 EMAIL_HOST_PASSWORD = environ.get('EMAIL_HOST_PASSWORD', '')
 
