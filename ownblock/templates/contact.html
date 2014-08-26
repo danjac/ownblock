@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block content %}
+<div class="container">
+    <h1>Contact us</h1>
+    {% if sent %}
+    <div class="alert alert-success">Thanks for getting in touch! We'll respond to your questions as soon as possible.</div>
+    {% endif %}
+    <p class="well">
+    Please enter your name and email address, and any questions you may have, and we'll get back to you!
+    </p>
+    <form role="form" action="{{ request.path }}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name" class="control-label">Your name (required)</label>
+            <input id="name" type="text" name="name" class="form-control" value="{{ form.name.value|default:"" }}" />
+        </div>
+        <div class="form-group">
+            <label for="email" class="control-label">Your email address (required)</label>
+            <input id="email" type="email" name="email" class="form-control" value="{{ form.email.value|default:"" }}" />
+        </div>
+        <div class="form-group">
+            <label for="question" class="control-label">Questions (not required)</label>
+            <textarea id="question" name="question" rows="10" class="form-control" cols="30">{{ form.question.value|default:"" }}</textarea>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit your question &raquo;</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

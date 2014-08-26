@@ -47,7 +47,7 @@ TEMPLATE_DEBUG = DEBUG
 # MANAGER CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = (
-    ('Your Name', 'your_email@example.com'),
+    ('Dan Jacob', 'danjac354@gmail.com'),
 )
 DEFAULT_FROM_EMAIL = 'noreply@example.com'
 

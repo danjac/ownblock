@@ -106,15 +106,19 @@ input.form-control[type="file"] {
     display:none;
 }
 
-#index-page {
+.larger-text {
+    font-size: large;
+}
+
+.front-page {
     background: url('../img/background.jpg') no-repeat center center;
 }
-#index-page .jumbotron, #index-page .container {
+.front-page .jumbotron, .front-page .container {
     zoom: 1;
 	filter: alpha(opacity=50);
 	opacity: 0.9;
 }
-#index-page .container {
+.front-page .container {
     background-color: #eee;
 }
 
