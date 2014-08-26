@@ -1,7 +1,16 @@
-<div class="btn-toolbar pull-right" role="toolbar" has-role="resident">
-    <a class="btn btn-primary" ng-show="amenity.is_available" ui-sref="amenities.newBooking({id: amenity.id})">
+<div class="btn-toolbar pull-right" role="toolbar">
+    <a has-role="resident" class="btn btn-primary" ng-show="amenity.is_available" ui-sref="amenities.newBooking({id: amenity.id})">
         <icon name="calendar" />Make a reservation
     </a>
+
+    <a class="btn btn-default" has-role="manager" ui-sref="amenities.edit({id: amenity.id})">
+        <icon name="edit" />Edit amenity
+    </a>
+
+    <confirm-dialog has-role="manager" class="btn btn-danger" header="Delete amenity" text="Are you sure you want to remove this amenity?" on-confirm="deleteAmenity()">
+        <icon name="trash-o" text="Delete this amenity"></icon>
+    </confirm-dialog>
+
 </div>
 
 

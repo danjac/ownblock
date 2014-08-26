@@ -259,12 +259,6 @@
             api.Amenity.query().$promise.then(function(response) {
                 $scope.amenities = paginator(response);
             });
-            $scope.deleteAmenity = function(amenity, index) {
-                $scope.amenities.remove(index);
-                amenity.$delete(function() {
-                    notifier.success('The amenity has been removed');
-                });
-            };
         }
     ]).controller('amenities.NewAmenityCtrl', ['$scope', '$state', 'api', 'notifier',
         function($scope, $state, api, notifier) {
@@ -288,7 +282,9 @@
             $scope.save = function() {
                 $scope.amenity.$update(function() {
                     notifier.success('Amenity has been updated');
-                    $state.go('amenities.list');
+                    $state.go('amenities.detail', {
+                        id: $scope.amenity.id
+                    });
                 });
             };
         }
@@ -371,10 +367,17 @@
         '$state',
         'api',
         'auth',
-        function($scope, $state, api, auth) {
+        'notifier',
+        function($scope, $state, api, auth, notifier) {
             var bookings = [],
                 today = new Date();
             $scope.eventSources = [bookings];
+            $scope.deleteAmenity = function() {
+                $scope.amenity.$delete(function() {
+                    notifier.success('The amenity has been removed');
+                    $state.go('amenities.list');
+                });
+            };
 
             function getColor(residentId, isPast) {
                 if (isPast) {

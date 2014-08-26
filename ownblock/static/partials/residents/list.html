@@ -37,7 +37,7 @@
             <td><a ui-sref="buildings.apartment({id: resident.apartment})">{{resident.apartment_detail.number}} / Floor {{ resident.apartment_detail.floor}}</a>
             </td>
             <td>
-                <button send-message="{{resident}}" class="btn btn-primary btn-sm" ng-show="resident.id !== user.id">
+                <button send-message="{{resident}}" class="btn btn-primary" ng-show="resident.id !== user.id">
                     <icon name="send" text="Send message" />
                 </button>
             </td>

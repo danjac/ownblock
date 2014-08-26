@@ -27,7 +27,6 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Description</th>
                     <th>Phone</th>
                     <th>Email</th>
                 </tr>
@@ -36,7 +35,6 @@
                 <tr ng-repeat="contact in contacts.currentItems">
                     <td><a ui-sref="contacts.detail({id: contact.id})">{{contact.name}}</a>
                     </td>
-                    <td>{{contact.description}}</td>
                     <td>{{contact.phone}}</td>
                     <td><a href="mailto:{{contact.email}}">{{contact.email}}</a>
                     </td>
