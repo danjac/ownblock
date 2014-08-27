@@ -99,6 +99,11 @@
                             <icon name="calendar" text="Reservations" />
                         </a>
                     </li>
+                    <li ng-class="{active: includes('tickets')}">
+                        <a href="">
+                            <icon name="wrench" text="Maintenance" />
+                        </a>
+                    </li>
                     <li ng-class="{active: includes('contacts')}">
                         <a ui-sref="contacts.list">
                             <icon name="phone" text="Contacts" />
