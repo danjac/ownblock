@@ -5,10 +5,17 @@ from .models import Ticket
 from .serializers import TicketSerializer
 
 
-class TicketViewSet(viewsets.ModelViewset):
+class TicketViewSet(viewsets.ModelViewSet):
 
     model = Ticket
     serializer_class = TicketSerializer
+
+    def pre_save(self, obj):
+        if obj.reporter_id is None:
+            obj.reporter = self.request.user
+
+    def post_save(self, obj, created):
+        pass  # TBD: notify managers on create, notify reporter on change
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
@@ -23,4 +30,4 @@ class TicketViewSet(viewsets.ModelViewset):
             return qs
 
         return qs.filter(Q(apartment=self.request.user.apartment) |
-                         Q(reporter=self.user))
+                         Q(reporter=self.request.user))
