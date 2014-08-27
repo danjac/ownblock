@@ -791,6 +791,29 @@
                 });
             };
         }
+    ]).controller('tickets.ListCtrl', ['$scope', 'auth', 'api', 'paginator',
+        function($scope, auth, api, paginator) {
+            var service = auth.hasRole('resident') ? api.ResidentTicket : api.ManagerTicket;
+            service.query().$promise.then(function(response) {
+                $scope.tickets = paginator(response);
+            });
+        }
+    ]).controller('tickets.NewCtrl', ['$scope', '$state', 'auth', 'api', 'notifier',
+        function($scope, $state, auth, api, notifier) {
+            var service = auth.hasRole('resident') ? api.ResidentTicket : api.ManagerTicket;
+            $scope.ticket = new service();
+            if (auth.hasRole('manager')) {
+                api.Apartment.query().$promise.then(function(response) {
+                    $scope.apartments = response;
+                });
+            }
+            $scope.save = function() {
+                $scope.ticket.$save(function() {
+                    notifier.success('Your ticket has been saved');
+                    $state.go('tickets.list');
+                });
+            };
+        }
     ]).controller('account.EditCtrl', ['$scope', '$state', 'auth', 'api', 'notifier',
         function($scope, $state, auth, api, notifier) {
             $scope.save = function() {

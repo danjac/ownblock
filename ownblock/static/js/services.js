@@ -127,6 +127,7 @@
                 Contact: makeEndpoint('/api/contacts/contacts/:id'),
                 Vehicle: makeEndpoint('/api/parking/vehicles/:id'),
                 StorageItem: makeEndpoint('/api/storage/items/:id'),
+                ResidentTicket: makeEndpoint('/api/tickets/residents/:id'),
                 Apartment: makeEndpoint('/api/buildings/apartments/:id', {
                     addResident: {
                         url: '/api/buildings/apartments/:id/add_resident',

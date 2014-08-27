@@ -1,33 +1,31 @@
-from django.db.models import Q
 from rest_framework import viewsets
 
+from apps.accounts.permissions import IsResident
+
 from .models import Ticket
-from .serializers import TicketSerializer
+from .serializers import ResidentTicketSerializer
 
 
-class TicketViewSet(viewsets.ModelViewSet):
+class ResidentTicketViewSet(viewsets.ModelViewSet):
 
     model = Ticket
-    serializer_class = TicketSerializer
+
+    serializer_class = ResidentTicketSerializer
+
+    permission_classes = (
+        IsResident,
+    )
 
     def pre_save(self, obj):
-        if obj.reporter_id is None:
-            obj.reporter = self.request.user
+        obj.reporter = self.request.user
+        obj.apartment = self.request.user.apartment
+        obj.building = self.request.building
 
     def post_save(self, obj, created):
         pass  # TBD: notify managers on create, notify reporter on change
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
-        qs = qs.filter(
-            building=self.request.building
-        ).order_by('-created').select_related(
-            'apartment',
-            'reporter',
-            'amenity')
-
-        if self.request.user.role == 'manager':
-            return qs
-
-        return qs.filter(Q(apartment=self.request.user.apartment) |
-                         Q(reporter=self.request.user))
+        return qs.filter(
+            apartment=self.request.user.apartment
+        ).order_by('-created')
