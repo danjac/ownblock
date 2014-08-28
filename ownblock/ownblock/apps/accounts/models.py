@@ -26,6 +26,9 @@ _fuzzier = FuzzyText()
 
 class UserManager(BaseUserManager):
 
+    def get_queryset(self):
+        return super().get_queryset().filter(is_active=True)
+
     def create_user(self, email, first_name, last_name, role,
                     password=None, **kwargs):
 
@@ -51,6 +54,12 @@ class UserManager(BaseUserManager):
                                 is_staff=True)
 
 
+class InactiveUserManager(BaseUserManager):
+
+    def get_queryset(self):
+        return super().get_queryset().filter(is_active=False)
+
+
 class User(AbstractBaseUser):
 
     ROLES = Choices('resident', 'manager')
@@ -72,6 +81,7 @@ class User(AbstractBaseUser):
     role = models.CharField(choices=ROLES, default='resident', max_length=10)
 
     objects = UserManager()
+    inactive_objects = InactiveUserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ('first_name', 'last_name')
