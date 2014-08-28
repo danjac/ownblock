@@ -19,6 +19,7 @@ class TicketSerializer(serializers.ModelSerializer):
             'status',
             'created',
             'reporter',
+            'reporter_detail',
         )
 
         read_only_fields = ('reporter',)
@@ -26,9 +27,11 @@ class TicketSerializer(serializers.ModelSerializer):
 
 class ManagerTicketSerializer(TicketSerializer):
 
-    apartment_detail = ApartmentRelatedField(source='apartment')
+    apartment_detail = ApartmentRelatedField(
+        source='apartment', read_only=True)
 
     class Meta(TicketSerializer.Meta):
-        fields = TicketSerializer.fields + (
+        fields = TicketSerializer.Meta.fields + (
             'apartment',
+            'apartment_detail',
         )

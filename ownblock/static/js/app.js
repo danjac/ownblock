@@ -267,6 +267,11 @@
                 templateUrl: partialsUrl + 'tickets/form.html',
                 controller: 'tickets.NewCtrl'
             }).
+            state('tickets.detail', {
+                url: '/tickets/:id',
+                templateUrl: partialsUrl + 'tickets/detail.html',
+                controller: 'tickets.DetailCtrl'
+            }).
             state('storage', {
                 templateUrl: partialsUrl + 'storage/base.html',
                 parent: 'site'

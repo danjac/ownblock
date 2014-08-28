@@ -135,3 +135,7 @@ div.olMap
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important;
 }
+
+a {
+    color: #0D82C5;
+}

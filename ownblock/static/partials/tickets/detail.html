@@ -1,0 +1,32 @@
+<div class="btn-toolbar pull-right" role="toolbar">
+    <a href class="btn btn-default" has-role="manager">
+        <icon name="edit" text="Edit" />
+    </a>
+</div>
+<h2>Issue #{{ticket.id}}</h2>
+<table>
+    <table class="table table-condensed">
+        <tbody>
+            <tr>
+                <td>Status</td>
+                <td><span class="label" ng-class="{'label-success': ticket.status == 'new', 'label-warning': ticket.status == 'accepted', 'label-danger': ticket.status == 'resolved'}">{{ticket.status}}</td>
+            </tr>
+            <tr>
+                <td>Reported by</td>
+                <td>
+                    <user-link user="ticket.reporter_detail" />
+                </td>
+            </tr>
+            <tr has-role="manager" ng-show="ticket.apartment">
+                <td>Apartment</td>
+                <td><a ui-sref="buildings.apartment({id: ticket.apartment})">{{ticket.apartment_detail.name}}</a>
+                </td>
+            </tr>
+            <tr>
+                <td>Reported on</td>
+                <td>{{ticket.created|date:"short"}}</td>
+            </tr>
+        </tbody>
+    </table>
+</table>
+<pre>{{ticket.description}}</pre>

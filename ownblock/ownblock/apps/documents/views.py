@@ -47,7 +47,7 @@ class DocumentViewSet(viewsets.ModelViewSet):
                       [resident.email]
                       )
 
-        def get_queryset(self):
-            return super().get_queryset().filter(
-                building=self.request.building
-            ).order_by('-created')
+    def get_queryset(self):
+        return super().get_queryset().filter(
+            building=self.request.building
+        ).order_by('-created')

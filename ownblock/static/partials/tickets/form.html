@@ -5,8 +5,9 @@
     </div>
     <div class="form-group" has-role="manager">
         <label for="" class="label-control">Apartment</label>
-        <select class="form-control" ng-options="apartment.id for apartment.name in apartments">
+        <select class="form-control" ng-model="ticket.apartment" ng-options="apartment.id as apartment.name for apartment in apartments">
         </select>
     </div>
     <button role="button" class="btn btn-primary" ng-click="save()" ng-disabled="ticketForm.$invalid">Save</button>
+    <button role="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
 </form>

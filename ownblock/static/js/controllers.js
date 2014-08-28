@@ -791,17 +791,15 @@
                 });
             };
         }
-    ]).controller('tickets.ListCtrl', ['$scope', 'auth', 'api', 'paginator',
-        function($scope, auth, api, paginator) {
-            var service = auth.hasRole('resident') ? api.ResidentTicket : api.ManagerTicket;
-            service.query().$promise.then(function(response) {
+    ]).controller('tickets.ListCtrl', ['$scope', 'api', 'paginator',
+        function($scope, api, paginator) {
+            api.Ticket.query().$promise.then(function(response) {
                 $scope.tickets = paginator(response);
             });
         }
     ]).controller('tickets.NewCtrl', ['$scope', '$state', 'auth', 'api', 'notifier',
         function($scope, $state, auth, api, notifier) {
-            var service = auth.hasRole('resident') ? api.ResidentTicket : api.ManagerTicket;
-            $scope.ticket = new service();
+            $scope.ticket = new api.Ticket();
             if (auth.hasRole('manager')) {
                 api.Apartment.query().$promise.then(function(response) {
                     $scope.apartments = response;
@@ -813,6 +811,17 @@
                     $state.go('tickets.list');
                 });
             };
+            $scope.cancel = function() {
+                $state.go('tickets.list');
+            };
+        }
+    ]).controller('tickets.DetailCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+            api.Ticket.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.ticket = response;
+            });
         }
     ]).controller('account.EditCtrl', ['$scope', '$state', 'auth', 'api', 'notifier',
         function($scope, $state, auth, api, notifier) {

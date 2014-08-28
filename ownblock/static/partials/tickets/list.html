@@ -14,7 +14,7 @@ Sorry, no tickets found for your search.
     <div class="col-md-6">
         <div role="toolbar" class="btn-toolbar pull-right">
             <a ui-sref="tickets.new" class="btn btn-primary">
-                <icon name="plus" text="Post ticket" />
+                <icon name="plus" text="Submit a problem" />
             </a>
         </div>
     </div>
@@ -27,16 +27,16 @@ Sorry, no tickets found for your search.
             <th>Description</th>
             <th>Status</th>
             <th>Reported on</th>
-            <th has-role="manager">Reported by</th>
+            <th>Reported by</th>
         </tr>
     </thead>
     <tbody>
         <tr ng-repeat="ticket in tickets.currentItems">
-            <td><a href>{{ticket.description}}</a>
+            <td><a ui-sref="tickets.detail({id: ticket.id})">{{ticket.description}}</a>
             </td>
             <td><span class="label" ng-class="{'label-success': ticket.status == 'new', 'label-warning': ticket.status == 'accepted', 'label-danger': ticket.status == 'resolved'}">{{ticket.status}}</td>
             <td>{{ticket.created|date:"short"}}</td>
-            <td></td>
+            <td><user-link user="ticket.reporter_detail" /></td>
         </tr>
     </tbody>
 

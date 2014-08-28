@@ -3,6 +3,5 @@ from rest_framework import routers
 from . import views
 
 router = routers.DefaultRouter(trailing_slash=False)
-router.register('residents', views.ResidentTicketViewSet)
-router.register('managers', views.ManagerTicketViewSet)
+router.register(r'tickets', views.TicketViewSet)
 urlpatterns = router.urls
