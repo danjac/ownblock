@@ -32,5 +32,5 @@ class Ticket(TimeStampedModel):
 
     def has_permission(self, user, perm):
         if user.role == 'manager':
-            return True
+            return self.building.site == user.site
         return False
