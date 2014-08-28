@@ -807,7 +807,7 @@
             }
             $scope.save = function() {
                 $scope.ticket.$save(function() {
-                    notifier.success('Your ticket has been saved');
+                    notifier.success('Your issue has been saved');
                     $state.go('tickets.list');
                 });
             };
@@ -830,7 +830,7 @@
             });
             $scope.save = function() {
                 $scope.ticket.$update(function() {
-                    notifier.success('Your ticket has been saved');
+                    notifier.success('Your issue has been saved');
                     $state.go('tickets.detail', {
                         id: $scope.ticket.id
                     });

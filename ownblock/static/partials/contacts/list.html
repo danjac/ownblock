@@ -58,7 +58,9 @@
             </thead>
             <tbody>
                 <tr ng-repeat="manager in managers">
-                    <td>{{manager.full_name}}</td>
+                    <td>
+                        <user-link user="manager" />
+                    </td>
                     <td>
                         <button class="btn btn-primary btn-sm" ng-show="auth.user.id !== manager.id" send-message="{{manager}}">
                             <icon name="send" text="Send message" />
