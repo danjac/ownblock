@@ -791,6 +791,65 @@
                 });
             };
         }
+    ]).controller('tickets.ListCtrl', ['$scope', 'api', 'paginator',
+        function($scope, api, paginator) {
+            api.Ticket.query().$promise.then(function(response) {
+                $scope.tickets = paginator(response);
+            });
+        }
+    ]).controller('tickets.NewCtrl', ['$scope', '$state', 'auth', 'api', 'notifier',
+        function($scope, $state, auth, api, notifier) {
+            $scope.ticket = new api.Ticket();
+            if (auth.hasRole('manager')) {
+                api.Apartment.query().$promise.then(function(response) {
+                    $scope.apartments = response;
+                });
+            }
+            $scope.save = function() {
+                $scope.ticket.$save(function() {
+                    notifier.success('Your ticket has been saved');
+                    $state.go('tickets.list');
+                });
+            };
+            $scope.cancel = function() {
+                $state.go('tickets.list');
+            };
+        }
+    ]).controller('tickets.EditCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+
+            $scope.statusOptions = ["new", "accepted", "resolved"];
+
+            api.Ticket.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.ticket = response;
+            });
+            api.Apartment.query().$promise.then(function(response) {
+                $scope.apartments = response;
+            });
+            $scope.save = function() {
+                $scope.ticket.$update(function() {
+                    notifier.success('Your ticket has been saved');
+                    $state.go('tickets.detail', {
+                        id: $scope.ticket.id
+                    });
+                });
+            };
+            $scope.cancel = function() {
+                $state.go('tickets.detail', {
+                    id: $scope.ticket.id
+                });
+            };
+        }
+    ]).controller('tickets.DetailCtrl', ['$scope', '$state', 'api',
+        function($scope, $state, api) {
+            api.Ticket.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.ticket = response;
+            });
+        }
     ]).controller('account.EditCtrl', ['$scope', '$state', 'auth', 'api', 'notifier',
         function($scope, $state, auth, api, notifier) {
             $scope.save = function() {

@@ -230,6 +230,7 @@ LOCAL_APPS = (
     'apps.notices',
     'apps.parking',
     'apps.storage',
+    'apps.tickets',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

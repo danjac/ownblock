@@ -253,6 +253,30 @@
                     access: 'resident'
                 }
             }).
+            state('tickets', {
+                templateUrl: partialsUrl + 'tickets/base.html',
+                parent: 'site'
+            }).
+            state('tickets.list', {
+                url: '/tickets',
+                templateUrl: partialsUrl + 'tickets/list.html',
+                controller: 'tickets.ListCtrl'
+            }).
+            state('tickets.new', {
+                url: '/tickets/new',
+                templateUrl: partialsUrl + 'tickets/form.html',
+                controller: 'tickets.NewCtrl'
+            }).
+            state('tickets.detail', {
+                url: '/tickets/:id',
+                templateUrl: partialsUrl + 'tickets/detail.html',
+                controller: 'tickets.DetailCtrl'
+            }).
+            state('tickets.edit', {
+                url: '/tickets/:id/edit',
+                templateUrl: partialsUrl + 'tickets/form.html',
+                controller: 'tickets.EditCtrl'
+            }).
             state('storage', {
                 templateUrl: partialsUrl + 'storage/base.html',
                 parent: 'site'
