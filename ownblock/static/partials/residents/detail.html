@@ -18,16 +18,16 @@
 <h3 ng-show="resident.apartment_detail"><a ui-sref="buildings.apartment({id : resident.apartment })">Apartment {{resident.apartment_detail.name}}</a></h3>
 
 <accordion close-others="true">
-    <accordion-group has-role="manager" is-open="status.contact" ng-click="status.contact = !status.contact">
+    <accordion-group ng-if="auth.user.role=='manager'" is-open=" status.contact " ng-click="status.contact=! status.contact ">
         <accordion-heading>
             Contact details
-            <icon class="pull-right" name="{{status.contact? 'arrow-down': 'arrow-right'}}" />
+            <icon class="pull-right " name="{{status.contact? 'arrow-down': 'arrow-right'}} " />
         </accordion-heading>
 
-        <table class="table table-condensed">
+        <table class="table table-condensed ">
             <tr>
                 <td>Email address</td>
-                <td ng-href="mailto:{{resident.email}}">{{resident.email}}</td>
+                <td ng-href="mailto:{{resident.email}} ">{{resident.email}}</td>
             </tr>
             <tr>
                 <td>Phone</td>
@@ -36,14 +36,14 @@
         </table>
     </accordion-group>
 
-    <accordion-group heading="Storage" has-role="manager" ng-if="resident.items.length" is-open="status.storage" ng-click="status.storage = !status.storage">
+    <accordion-group heading="Storage " ng-if="resident.items.length " is-open="status.storage " ng-click="status.storage=! status.storage ">
         <accordion-heading>
             Storage
-            <icon class="pull-right" name="{{status.storage? 'arrow-down': 'arrow-right'}}" />
+            <icon class="pull-right " name="{{status.storage? 'arrow-down': 'arrow-right'}} " />
         </accordion-heading>
 
 
-        <table class="table table-bordered table-hover table-striped table-condensed">
+        <table class="table table-bordered table-hover table-striped table-condensed ">
             <thead>
                 <tr>
                     <th>Item</th>
@@ -51,12 +51,12 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="item in resident.items">
+                <tr ng-repeat="item in resident.items ">
                     <td>
-                        <a ui-sref="storage.itemDetail({id: item.id})">{{item.description}}</a>
+                        <a ui-sref="storage.itemDetail({id: item.id}) ">{{item.description}}</a>
                     </td>
                     <td>
-                        <a ui-sref="storage.placeDetail({id: item.place_id})">{{item.place_name}}</a>
+                        <a ui-sref="storage.placeDetail({id: item.place_id}) ">{{item.place_name}}</a>
                     </td>
                 </tr>
             </tbody>
@@ -64,14 +64,14 @@
 
     </accordion-group>
 
-    <accordion-group heading="Vehicles" ng-if="resident.vehicles.length" is-open="status.vehicles" ng-click="status.vehicles = !status.vehicles">
+    <accordion-group heading="Vehicles " ng-if="resident.vehicles.length " is-open="status.vehicles " ng-click="status.vehicles=! status.vehicles ">
         <accordion-heading>
             Vehicles
-            <icon class="pull-right" name="{{status.vehicles? 'arrow-down': 'arrow-right'}}" />
+            <icon class="pull-right " name="{{status.vehicles? 'arrow-down': 'arrow-right'}} " />
         </accordion-heading>
 
 
-        <table class="table table-bordered table-hover table-striped table-condensed">
+        <table class="table table-bordered table-hover table-striped table-condensed ">
             <thead>
                 <tr>
                     <th>Registration</th>
@@ -79,9 +79,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="vehicle in resident.vehicles">
+                <tr ng-repeat="vehicle in resident.vehicles ">
                     <td>
-                        <a ui-sref="parking.detail({id: vehicle.id})">{{vehicle.registration_number}}</a>
+                        <a ui-sref="parking.detail({id: vehicle.id}) ">{{vehicle.registration_number}}</a>
                     </td>
                     <td>{{vehicle.description}}</td>
                 </tr>
@@ -90,14 +90,14 @@
 
     </accordion-group>
 
-    <accordion-group ng-if="resident.bookings.length" is-open="status.bookings" ng-click="status.bookings = !status.bookings">
+    <accordion-group ng-if="resident.bookings.length " is-open="status.bookings " ng-click="status.bookings=! status.bookings ">
         <accordion-heading>
             Reservations
-            <icon class="pull-right" name="{{status.bookings? 'arrow-down': 'arrow-right'}}" />
+            <icon class="pull-right " name="{{status.bookings? 'arrow-down': 'arrow-right'}} " />
         </accordion-heading>
 
 
-        <table class="table table-bordered table-hover table-striped table-condensed">
+        <table class="table table-bordered table-hover table-striped table-condensed ">
             <thead>
                 <tr>
                     <th>Reservation</th>
@@ -106,26 +106,26 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="booking in resident.bookings">
+                <tr ng-repeat="booking in resident.bookings ">
                     <td>
-                        <a ui-sref="amenities.bookingDetail({id: booking.id})">{{booking.amenity.name}}</a>
+                        <a ui-sref="amenities.bookingDetail({id: booking.id}) ">{{booking.amenity.name}}</a>
                     </td>
-                    <td>{{booking.reserved_from|date:"short"}}</td>
-                    <td>{{booking.reserved_to|date:"short"}}</td>
+                    <td>{{booking.reserved_from|date:"short "}}</td>
+                    <td>{{booking.reserved_to|date:"short "}}</td>
                 </tr>
             </tbody>
         </table>
     </accordion-group>
 
 
-    <accordion-group ng-if="resident.notices.length" is-open="status.notices" ng-click="status.notices = !status.notices">
+    <accordion-group ng-if="resident.notices.length " is-open="status.notices " ng-click="status.notices=! status.notices ">
         <accordion-heading>
             Notice board
-            <icon class="pull-right" name="{{status.notices? 'arrow-down': 'arrow-right'}}" />
+            <icon class="pull-right " name="{{status.notices? 'arrow-down': 'arrow-right'}} " />
         </accordion-heading>
 
 
-        <table class="table table-bordered table-hover table-striped table-condensed">
+        <table class="table table-bordered table-hover table-striped table-condensed ">
             <thead>
                 <tr>
                     <th>Notice</th>
@@ -133,25 +133,25 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="notice in resident.notices">
+                <tr ng-repeat="notice in resident.notices ">
                     <td>
-                        <a ui-sref="notices.detail({id: notice.id})">{{notice.title}}</a>
+                        <a ui-sref="notices.detail({id: notice.id}) ">{{notice.title}}</a>
                     </td>
-                    <td>{{notice.created|date:"short"}}</td>
+                    <td>{{notice.created|date:"short "}}</td>
                 </tr>
             </tbody>
         </table>
     </accordion-group>
 
 
-    <accordion-group ng-if="resident.sent_messages.length || resident.received_messages.length" is-open="status.messages" ng-click="status.messages = !status.messages">
+    <accordion-group ng-if="resident.sent_messages.length || resident.received_messages.length " is-open="status.messages " ng-click="status.messages=! status.messages ">
 
         <accordion-heading>
             Messages
-            <icon class="pull-right" name="{{status.messages? 'arrow-down': 'arrow-right'}}" />
+            <icon class="pull-right " name="{{status.messages? 'arrow-down': 'arrow-right'}} " />
         </accordion-heading>
 
-        <table class="table table-bordered table-hover table-striped table-condensed" ng-show="resident.sent_messages.length">
+        <table class="table table-bordered table-hover table-striped table-condensed " ng-show="resident.sent_messages.length ">
             <caption>Messages {{resident.full_name}} has sent you</caption>
             <thead>
                 <tr>
@@ -160,20 +160,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="message in resident.sent_messages">
+                <tr ng-repeat="message in resident.sent_messages ">
                     <td>
-                        <a ui-sref="messages.detail({id: message.id})">{{message.header}}</a>
+                        <a ui-sref="messages.detail({id: message.id}) ">{{message.header}}</a>
                     </td>
                     <td>
-                        {{message.created|date:"short"}}
+                        {{message.created|date:"short "}}
                     </td>
                 </tr>
             </tbody>
         </table>
-        </tab>
 
 
-        <table class="table table-bordered table-hover table-striped table-condensed" ng-show="resident.received_messages.length">
+        <table class="table table-bordered table-hover table-striped table-condensed " ng-show="resident.received_messages.length ">
             <caption>Messages you have sent to {{resident.full_name}}</caption>
             <thead>
                 <tr>
@@ -182,12 +181,12 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="message in resident.received_messages">
+                <tr ng-repeat="message in resident.received_messages ">
                     <td>
-                        <a ui-sref="messages.detail({id: message.id})">{{message.header}}</a>
+                        <a ui-sref="messages.detail({id: message.id}) ">{{message.header}}</a>
                     </td>
                     <td>
-                        {{message.created|date:"short"}}
+                        {{message.created|date:"short "}}
                     </td>
                 </tr>
             </tbody>
