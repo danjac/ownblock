@@ -1,4 +1,8 @@
 <form role="form" name="ticketForm" novalidate>
+    <div class="form-group" has-role="manager" ng-if="ticket.id">
+        <label for="" class="label-control">Status</label>
+        <select ng-model="ticket.status" ng-options="status for status in statusOptions" required></select>
+    </div>
     <div class="form-group">
         <label for="" class="label-control">Please give a detailed description of the issue.</label>
         <textarea id="" ng-model="ticket.description" rows="10" class="form-control" cols="30" required></textarea>
@@ -7,6 +11,14 @@
         <label for="" class="label-control">Apartment</label>
         <select class="form-control" ng-model="ticket.apartment" ng-options="apartment.id as apartment.name for apartment in apartments">
         </select>
+    </div>
+    <div class="form-group" has-role="manager" ng-if="ticket.status == 'accepted'">
+        <label for="" class="label-control">Comment</label>
+        <textarea class="form-control" ng-model="ticket.comment"></textarea>
+    </div>
+    <div class="form-group" has-role="manager" ng-if="ticket.status == 'resolved'">
+        <label for="" class="label-control">Action taken</label>
+        <textarea class="form-control" ng-model="ticket.action"></textarea>
     </div>
     <button role="button" class="btn btn-primary" ng-click="save()" ng-disabled="ticketForm.$invalid">Save</button>
     <button role="button" class="btn btn-default" ng-click="cancel()">Cancel</button>

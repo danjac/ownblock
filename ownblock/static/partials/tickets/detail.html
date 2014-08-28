@@ -1,6 +1,6 @@
 <div class="btn-toolbar pull-right" role="toolbar">
-    <a href class="btn btn-default" has-role="manager">
-        <icon name="edit" text="Edit" />
+    <a ui-sref="tickets.edit({id: ticket.id})" class="btn btn-default" has-role="manager">
+        <icon name="edit" text="Update" />
     </a>
 </div>
 <h2>Issue #{{ticket.id}}</h2>
@@ -12,21 +12,39 @@
                 <td><span class="label" ng-class="{'label-success': ticket.status == 'new', 'label-warning': ticket.status == 'accepted', 'label-danger': ticket.status == 'resolved'}">{{ticket.status}}</td>
             </tr>
             <tr>
+                <td>Reported on</td>
+                <td>{{ticket.created|date:"short"}}</td>
+            </tr>
+             <tr>
                 <td>Reported by</td>
                 <td>
                     <user-link user="ticket.reporter_detail" />
                 </td>
             </tr>
-            <tr has-role="manager" ng-show="ticket.apartment">
+           <tr ng-show="ticket.modified">
+                <td>Last updated</td>
+                <td>{{ticket.modified|date:"short"}}</td>
+            </tr>
+             <tr ng-show="ticket.handler">
+                <td>Last updated by</td>
+                <td>
+                    <user-link user="ticket.handler_detail" />
+                </td>
+            </tr>
+             <tr has-role="manager" ng-show="ticket.apartment">
                 <td>Apartment</td>
                 <td><a ui-sref="buildings.apartment({id: ticket.apartment})">{{ticket.apartment_detail.name}}</a>
                 </td>
             </tr>
-            <tr>
-                <td>Reported on</td>
-                <td>{{ticket.created|date:"short"}}</td>
-            </tr>
-        </tbody>
+         </tbody>
     </table>
 </table>
+
+<h3>Description</h3>
 <pre>{{ticket.description}}</pre>
+
+<h3 ng-show="ticket.comment">Comment</h3>
+<pre ng-show="ticket.comment">{{ticket.comment}}</pre>
+
+<h3 ng-show="ticket.action">Action taken</h3>
+<pre ng-show="ticket.action">{{ticket.action}}</pre>

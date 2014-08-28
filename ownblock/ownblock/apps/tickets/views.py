@@ -21,6 +21,8 @@ class TicketViewSet(viewsets.ModelViewSet):
         obj.building = self.request.building
         if self.request.user.role == 'resident':
             obj.apartment = self.request.user.apartment
+        elif self.request.user.role == 'manager':
+            obj.handler = self.request.user
 
     def post_save(self, obj, created):
         pass  # TBD: notify managers on create, notify reporter on change

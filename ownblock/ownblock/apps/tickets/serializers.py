@@ -10,6 +10,7 @@ from apps.buildings.serializers import ApartmentRelatedField
 class TicketSerializer(serializers.ModelSerializer):
 
     reporter_detail = UserSerializer(source='reporter', read_only=True)
+    handler_detail = UserSerializer(source='handler', read_only=True)
 
     class Meta:
         model = Ticket
@@ -18,11 +19,21 @@ class TicketSerializer(serializers.ModelSerializer):
             'description',
             'status',
             'created',
+            'comment',
+            'modified',
+            'action',
             'reporter',
             'reporter_detail',
+            'handler',
+            'handler_detail',
         )
 
-        read_only_fields = ('reporter',)
+        read_only_fields = (
+            'reporter',
+            'handler',
+            'status',
+            'comment',
+            'action')
 
 
 class ManagerTicketSerializer(TicketSerializer):
@@ -35,3 +46,4 @@ class ManagerTicketSerializer(TicketSerializer):
             'apartment',
             'apartment_detail',
         )
+        read_only_fields = ('reporter', 'handler')

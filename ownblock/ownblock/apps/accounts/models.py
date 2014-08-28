@@ -94,7 +94,6 @@ class User(AbstractBaseUser):
             'storage.delete_item',
             'tickets.add_ticket',
             'tickets.change_ticket',
-            'tickets.delete_ticket',
         },
         'manager': {
             'accounts.add_user',

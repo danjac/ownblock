@@ -15,23 +15,22 @@ class Ticket(TimeStampedModel):
 
     status = StatusField()
     reporter = models.ForeignKey(settings.AUTH_USER_MODEL)
+    handler = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                related_name='handled_tickets',
+                                null=True, blank=True)
     description = models.TextField()
 
     building = models.ForeignKey(Building)
     apartment = models.ForeignKey(Apartment, null=True, blank=True)
     amenity = models.ForeignKey(Amenity, null=True, blank=True)
 
+    # ticket is updated
+    comment = models.TextField(blank=True)
+
+    # ticket is resolved
+    action = models.TextField(blank=True)
+
     def has_permission(self, user, perm):
         if user.role == 'manager':
             return True
         return False
-
-
-class Comment(TimeStampedModel):
-
-    ticket = models.ForeignKey(Ticket)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL)
-    comment = models.TextField()
-
-    def has_permission(self, user, perm):
-        return self.author == user or self.user.role == 'manager'
