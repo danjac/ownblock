@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from apps.accounts.permissions import IsManager
 from apps.storage.models import Item
 from apps.parking.models import Vehicle
+from apps.tickets.models import Ticket
 
 from .models import Apartment, Building
 
@@ -77,6 +78,22 @@ class ApartmentViewSet(viewsets.ReadOnlyModelViewSet):
                 'description': vehicle.description,
                 'registration_number': vehicle.registration_number,
             })
+
+        if (self.request.user.role == 'manager' or
+                self.request.user.apartment == self.object):
+
+            tickets = Ticket.objects.filter(
+                apartment=self.object
+            ).order_by('-created')
+
+            data['tickets'] = []
+
+            for ticket in tickets:
+                data['tickets'].append({
+                    'id': ticket.id,
+                    'description': ticket.description,
+                    'status': ticket.status,
+                })
 
         return Response(data)
 

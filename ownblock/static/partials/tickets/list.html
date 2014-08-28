@@ -32,7 +32,7 @@ Sorry, no tickets found for your search.
     </thead>
     <tbody>
         <tr ng-repeat="ticket in tickets.currentItems">
-            <td><a ui-sref="tickets.detail({id: ticket.id})">{{ticket.description}}</a>
+            <td><a ui-sref="tickets.detail({id: ticket.id})">{{ticket.description|limitTo:30}}</a>
             </td>
             <td><span class="label" ng-class="{'label-success': ticket.status == 'new', 'label-warning': ticket.status == 'accepted', 'label-danger': ticket.status == 'resolved'}">{{ticket.status}}</td>
             <td>{{ticket.created|date:"short"}}</td>

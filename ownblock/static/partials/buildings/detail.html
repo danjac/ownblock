@@ -150,6 +150,32 @@
                     </table>
 
                 </accordion-group>
+                <accordion-group ng-if="currentApartment.tickets.length" is-open="status.tickets" ng-click="status.tickets = !status.tickets">
+                    <accordion-heading>
+                        Issues
+                        <icon class="pull-right" name="{{status.tickets? 'arrow-down': 'arrow-right'}}" />
+                    </accordion-heading>
+
+
+                    <table class="table table-bordered table-striped table-hover voffset-2" ng-show="currentApartment.tickets.length">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="ticket in currentApartment.tickets">
+                                <td><a ui-sref="tickets.detail({id: ticket.id})">{{ticket.description|limitTo:30}}</a>
+                                </td>
+                                <td><span class="label" ng-class="{'label-success': ticket.status == 'new', 'label-warning': ticket.status == 'accepted', 'label-danger': ticket.status == 'resolved'}">{{ticket.status}}</td>
+        </tr>
+    </tbody>
+
+</table>
+
+
+                </accordion-group>
             </accordion>
 
     </tab>
