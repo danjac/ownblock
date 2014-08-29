@@ -150,3 +150,7 @@ a, a:hover {
     border-color:#2C3E50;
     background-color:#2C3E50;
 }
+
+.navbar-nav a:hover {
+    color: #aaa;
+}
