@@ -111,7 +111,7 @@ input.form-control[type="file"] {
 }
 
 .front-page {
-    background: url('../img/background.jpg') no-repeat center center;
+    /*background: url('../img/background.jpg') no-repeat center center; */
 }
 .front-page .jumbotron, .front-page .container {
     zoom: 1;
