@@ -151,6 +151,6 @@ a, a:hover {
     background-color:#2C3E50;
 }
 
-.navbar-nav a:hover {
+.navbar-brand:hover, .navbar-brand:focus  .navbar-nav a:hover, .navbar-nav a:focus  {
     color: #aaa;
 }
