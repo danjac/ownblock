@@ -2,6 +2,9 @@
     <confirm-dialog ng-show="vehicle.is_removable" class="btn btn-danger" header="Remove vehicle" text="Are you sure you want to remove this vehicle?" on-confirm="deleteVehicle()">
         <icon name="trash-o" text="Remove vehicle"></icon>
     </confirm-dialog>
+    <send-message class="btn btn-default" recipient="vehicle.resident" header="Re:{{vehicle.description}}">
+        <icon name="send" text="Send message to {{vehicle.resident.full_name}}" />
+    </send-message>
 </div>
 
 <h2>{{vehicle.description}}</h2>

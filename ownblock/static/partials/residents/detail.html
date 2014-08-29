@@ -1,7 +1,7 @@
 <div class="btn-toolbar pull-right">
-    <button send-message="resident" role="button" class="btn btn-primary" ng-show="resident.id !== auth.user.id">
+    <send-message recipient="resident" class="btn btn-primary">
         <icon name="send" text="Send message"></icon>
-    </button>
+    </send-message>
 
     <a ui-sref="residents.edit({id: resident.id})" class="btn btn-default" has-role="manager" ng-show="resident.id !== auth.user.id && resident.role === 'resident'">
         <icon name="edit" text="Edit"></icon>

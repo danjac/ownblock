@@ -5,9 +5,9 @@
     <confirm-dialog class="btn btn-danger" ng-show="booking.is_removable" header="Cancel booking" text="Are you sure you want to cancel this booking?" on-confirm="cancelBooking()">
         <icon name="trash-o" text="Cancel reservation" />
     </confirm-dialog>
-    <button class="btn btn-default" send-message="{{booking.resident}}" ng-show="booking.resident.id !== auth.user.id">
-        <icon name="send" text="Send message to resident" />
-    </button>
+    <send-message class="btn btn-default" recipient="booking.resident" header="Re:{{booking.amenity_detail.name}}">
+        <icon name="send" text="Send message to {{booking.resident.full_name}}" />
+    </send-message>
 </div>
 
 <h2><a ui-sref="amenities.detail({id: booking.amenity})">{{booking.amenity_detail.name}}</a></h2>

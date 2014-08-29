@@ -107,13 +107,14 @@
             };
 
         }
-    ]).directive('sendMessage', ['$modal', 'api', 'notifier', 'staticUrl',
-        function($modal, api, notifier, staticUrl) {
-            var modalInstanceCtrl = function($scope, $modalInstance, recipient) {
+    ]).directive('sendMessage', ['$modal', 'auth', 'api', 'notifier', 'staticUrl',
+        function($modal, auth, api, notifier, staticUrl) {
+            var modalInstanceCtrl = function($scope, $modalInstance, recipient, header) {
 
                     $scope.recipient = recipient;
                     $scope.message = new api.Message({
-                        recipient: recipient.id
+                        recipient: recipient.id,
+                        header: header || ''
                     });
                     $scope.send = function() {
                         $modalInstance.close($scope.message);
@@ -122,13 +123,16 @@
                         $modalInstance.dismiss('cancel');
                     };
                 },
-                openModal = function(user) {
+                openModal = function(recipient, header) {
                     var modalInstance = $modal.open({
                         templateUrl: staticUrl + '/partials/messages/modalForm.html',
                         controller: modalInstanceCtrl,
                         resolve: {
                             recipient: function() {
-                                return user;
+                                return recipient;
+                            },
+                            header: function() {
+                                return header;
                             }
                         }
                     });
@@ -140,11 +144,24 @@
 
                 };
             return {
-                restrict: 'A',
+                restrict: 'E',
+                scope: {
+                    recipient: '=recipient',
+                    header: '@'
+                },
+                replace: true,
+                transclude: true,
+                template: '<button role="button"><ng-transclude></ng-transclude></button>',
                 link: function(scope, element, attrs) {
+                    scope.$watch('recipient', function(newVal) {
+                        if (newVal && newVal.id === auth.user.id) {
+                            attrs.$set('ngDisabled', true);
+                            element.addClass('disabled');
+                        }
+                    });
                     element.bind('click', function(event) {
                         event.preventDefault();
-                        openModal(scope.$eval(attrs.sendMessage));
+                        openModal(scope.recipient, scope.header);
                     });
                 }
             };

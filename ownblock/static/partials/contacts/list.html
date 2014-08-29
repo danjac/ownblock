@@ -62,9 +62,9 @@
                         <user-link user="manager" />
                     </td>
                     <td>
-                        <button class="btn btn-primary btn-sm" ng-show="auth.user.id !== manager.id" send-message="{{manager}}">
+                        <send-message class="btn btn-primary" recipient="manager">
                             <icon name="send" text="Send message" />
-                        </button>
+                        </send-message>
                     </td>
                 </tr>
             </tbody>

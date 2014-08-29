@@ -5,9 +5,9 @@
     <confirm-dialog class="btn btn-danger" header="Remove item" text="Are you sure you want to remove this item?" on-confirm="deleteItem()" ng-show="item.is_removable">
         <icon name="trash-o" text="Remove item" />
     </confirm-dialog>
-    <button class="btn btn-default" send-message="{{item.resident}}" ng-show="item.resident.id !== auth.user.id">
+    <send-message class="btn btn-default" recipient="item.resident" header="Re:{{item.description}}">
         <icon name="send" text="Send message" />
-    </button>
+    </send-message>
 
 </div>
 <h2>{{item.description}}</h2>

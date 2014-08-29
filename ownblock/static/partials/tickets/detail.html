@@ -2,6 +2,12 @@
     <a ui-sref="tickets.edit({id: ticket.id})" class="btn btn-default" has-role="manager">
         <icon name="edit" text="Update" />
     </a>
+    <send-message recipient="ticket.reporter_detail" class="btn btn-default" header="Re:{{ticket.description|limitTo:30}}">
+        <icon name="send" text="Send message to {{ticket.reporter_detail.full_name}}" />
+    </send-message>
+    <send-message ng-if="ticket.handler_detail && ticket.handler !== ticket.reporter" recipient="ticket.handler_detail" class="btn btn-default" header="Re:{{ticket.description|limitTo:30}}">
+        <icon name="send" text="Send message to {{ticket.handler_detail.full_name}}" />
+    </send-message>
 </div>
 <h2>Issue #{{ticket.id}}</h2>
 <table>
