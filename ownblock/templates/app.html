@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
     <!--<link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap-theme.min.css' %}">-->
     <link rel="stylesheet" href="{% static 'bower_components/fullcalendar/fullcalendar.css' %}">
-    <link rel="stylesheet" href="{% static 'bower_components/bootswatch/cerulean/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bower_components/bootswatch/flatly/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'bower_components/fontawesome/css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/app.css' %}" />
 </head>
@@ -29,7 +29,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="/app">
-                    <img src="/static/img/logo.jpg">&nbsp;{{auth.user.site_name}}
+                    {{auth.user.site_name}}
                 </a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-links" ng-if="auth.user">

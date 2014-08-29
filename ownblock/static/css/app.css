@@ -138,6 +138,15 @@ div.olMap
   display: none !important;
 }
 
-a {
+.btn {
+    padding: 8px 12px;
+}
+
+a, a:hover {
     color: #0C71D4;
+}
+
+.navbar-inverse {
+    border-color:#2C3E50;
+    background-color:#2C3E50;
 }

@@ -29,7 +29,7 @@
                 <td>Email address</td>
                 <td ng-href="mailto:{{resident.email}} ">{{resident.email}}</td>
             </tr>
-            <tr>
+            <tr ng-if="resident.phone">
                 <td>Phone</td>
                 <td>{{resident.phone}}</td>
             </tr>
