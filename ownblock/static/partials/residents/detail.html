@@ -151,7 +151,7 @@
             <icon class="pull-right " name="{{status.messages? 'arrow-down': 'arrow-right'}} " />
         </accordion-heading>
 
-        <h3 ng-show="resident.sent_messages.length ">Messages {{resident.full_name}} has sent you</h3>
+        <h4 ng-show="resident.sent_messages.length ">Messages {{resident.full_name}} has sent you</h4>
         <table class="table table-bordered table-hover table-striped table-condensed" ng-show="resident.sent_messages.length ">
             <thead>
                 <tr>
@@ -172,7 +172,7 @@
         </table>
 
 
-        <h3 ng-show="resident.received_messages.length">Messages you have sent to {{resident.full_name}}</h3>
+        <h4 ng-show="resident.received_messages.length">Messages you have sent to {{resident.full_name}}</h4>
         <table class="table table-bordered table-hover table-striped table-condensed" ng-show="resident.received_messages.length ">
             <thead>
                 <tr>
