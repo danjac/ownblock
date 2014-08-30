@@ -14,3 +14,4 @@ Issue #{{ ticket.id }} at {% if ticket.apartment %} {{ ticket.apartment.number }
 You can view details here:
 
 https://{{ site.domain }}{% url 'app' %}#/tickets/{{ ticket.id }}
+

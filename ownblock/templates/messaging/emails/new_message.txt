@@ -11,5 +11,5 @@ You have received a message from {{ sender.get_full_name }} {% if sender.apartme
 
 To reply to the message please visit {{ site.name }} here:
 
-https://{{ site.domain }}/#/messages/{{ message.id }}/reply
+https://{{ site.domain }}{% url 'app' %}#/messages/{{ message.id }}
 

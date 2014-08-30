@@ -6,4 +6,4 @@ Hi, {{ recipient.first_name }}
 
 To see other notices at {{ site.name }} please go here:
 
-https://{{ site.domain }}/#/notices
+https://{{ site.domain }}{% url 'app' %}#/notices
