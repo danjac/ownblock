@@ -2,10 +2,6 @@
 <div class="alert alert-warning">Your username and password didn't match. Please try again.</div>
 {% endif %}
 
-<div class="alert alert-info">
-    Use of this site, including the demo, requires the use of <a target="_blank" href="https://en.wikipedia.org/wiki/HTTP_cookie">cookies</a>.
-</div>
-
 <p class="well">
 Sign into {{ site.name }} with your email address and password.
 </p>
@@ -27,6 +23,11 @@ Sign into {{ site.name }} with your email address and password.
     <button type="submit" class="btn btn-primary">Sign in</button>
     <a href="{% url 'django.contrib.auth.views.password_reset' %}">Forgot your password?</a>
 </form>
+
+<div class="alert alert-info voffset-2">
+    Use of this site, including the demo, requires the use of <a target="_blank" href="https://en.wikipedia.org/wiki/HTTP_cookie">cookies</a>.
+</div>
+
 
 
 {% endblock %}
