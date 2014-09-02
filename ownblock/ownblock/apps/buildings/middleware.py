@@ -1,5 +1,3 @@
-import logging
-
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.utils.functional import SimpleLazyObject
@@ -49,10 +47,8 @@ class CurrentSiteMiddleware(object):
     def process_request(self, request):
 
         request.site = SimpleLazyObject(lambda: self.get_site(request))
-        if (request.site is None or (
-                request.building and request.building.site != request.site) or
-                request.get_host() != request.site.domain):
-            logging.error("REDIRECT:", request.get_host(), request.site.domain)
+        if request.site is None or (
+                request.building and request.building.site != request.site):
             return HttpResponseRedirect(self.get_redirect_url(request))
         return None
 
