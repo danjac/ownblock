@@ -253,6 +253,15 @@
                     access: 'resident'
                 }
             }).
+            state('complaints', {
+                templateUrl: partialsUrl + 'complaints/base.html',
+                parent: 'site'
+            }).
+            state('complaints.list', {
+                url: '/complaints',
+                templateUrl: partialsUrl + 'complaints/list.html',
+                controller: 'complaints.ListCtrl'
+            }).
             state('tickets', {
                 templateUrl: partialsUrl + 'tickets/base.html',
                 parent: 'site'

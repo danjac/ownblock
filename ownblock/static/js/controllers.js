@@ -791,6 +791,12 @@
                 });
             };
         }
+    ]).controller('complaints.ListCtrl', ['$scope', 'api', 'paginator',
+        function($scope, api, paginator) {
+            api.Complaint.query().$promise.then(function(response) {
+                $scope.complaints = paginator(response);
+            });
+        }
     ]).controller('tickets.ListCtrl', ['$scope', 'api', 'paginator',
         function($scope, api, paginator) {
             api.Ticket.query().$promise.then(function(response) {

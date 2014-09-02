@@ -17,6 +17,7 @@ class ComplaintSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'complaint',
+            'created',
             'resident',
             'resident_detail',
             'apartment',
