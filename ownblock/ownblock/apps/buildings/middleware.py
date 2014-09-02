@@ -36,7 +36,7 @@ class CurrentSiteMiddleware(object):
             domain = request.building.site.domain
             path = request.path
 
-        elif request.user.staff:
+        elif request.user.is_staff:
             path = reverse('admin:index')
 
         else:
