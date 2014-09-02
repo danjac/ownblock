@@ -27,6 +27,7 @@ class CurrentSiteMiddleware(object):
             return get_current_site(request)
 
     def get_redirect_url(self, request):
+        # not sure if we really need a redirect here
         scheme = 'https' if request.is_secure() else 'http'
         domain = request.site.domain
         path = None
@@ -44,9 +45,11 @@ class CurrentSiteMiddleware(object):
         return '%s://%s%s' % (scheme, domain, path)
 
     def process_request(self, request):
+
         request.site = SimpleLazyObject(lambda: self.get_site(request))
         if request.site is None or (
-                request.building and request.building.site != request.site):
+                request.get_host() != request.site.domain or
+                (request.building and request.building.site != request.site)):
             return HttpResponseRedirect(self.get_redirect_url(request))
         return None
 
