@@ -1,10 +1,11 @@
 
 import factory
 
+from django.db.models import signals
 from django.test import TestCase
 from django.contrib.sites.models import Site
 
-from factory.django import DjangoModelFactory
+from factory.django import DjangoModelFactory, mute_signals
 
 from .models import Building, Apartment
 
@@ -15,6 +16,7 @@ class SiteFactory(DjangoModelFactory):
         model = Site
 
 
+@mute_signals(signals.pre_save)
 class BuildingFactory(DjangoModelFactory):
 
     class Meta:
@@ -24,6 +26,8 @@ class BuildingFactory(DjangoModelFactory):
     city = 'Lappeenranta'
     postcode = '53900'
     country = 'FI'
+    latitude = 60.1
+    longitude = 20
 
     site = factory.SubFactory(SiteFactory)
 
