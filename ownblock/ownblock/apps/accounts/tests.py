@@ -54,7 +54,8 @@ class UserTests(TestCase):
         resident = ResidentFactory.create()
         resident.delete()
 
-        self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(User.objects.count(), 0)
+        self.assertEqual(User.inactive_objects.count(), 1)
 
         self.assertFalse(resident.is_active)
         self.assertNotEqual(resident.email, 'resident@gmail.com')
@@ -73,9 +74,9 @@ class ObjectPermissionBackendTests(TestCase):
     def test_model_permission(self):
 
         user = ManagerFactory.create()
-        backend = ObjectPermissionBackend().has_perm(
+        self.assertTrue(ObjectPermissionBackend().has_perm(
             user, 'notices.add_notice'
-        )
+        ))
 
     def test_has_perms(self):
 
