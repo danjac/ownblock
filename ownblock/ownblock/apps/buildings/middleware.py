@@ -9,9 +9,14 @@ class CurrentSiteMiddleware(object):
     """Gets current Site based on HTTP HOST (fallback on SITE_ID).
 
     The site object is added to request.site.
+
+    This middleware goes after CurrentBuildingMiddleware.
     """
 
     def get_site(self, request):
+
+        if request.building:
+            return request.building.site
 
         try:
             return Site.objects.get(domain=request.get_host())
