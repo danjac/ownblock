@@ -103,7 +103,7 @@ urlpatterns = patterns('',
 
 
                        # Admin site
-                       url(r'^admin/', include(admin.site.urls)),
+                       url(r'^backend/', include(admin.site.urls)),
                        )
 
 # Authentication

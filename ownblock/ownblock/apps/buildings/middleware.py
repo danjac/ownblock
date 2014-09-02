@@ -27,15 +27,21 @@ class CurrentSiteMiddleware(object):
             return get_current_site(request)
 
     def get_redirect_url(self, request):
-        if request.building:
-            scheme = 'https' if request.is_secure() else 'http'
-            return '%s://%s%s' % (scheme,
-                                  request.building.site.domain,
-                                  request.path)
-        if request.user.staff:
-            return reverse('admin:index')
+        scheme = 'https' if request.is_secure() else 'http'
+        domain = request.site.domain
+        path = None
 
-        return reverse('index')
+        if request.building:
+            domain = request.building.site.domain
+            path = request.path
+
+        elif request.user.staff:
+            path = reverse('admin:index')
+
+        else:
+            path = reverse('index')
+
+        return '%s://%s%s' % (scheme, domain, path)
 
     def process_request(self, request):
         request.site = SimpleLazyObject(lambda: self.get_site(request))
