@@ -4,6 +4,7 @@ import factory
 from unittest.mock import Mock
 
 from django.test import TestCase
+from django.utils import timezone
 
 from rest_framework import serializers
 
@@ -78,8 +79,8 @@ class BookingSerializerTests(TestCase):
 
     def test_validate_amenity_if_conflicting_dates(self):
 
-        date_from = datetime.datetime.now() + datetime.timedelta(hours=4)
-        date_to = datetime.datetime.now() + datetime.timedelta(hours=5)
+        date_from = timezone.now() + datetime.timedelta(hours=4)
+        date_to = timezone.now() + datetime.timedelta(hours=5)
 
         resident = ResidentFactory.create()
         amenity = AmenityFactory.create(building=resident.apartment.building)
