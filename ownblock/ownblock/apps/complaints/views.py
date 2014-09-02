@@ -40,5 +40,5 @@ class ComplaintViewSet(viewsets.ModelViewSet):
             'resident',
             'resident__apartment').order_by('-created')
         if self.request.user.role == 'resident':
-            return qs.filter(resident=self.request.user)
+            qs = qs.filter(resident=self.request.user)
         return qs
