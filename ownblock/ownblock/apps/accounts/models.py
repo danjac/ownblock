@@ -91,6 +91,7 @@ class User(AbstractBaseUser):
             'amenities.add_booking',
             'amenities.change_booking',
             'amenities.delete_booking',
+            'complaints.add_complaint',
             'messaging.add_message',
             'notices.add_notice',
             'notices.change_notice',

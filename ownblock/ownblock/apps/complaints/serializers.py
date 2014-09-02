@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 
 from apps.accounts.serializers import UserSerializer
-from apps.buidlings.serializers import ApartmentSerializer
+from apps.buildings.serializers import ApartmentSerializer
 
 from .models import Complaint
 
@@ -22,3 +22,12 @@ class ComplaintSerializer(serializers.ModelSerializer):
             'apartment',
             'apartment_detail',
         )
+
+    def validate_apartment(self, attrs, source):
+        apartment = attrs[source]
+        if apartment is None:
+            return attrs
+        if apartment.building != self.context['request'].building:
+            raise serializers.ValidationError(
+                "Apartment does not belong to building")
+        return attrs

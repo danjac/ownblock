@@ -91,6 +91,8 @@ urlpatterns = patterns('',
                        url(r'^api/users/', include('apps.accounts.urls')),
                        url(r'^api/notices/', include('apps.notices.urls')),
                        url(r'^api/amenities/', include('apps.amenities.urls')),
+                       url(r'^api/complaints/', include(
+                           'apps.complaints.urls')),
                        url(r'^api/messages/', include('apps.messaging.urls')),
                        url(r'^api/storage/', include('apps.storage.urls')),
                        url(r'^api/buildings/', include('apps.buildings.urls')),
