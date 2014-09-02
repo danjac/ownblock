@@ -22,7 +22,14 @@ class SerializerTests(TestCase):
                           serializer.validate_recipient, attrs, 'recipient')
 
     def test_validate_recipient_if_does_not_exist(self):
-        pass
+        apt = ApartmentFactory.create()
+        req = Mock()
+        req.user = ResidentFactory.create(apartment=apt)
+        recipient = ResidentFactory.create()
+        serializer = MessageSerializer(context={'request': req})
+        attrs = {'recipient': recipient}
+        self.assertRaises(serializers.ValidationError,
+                          serializer.validate_recipient, attrs, 'recipient')
 
     def test_validate_recipient_if_ok(self):
         pass
