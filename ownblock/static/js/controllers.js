@@ -797,6 +797,31 @@
                 $scope.complaints = paginator(response);
             });
         }
+    ]).controller('complaints.DetailCtrl', ['$scope', '$state', 'api',
+        function($scope, $state, api) {
+            api.Complaint.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.complaint = response;
+            });
+        }
+    ]).controller('complaints.NewCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+            $scope.complaint = new api.Complaint();
+            api.Apartment.query().$promise.then(function(response) {
+                $scope.apartments = response;
+            });
+
+            $scope.save = function() {
+                $scope.complaint.$save(function() {
+                    notifier.success('Your complaint has been sent');
+                    $state.go('complaints.list');
+                });
+            };
+            $scope.cancel = function() {
+                $state.go('complaints.list');
+            };
+        }
     ]).controller('tickets.ListCtrl', ['$scope', 'api', 'paginator',
         function($scope, api, paginator) {
             api.Ticket.query().$promise.then(function(response) {

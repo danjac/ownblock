@@ -262,6 +262,19 @@
                 templateUrl: partialsUrl + 'complaints/list.html',
                 controller: 'complaints.ListCtrl'
             }).
+            state('complaints.new', {
+                url: '/complaints/new',
+                templateUrl: partialsUrl + 'complaints/form.html',
+                controller: 'complaints.NewCtrl',
+                data: {
+                    access: 'resident'
+                }
+            }).
+            state('complaints.detail', {
+                url: '/complaints/:id',
+                templateUrl: partialsUrl + 'complaints/detail.html',
+                controller: 'complaints.DetailCtrl'
+            }).
             state('tickets', {
                 templateUrl: partialsUrl + 'tickets/base.html',
                 parent: 'site'

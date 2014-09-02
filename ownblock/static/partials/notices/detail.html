@@ -1,9 +1,4 @@
 <div class="btn-toolbar pull-right" role="toolbar">
-    <!--
-    <button class="btn btn-default" ng-show="notice.author.id != auth.user.id" send-message="{{notice.author}}">
-        <icon name="send" text="Send message to author" />
-    </button>
-    -->
     <send-message recipient="notice.author" class="btn btn-default" header="Re:{{notice.title}}">
         <icon name="send" text="Send message to {{notice.author.full_name}}" />
     </send-message>

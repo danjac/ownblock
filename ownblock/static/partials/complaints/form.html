@@ -1,0 +1,12 @@
+<p class="well">Your complaint will be sent to the building management. It will be treated with the utmost confidence.</p>
+<form role="form" name="form" novalidate>
+    <div class="form-group">
+        <textarea ng-model="complaint.complaint" rows="10" class="form-control" cols="30" placeholder="Please provide the details of your complaint" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="" class="control-label">Please select which apartment the complaint concerns (if any)</label>
+        <select ng-model="complaint.apartment" class="form-control" ng-options="apartment.id as apartment.name for apartment in apartments"></select>
+    </div>
+    <button role="button" class="btn btn-primary" ng-click="save()" ng-disabled="form.$invalid">Save</button>
+    <button role="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+</form>

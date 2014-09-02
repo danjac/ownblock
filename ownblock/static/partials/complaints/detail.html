@@ -1,0 +1,27 @@
+<div class="btn-toolbar pull-right" role="toolbar">
+    <send-message recipient="complaint.resident_detail" class="btn btn-default" header="Re:complaint">
+        <icon name="send" text="Send message to {{complaint.resident_detail.full_name}}" />
+    </send-message>
+</div>
+
+<table class="table table-condensed">
+    <tr>
+        <td>Reported by</td>
+        <td>
+            <user-link user="complaint.resident_detail" />
+        </td>
+    </tr>
+    <tr>
+        <td>Reported on</td>
+        <td>{{complaint.created|date:"short"}}</td>
+    </tr>
+    <tr ng-if="complaint.apartment">
+        <td>Apartment</td>
+        <td><a ui-sref="buildings.apartment({id: complaint.apartment})">{{complaint.apartment_detail.name}}</a>
+        </td>
+    </tr>
+</table>
+
+
+
+<pre>{{complaint.complaint}}</pre>

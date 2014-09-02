@@ -13,7 +13,7 @@ Sorry, no complaints found for your search.
     </div>
     <div class="col-md-6">
         <div role="toolbar" class="btn-toolbar pull-right" has-role="resident">
-            <a href class="btn btn-primary">
+            <a ui-sref="complaints.new" class="btn btn-primary">
                 <icon name="plus" text="Submit a complaint" />
             </a>
         </div>
@@ -31,7 +31,7 @@ Sorry, no complaints found for your search.
     </thead>
     <tbody>
         <tr ng-repeat="complaint in complaints.currentItems">
-            <td><a href>{{complaint.complaint|limitTo:30}}</a>
+            <td><a ui-sref="complaints.detail({id: complaint.id})">{{complaint.complaint|limitTo:30}}</a>
             </td>
             <td>{{complaint.created|date:"short"}}</td>
             <td has-role="manager">

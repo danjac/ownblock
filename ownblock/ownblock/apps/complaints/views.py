@@ -10,7 +10,7 @@ class ComplaintViewSet(viewsets.ModelViewSet):
     serializer_class = ComplaintSerializer
 
     def pre_save(self, obj):
-        obj.user = self.request.user
+        obj.resident = self.request.user
         obj.building = self.request.building
 
     def post_save(self, obj, created):

@@ -23,6 +23,7 @@ class ComplaintSerializer(serializers.ModelSerializer):
             'apartment',
             'apartment_detail',
         )
+        read_only_fields = ('resident', )
 
     def validate_apartment(self, attrs, source):
         apartment = attrs[source]
