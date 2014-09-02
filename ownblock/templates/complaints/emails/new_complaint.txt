@@ -1,0 +1,9 @@
+Hi {{ manager.get_short_name }}
+
+{{ complaint.resident.get_full_name }} at {{ complaint.resident.apartment.number }}, {{ complaint.building.get_full_address }} has sent the following complaint:
+
+{{ complaint.complaint }}
+
+You can view this complaint here:
+
+https://{{ site.domain }}{% url 'app' %}#complaints/{{ complaint.id }}
