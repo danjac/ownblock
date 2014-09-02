@@ -117,7 +117,7 @@
                     markers = new OL.Layer.Markers('Markers'),
                     size = new OL.Size(21, 25),
                     offset = new OL.Pixel(-(size.w / 2), -size.h),
-                    icon = new OL.Icon('http://www.openlayers.org/dev/img/marker.png', size, offset);
+                    icon = new OL.Icon('/static/bower_components/openlayers/build/img/marker.png', size, offset);
                 map.addLayer(layer);
                 map.addLayer(markers);
                 map.setCenter(point, 15);
