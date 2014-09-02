@@ -19,6 +19,18 @@ class NoticeTests(TestCase):
         self.assertTrue(notice.has_permission(manager,
                                               'notices.change_notice'))
 
+    def test_has_permission_if_not_manager(self):
+        building = BuildingFactory()
+        manager = ManagerFactory()
+        notice = Notice(building=building)
+        self.assertFalse(notice.has_permission(manager,
+                                               'notices.change_notice'))
+
+    def test_has_permission_if_not_author(self):
+        notice = Notice(author=User(role='resident'))
+        self.assertTrue(notice.has_permission(User(role='resident'),
+                                              'notices.change_notice'))
+
     def test_has_permission_if_author(self):
         notice = Notice(author=User(role='resident'))
         self.assertTrue(notice.has_permission(notice.author,
