@@ -154,3 +154,7 @@ a, a:hover {
 .navbar-inverse a:hover, .navbar-inverse a:focus {
     color: #aaa !important;
 }
+
+.alert {
+    color: #fff;
+}
