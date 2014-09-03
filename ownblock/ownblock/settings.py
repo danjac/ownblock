@@ -227,9 +227,9 @@ class Production(Base):
     ALLOWED_HOSTS = ['.ownblock.com']
 
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = values.Value('EMAIL_HOST', 'smtp.gmail.com')
-    EMAIL_HOST_PASSWORD = values.Value('EMAIL_HOST_PASSWORD', '')
-    EMAIL_HOST_USER = values.Value('EMAIL_HOST_USER', 'your_email@example.com')
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_HOST_PASSWORD = values.Value('EMAIL_HOST_PASSWORD')
+    EMAIL_HOST_USER = values.Value('EMAIL_HOST_USER')
     EMAIL_PORT = values.Value('EMAIL_PORT', 587)
 
     EMAIL_SUBJECT_PREFIX = '[%s] ' % Base.SITE_NAME
