@@ -15,7 +15,8 @@
 <table class="table table-condensed">
     <tr>
         <td>Reserved by</td>
-        <td><a ui-sref="residents.detail({id: booking.resident.id})">{{booking.resident.full_name}}</a>
+        <td>
+            <user-link user="booking.resident" />
         </td>
     </tr>
     <tr>

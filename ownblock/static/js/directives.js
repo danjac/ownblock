@@ -32,7 +32,7 @@
                 user: '='
             },
             replace: true,
-            template: '<span><span ng-if="!user.is_active">{{user.full_name}} <span class="label label-warning">Removed</span></span><a ng-if="user.is_active" ui-sref="residents.detail({id: user.id})">{{user.full_name}}</a></span>'
+            template: '<span><span ng-if="!user.is_active">{{user.full_name}} <span class="label label-warning">Removed</span></span><img ng-src="{{user.gravatar}}" ng-if="user.gravatar"> <a ng-if="user.is_active" ui-sref="residents.detail({id: user.id})">{{user.full_name}}</a></span>'
         };
     }).
     directive('filesModel', function() {

@@ -14,7 +14,7 @@
     </confirm-dialog>
 </div>
 
-<h2>{{resident.full_name}} <span ng-show="resident.role === 'manager'" class="label label-info">Building manager</span></h2>
+<h2><img ng-src="{{resident.gravatar}}" ng-if="resident.gravatar"> {{resident.full_name}} </h2>
 <h3 ng-show="resident.apartment_detail"><a ui-sref="buildings.apartment({id : resident.apartment })">Apartment {{resident.apartment_detail.name}}</a></h3>
 
 <accordion close-others="true">

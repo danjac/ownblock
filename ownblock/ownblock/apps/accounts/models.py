@@ -1,3 +1,6 @@
+import urllib
+import hashlib
+
 from django.conf import settings
 from django.db import models
 from django.db.models import signals
@@ -189,6 +192,11 @@ class User(AbstractBaseUser):
         elif self.apartment_id:
             return self.apartment.building.site
         return Site.objects.get_current()
+
+    def get_gravatar_url(self, size=40):
+        return "http://www.gravatar.com/avatar/%s?%s" % (
+            hashlib.md5(self.email.lower().encode()).hexdigest(),
+            urllib.parse.urlencode({'s': size}))
 
 
 def send_invitation_email(sender, instance, created, **kwargs):

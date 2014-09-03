@@ -8,7 +8,8 @@
 <table class="table table-condensed">
     <tr ng-show="message.sender.id !== auth.user.id">
         <td>From</td>
-        <td><a ui-sref="residents.detail({id: message.sender.id})">{{message.sender.full_name}}</a> 
+        <td>
+            <user-link user="message.sender" />
         </td>
     </tr>
     <tr ng-show="message.recipient !== auth.user.id">

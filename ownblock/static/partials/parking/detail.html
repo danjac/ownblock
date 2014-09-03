@@ -15,7 +15,8 @@
     </tr>
     <tr>
         <td>Owner</td>
-        <td><a ui-sref="residents.detail({id: vehicle.resident.id})">{{vehicle.resident.full_name}}</a>
+        <td>
+            <user-link user="vehicle.resident" />
         </td>
     </tr>
     <tr>

@@ -21,6 +21,7 @@ class ResidentSerializer(serializers.ModelSerializer):
     """Specifically to add new residents to apartment"""
 
     full_name = serializers.SerializerMethodField('get_full_name')
+    gravatar = serializers.SerializerMethodField('get_gravatar_url')
 
     class Meta:
         model = get_user_model()
@@ -31,6 +32,7 @@ class ResidentSerializer(serializers.ModelSerializer):
             'email',
             'phone',
             'full_name',
+            'gravatar',
             'is_active',
         )
 
@@ -40,6 +42,9 @@ class ResidentSerializer(serializers.ModelSerializer):
 
     def get_full_name(self, obj):
         return obj.get_full_name()
+
+    def get_gravatar_url(self, obj):
+        return obj.get_gravatar_url(size=25)
 
 
 class BuildingSerializer(serializers.ModelSerializer):

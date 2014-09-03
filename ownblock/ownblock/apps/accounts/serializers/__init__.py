@@ -12,6 +12,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     apartment_detail = ApartmentRelatedField(source='apartment')
     full_name = serializers.SerializerMethodField('get_full_name')
+    gravatar = serializers.SerializerMethodField('get_gravatar_url')
 
     class Meta:
         model = User
@@ -25,12 +26,16 @@ class UserSerializer(serializers.ModelSerializer):
             'apartment_detail',
             'full_name',
             'is_active',
+            'gravatar',
         )
 
         read_only_fields = ('role', )
 
     def get_full_name(self, obj):
         return obj.get_full_name()
+
+    def get_gravatar_url(self, obj):
+        return obj.get_gravatar_url(size=25)
 
 
 class RestrictedUserSerializer(UserSerializer):

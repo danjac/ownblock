@@ -32,6 +32,7 @@ class UserViewSet(viewsets.ModelViewSet):
         self.object = self.get_object()
 
         data = self.get_serializer(self.object).data
+        data['gravatar'] = self.object.get_gravatar_url(size=40)
 
         notices = Notice.objects.filter(author=self.object)
 

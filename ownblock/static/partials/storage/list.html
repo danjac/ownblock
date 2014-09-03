@@ -40,7 +40,8 @@
             </td>
             <td><a ui-sref="storage.placeDetail({id: item.place})">{{item.place_name}}</a>
             </td>
-            <td><a ui-sref="residents.detail({id: item.resident.id})">{{item.resident.full_name}}</a>
+            <td>
+                <user-link user="item.resident" />
             </td>
             <td><a ui-sref="buildings.apartment({id: item.apartment.id})">{{item.apartment.number}}</a>
             </td>
