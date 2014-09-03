@@ -12,8 +12,9 @@ def deploy():
             api.prefix(api.env.activate):
 
         api.run("git pull")
+        api.run("pip install -r ../requirements/production.txt")
         api.run("./manage.py check")
         api.run("./manage.py collectstatic --noinput")
         # TBD: database backup
-        api.run("./manage.py syncdb --migrate")
+        api.run("./manage.py migrate")
         api.sudo("supervisorctl restart webapp")
