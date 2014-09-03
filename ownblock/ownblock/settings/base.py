@@ -5,7 +5,6 @@ from __future__ import absolute_import
 
 from os import environ
 from os.path import abspath, basename, dirname, join, normpath
-from sys import path
 
 from django.core.exceptions import ImproperlyConfigured
 
