@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <footer class="voffset-3">
     <div class="container">
         <ul class="nav nav-pills">
@@ -9,7 +10,7 @@
             </li>
         </ul>
         <p class="pull-right">
-            <small>&copy; Dan Jacob {% now 'Y' %}</small>
+            <small>&copy; Dan Jacob {% now 'Y' %} <a href="https://github.com/danjac"><img src="{% static 'img/GitHub_Logo.png' %}"></a></small>
         </p>
     </div>
 </footer>
