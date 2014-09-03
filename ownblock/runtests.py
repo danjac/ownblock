@@ -2,14 +2,16 @@
 import os
 import dotenv
 import django
+import sys
 
 dotenv.read_dotenv()
 
 if __name__ == "__main__":
+    os.environ.setdefault("DJANGO_CONFIGURATION", "Test")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ownblock.settings")
 
-    os.environ['DJANGO_SETTINGS_MODULE'] = 'ownblock.settings.test'
+    from configurations.management import execute_from_command_line
+
     django.setup()
 
-    from django.core.management import call_command
-
-    call_command("test")
+    execute_from_command_line([sys.argv[0]] + ["test"] + sys.argv[1:])
