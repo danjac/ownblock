@@ -11,7 +11,7 @@ from django.views.generic.edit import FormView
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 
-from apps.accounts.serializers import AuthUserSerializer
+from ownblock.apps.accounts.serializers import AuthUserSerializer
 
 admin.autodiscover()
 
@@ -88,18 +88,28 @@ urlpatterns = patterns('',
                            name='app'),
 
                        # REST API
-                       url(r'^api/users/', include('apps.accounts.urls')),
-                       url(r'^api/notices/', include('apps.notices.urls')),
-                       url(r'^api/amenities/', include('apps.amenities.urls')),
+                       url(r'^api/users/', include(
+                           'ownblock.apps.accounts.urls')),
+                       url(r'^api/notices/', include(
+                           'ownblock.apps.notices.urls')),
+                       url(r'^api/amenities/', include(
+                           'ownblock.apps.amenities.urls')),
                        url(r'^api/complaints/', include(
-                           'apps.complaints.urls')),
-                       url(r'^api/messages/', include('apps.messaging.urls')),
-                       url(r'^api/storage/', include('apps.storage.urls')),
-                       url(r'^api/buildings/', include('apps.buildings.urls')),
-                       url(r'^api/tickets/', include('apps.tickets.urls')),
-                       url(r'^api/documents/', include('apps.documents.urls')),
-                       url(r'^api/contacts/', include('apps.contacts.urls')),
-                       url(r'^api/parking/', include('apps.parking.urls')),
+                           'ownblock.apps.complaints.urls')),
+                       url(r'^api/messages/', include(
+                           'ownblock.apps.messaging.urls')),
+                       url(r'^api/storage/', include(
+                           'ownblock.apps.storage.urls')),
+                       url(r'^api/buildings/', include(
+                           'ownblock.apps.buildings.urls')),
+                       url(r'^api/tickets/', include(
+                           'ownblock.apps.tickets.urls')),
+                       url(r'^api/documents/', include(
+                           'ownblock.apps.documents.urls')),
+                       url(r'^api/contacts/', include(
+                           'ownblock.apps.contacts.urls')),
+                       url(r'^api/parking/', include(
+                           'ownblock.apps.parking.urls')),
 
 
                        # Admin site

@@ -1,7 +1,7 @@
 
 from rest_framework import serializers
 
-from apps.accounts.serializers import UserSerializer
+from ..accounts.serializers import UserSerializer
 
 from .models import Vehicle
 

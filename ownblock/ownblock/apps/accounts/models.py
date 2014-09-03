@@ -19,7 +19,7 @@ from factory.fuzzy import FuzzyText
 
 from model_utils import Choices
 
-from apps.buildings.models import Apartment
+from ..buildings.models import Apartment
 
 _fuzzier = FuzzyText()
 

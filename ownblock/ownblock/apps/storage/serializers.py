@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.accounts.serializers.related import UserRelatedField
+from ..accounts.serializers.related import UserRelatedField
 
 from .models import Place, Item
 

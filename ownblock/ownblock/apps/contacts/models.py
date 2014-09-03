@@ -1,6 +1,6 @@
 from django.db import models
 
-from apps.buildings.models import Building
+from ..buildings.models import Building
 
 
 class Contact(models.Model):

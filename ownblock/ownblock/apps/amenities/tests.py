@@ -10,8 +10,8 @@ from rest_framework import serializers
 
 from factory.django import DjangoModelFactory
 
-from apps.accounts.tests import ResidentFactory
-from apps.buildings.tests import BuildingFactory
+from ..accounts.tests import ResidentFactory
+from ..buildings.tests import BuildingFactory
 
 from .models import Amenity, Booking
 from .serializers import BookingSerializer

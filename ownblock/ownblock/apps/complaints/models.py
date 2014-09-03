@@ -3,7 +3,7 @@ from django.db import models
 
 from model_utils.models import TimeStampedModel
 
-from apps.buildings.models import Apartment, Building
+from ..buildings.models import Apartment, Building
 
 
 class Complaint(TimeStampedModel):

@@ -5,8 +5,8 @@ from model_utils import Choices
 from model_utils.fields import StatusField
 from model_utils.models import TimeStampedModel
 
-from apps.buildings.models import Building, Apartment
-from apps.amenities.models import Amenity
+from ..buildings.models import Building, Apartment
+from ..amenities.models import Amenity
 
 
 class Ticket(TimeStampedModel):

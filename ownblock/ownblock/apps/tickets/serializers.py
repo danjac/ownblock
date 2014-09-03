@@ -1,10 +1,10 @@
 from rest_framework import serializers
 
+
+from ..accounts.serializers import UserSerializer
+from ..buildings.serializers import ApartmentRelatedField
+
 from .models import Ticket
-
-
-from apps.accounts.serializers import UserSerializer
-from apps.buildings.serializers import ApartmentRelatedField
 
 
 class TicketSerializer(serializers.ModelSerializer):

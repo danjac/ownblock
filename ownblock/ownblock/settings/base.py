@@ -31,7 +31,7 @@ SITE_NAME = basename(DJANGO_ROOT)
 
 # Add our project to our pythonpath, this way we don't need to type our project
 # name in our dotted import paths:
-path.append(DJANGO_ROOT)
+# path.append(DJANGO_ROOT)
 # END PATH CONFIGURATION
 
 
@@ -183,8 +183,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'apps.buildings.middleware.CurrentBuildingMiddleware',
-    'apps.buildings.middleware.CurrentSiteMiddleware',
+    'ownblock.apps.buildings.middleware.CurrentBuildingMiddleware',
+    'ownblock.apps.buildings.middleware.CurrentSiteMiddleware',
 )
 # END MIDDLEWARE CONFIGURATION
 
@@ -198,7 +198,7 @@ APPEND_SLASH = False
 
 # APP CONFIGURATION
 DJANGO_APPS = (
-    # Default Django apps:
+    # Default Django ownblock.apps.
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -219,19 +219,19 @@ THIRD_PARTY_APPS = (
     'rest_framework',
 )
 
-# Apps specific for this project go here.
+# ownblock.apps.specific for this project go here.
 LOCAL_APPS = (
-    'apps.accounts',
-    'apps.amenities',
-    'apps.buildings',
-    'apps.complaints',
-    'apps.contacts',
-    'apps.documents',
-    'apps.messaging',
-    'apps.notices',
-    'apps.parking',
-    'apps.storage',
-    'apps.tickets',
+    'ownblock.apps.accounts',
+    'ownblock.apps.amenities',
+    'ownblock.apps.buildings',
+    'ownblock.apps.complaints',
+    'ownblock.apps.contacts',
+    'ownblock.apps.documents',
+    'ownblock.apps.messaging',
+    'ownblock.apps.notices',
+    'ownblock.apps.parking',
+    'ownblock.apps.storage',
+    'ownblock.apps.tickets',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -280,7 +280,7 @@ WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 # AUTH CONFIGURATION
 AUTH_USER_MODEL = 'accounts.User'
 AUTHENTICATION_BACKENDS = (
-    'apps.accounts.backends.ObjectPermissionBackend',
+    'ownblock.apps.accounts.backends.ObjectPermissionBackend',
     #'django.contrib.auth.backends.ModelBackend',
 )
 LOGIN_URL = '/account/login/'
@@ -290,7 +290,7 @@ LOGIN_REDIRECT_URL = '/app'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-        'apps.buildings.permissions.IsBuilding',
+        'ownblock.apps.buildings.permissions.IsBuilding',
         'rest_framework.permissions.DjangoObjectPermissions',
     )
 }
@@ -300,14 +300,3 @@ REST_FRAMEWORK = {
 
 
 # END REST CONFIGURATION
-
-# SOUTH CONFIGURATION
-# See:
-# http://south.readthedocs.org/en/latest/installation.html#configuring-your-django-installation
-INSTALLED_APPS += (
-    # Database migration helpers:
-    'south',
-)
-# Don't need to use South when setting up a test database.
-SOUTH_TESTS_MIGRATE = False
-# END SOUTH CONFIGURATION

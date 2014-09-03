@@ -3,7 +3,7 @@ from django.test import TestCase
 
 from rest_framework.test import APIRequestFactory, force_authenticate
 
-from apps.accounts.tests import ResidentFactory, ManagerFactory
+from ..accounts.tests import ResidentFactory, ManagerFactory
 
 from .models import Complaint
 from .views import ComplaintViewSet

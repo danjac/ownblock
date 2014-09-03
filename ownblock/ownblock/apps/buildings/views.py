@@ -2,10 +2,10 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from apps.accounts.permissions import IsManager
-from apps.storage.models import Item
-from apps.parking.models import Vehicle
-from apps.tickets.models import Ticket
+from ..accounts.permissions import IsManager
+from ..storage.models import Item
+from ..parking.models import Vehicle
+from ..tickets.models import Ticket
 
 from .models import Apartment, Building
 

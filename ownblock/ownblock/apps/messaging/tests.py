@@ -4,8 +4,8 @@ from django.test import TestCase
 
 from rest_framework import serializers
 
-from apps.accounts.tests import ResidentFactory
-from apps.buildings.tests import ApartmentFactory, BuildingFactory
+from ..accounts.tests import ResidentFactory
+from ..buildings.tests import ApartmentFactory, BuildingFactory
 
 from .serializers import MessageSerializer
 

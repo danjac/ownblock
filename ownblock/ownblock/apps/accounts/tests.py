@@ -6,7 +6,7 @@ from django.core import mail
 from factory.django import DjangoModelFactory
 
 
-from apps.buildings.tests import (
+from ..buildings.tests import (
     SiteFactory,
     ApartmentFactory,
 )

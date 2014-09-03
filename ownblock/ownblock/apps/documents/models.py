@@ -5,7 +5,7 @@ from django.db import models
 
 from model_utils.models import TimeStampedModel
 
-from apps.buildings.models import Building
+from ..buildings.models import Building
 
 
 class Document(TimeStampedModel):

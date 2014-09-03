@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
-from apps.accounts.tests import ManagerFactory
-from apps.buildings.tests import BuildingFactory
+from ..accounts.tests import ManagerFactory
+from ..buildings.tests import BuildingFactory
 
 from .models import Notice
 
@@ -28,8 +28,8 @@ class NoticeTests(TestCase):
 
     def test_has_permission_if_not_author(self):
         notice = Notice(author=User(role='resident'))
-        self.assertTrue(notice.has_permission(User(role='resident'),
-                                              'notices.change_notice'))
+        self.assertFalse(notice.has_permission(User(role='resident'),
+                                               'notices.change_notice'))
 
     def test_has_permission_if_author(self):
         notice = Notice(author=User(role='resident'))

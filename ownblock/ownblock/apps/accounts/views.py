@@ -4,11 +4,11 @@ from rest_framework import status, viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.storage.models import Item
-from apps.parking.models import Vehicle
-from apps.messaging.models import Message
-from apps.notices.models import Notice
-from apps.amenities.models import Booking
+from ..storage.models import Item
+from ..parking.models import Vehicle
+from ..messaging.models import Message
+from ..notices.models import Notice
+from ..amenities.models import Booking
 
 from .models import User
 
