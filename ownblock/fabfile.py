@@ -4,6 +4,11 @@ api.env.hosts = ['178.79.185.15']
 api.env.user = 'deploy'
 api.env.directory = "$HOME/sites/ownblock/ownblock"
 api.env.activate = "source $HOME/.virtualenvs/ownblock/bin/activate"
+api.env.manage = "dotenv %s/manage.py" % api.env.directory
+
+
+def manage(cmd):
+    return api.run("%s %s" % (api.env.manage, cmd))
 
 
 @api.task
@@ -13,8 +18,9 @@ def deploy():
 
         api.run("git pull")
         api.run("pip install -r ../requirements/production.txt")
-        api.run("./manage.py check")
-        api.run("./manage.py collectstatic --noinput")
-        # TBD: database backup
-        api.run("./manage.py migrate")
+
+        manage("check")
+        manage("collectstatic --noinput")
+        manage("migrate")
+
         api.sudo("supervisorctl restart webapp")
