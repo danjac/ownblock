@@ -4,11 +4,10 @@ api.env.hosts = ['178.79.185.15']
 api.env.user = 'deploy'
 api.env.directory = "$HOME/sites/ownblock/ownblock"
 api.env.activate = "source $HOME/.virtualenvs/ownblock/bin/activate"
-api.env.manage = "dotenv %s/manage.py" % api.env.directory
 
 
 def manage(cmd):
-    return api.run("%s %s" % (api.env.manage, cmd))
+    return api.run("dotenv %s/manage.py %s" % (api.env.directory, cmd))
 
 
 @api.task
@@ -23,4 +22,4 @@ def deploy():
         manage("collectstatic --noinput")
         manage("migrate")
 
-        api.sudo("supervisorctl restart webapp")
+    api.sudo("supervisorctl restart webapp")
