@@ -897,7 +897,22 @@
         }
     ]).controller('account.ChangePasswordCtrl', ['$scope', '$state', 'api', 'auth', 'notifier',
         function($scope, $state, api, auth, notifier) {
+            function checkMatchingPassword() {
+                if (($scope.user.password && $scope.user.password2) && $scope.user.password !== $scope.user.password2) {
+                    $scope.passwordMismatch = true;
+                } else {
+                    $scope.passwordMismatch = false;
+                }
+            }
+
             $scope.user = {};
+            $scope.passwordMismatch = false;
+            $scope.$watch('user.password', function() {
+                checkMatchingPassword();
+            });
+            $scope.$watch('user.password2', function() {
+                checkMatchingPassword();
+            });
             $scope.save = function() {
                 api.Auth.changePassword($scope.user, function() {
                     notifier.success('Your password has been updated');
