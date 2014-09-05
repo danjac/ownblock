@@ -33,6 +33,7 @@
                     </a>
                 </div>
                 <div class="collapse navbar-collapse" id="navbar-links" ng-if="auth.user">
+
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown" ng-show="auth.user.role==='manager'">
                             <a class="dropdown-toggle" data-toggle="dropdown">
@@ -68,7 +69,73 @@
             <div class="row">
 
                 <div class="col-md-2">
-                    <ul class="nav nav-pills nav-stacked">
+                    <ul class="visible-xs visible-sm nav"> 
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle data-toggle">
+                                <icon name="bars" text="Menu"/>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li ng-class="{active: includes('buildings')}" has-role="resident">
+                                    <a ui-sref="buildings.detail">
+                                        <icon name="building" text="My building" />
+                                    </a>
+                                </li>
+                                <li ng-class="{active: includes('notices')}">
+                                    <a ui-sref="notices.list">
+                                        <icon name="bullhorn" text="Notice board" />
+                                    </a>
+                                </li>
+                                <li ng-class="{active: includes('messages')}">
+                                    <a ui-sref="messages.list">
+                                        <icon name="envelope" text="Messages" />
+                                    </a>
+                                </li>
+                                <li ng-class="{active: includes('residents')}">
+                                    <a ui-sref="residents.list">
+                                        <icon name="users" text="Residents" />
+                                    </a>
+                                </li>
+                                <li ng-class="{active: includes('documents')}">
+                                    <a ui-sref="documents.list">
+                                        <icon name="archive" text="Documents" />
+                                    </a>
+                                </li>
+                                <li ng-class="{active: includes('amenities')}">
+                                    <a ui-sref="amenities.list">
+                                        <icon name="calendar" text="Reservations" />
+                                    </a>
+                                </li>
+                                <li ng-class="{active: includes('tickets')}">
+                                    <a ui-sref="tickets.list">
+                                        <icon name="wrench" text="Maintenance" />
+                                    </a>
+                                </li>
+                                <li ng-class="{active: includes('complaints')}">
+                                    <a ui-sref="complaints.list">
+                                        <icon name="thumbs-down" text="Complaints" />
+                                    </a>
+                                </li>
+                                <li ng-class="{active: includes('contacts')}">
+                                    <a ui-sref="contacts.list">
+                                        <icon name="phone" text="Contacts" />
+                                    </a>
+                                </li>
+                                <li ng-class="{active: includes('parking')}">
+                                    <a ui-sref="parking.list">
+                                        <icon name="automobile" text="Parking" />
+                                    </a>
+                                </li>
+                                <li ng-class="{active: includes('storage')}">
+                                    <a ui-sref="storage.list">
+                                        <icon name="lock" text="Storage" />
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <ul class="nav nav-pills nav-stacked visible-md visible-lg">
                         <li ng-class="{active: includes('buildings')}" has-role="resident">
                             <a ui-sref="buildings.detail">
                                 <icon name="building" text="My building" />
@@ -127,7 +194,7 @@
                     </ul>
 
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-10 voffset-2">
                     <alert ng-cloak ng-repeat="msg in notifier.notifications" type="{{msg.type}}" close="notifier.dismiss($index)">{{msg.message}}</alert>
 
                     <div ng-cloak ui-view></div>
