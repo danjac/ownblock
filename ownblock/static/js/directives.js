@@ -155,8 +155,9 @@
                 link: function(scope, element, attrs) {
                     scope.$watch('recipient', function(newVal) {
                         if (newVal && newVal.id === auth.user.id) {
-                            attrs.$set('ngDisabled', true);
-                            element.addClass('disabled');
+                            //attrs.$set('ngDisabled', true);
+                            //element.addClass('disabled');
+                            element.remove();
                         }
                     });
                     element.bind('click', function(event) {
