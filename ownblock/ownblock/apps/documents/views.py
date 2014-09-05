@@ -30,6 +30,7 @@ class DocumentViewSet(viewsets.ModelViewSet):
 
     def pre_save(self, obj):
         obj.building = self.request.building
+        obj.author = self.request.user
 
     def post_save(self, obj, created):
         if not created:

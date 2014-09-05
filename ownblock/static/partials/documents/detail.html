@@ -6,11 +6,20 @@
     <a class="btn btn-primary" ng-href="{{document.download_url}}">
         <icon name="download" text="Download" />
     </a>
+    <send-message ng-if="document.author" recipient="document.author" class="btn btn-default" header="Re: {{document.title}}">
+        <icon name="send" text="Send message to {{document.author.full_name}}" />
+    </send-message>
 </div>
 
 <h2>{{document.title}}</h2>
 <table class="table table-condensed">
     <tbody>
+        <tr ng-if="document.author">
+            <td>Uploaded by</td>
+            <td>
+                <user-link user="document.author" />
+            </td>
+        </tr>
         <tr>
             <td>Uploaded on</td>
             <td>{{document.created|date:"short"}}</td>

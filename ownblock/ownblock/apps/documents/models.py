@@ -1,6 +1,7 @@
 import mimetypes
 import os
 
+from django.conf import settings
 from django.db import models
 
 from model_utils.models import TimeStampedModel
@@ -17,6 +18,7 @@ class Document(TimeStampedModel):
     title = models.CharField(max_length=100)
     file = models.FileField(upload_to=_upload_to)
     building = models.ForeignKey(Building)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
 
     def __str__(self):
         return self.title
