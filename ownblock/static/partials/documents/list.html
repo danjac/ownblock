@@ -1,12 +1,15 @@
-<div class="btn-toolbar" role="toolbar" has-role="manager">
-    <a class="btn btn-primary" ui-sref="documents.upload">
-        <icon name="upload" text="Upload document">
+<div class="btn-toolbar" role="toolbar">
+    <a class="btn btn-primary" ui-sref="documents.upload" has-role="manager">
+        <icon name="upload" text="Upload document" />
     </a>
+    <button class="btn btn-default" ng-click="toggleSearch()">
+        <icon name="search" text="Search" />
+    </button>
 </div>
 
-<form class="search-form voffset-2">
+<form class="search-form voffset-2" ng-show="showSearch">
     <div class="input-group">
-        <input class="form-control" type="search" ng-model="searchFilter.title" ng-change="documents.filter(searchFilter)">
+        <input class="form-control" type="search" ng-model="searchFilter.title">
         <span class="input-group-addon"><icon name="search" /></span>
     </div>
 

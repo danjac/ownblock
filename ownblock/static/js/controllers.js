@@ -189,6 +189,18 @@
         function($scope, api, auth, paginator) {
             $scope.residents = [];
             $scope.user = auth.user;
+
+            $scope.showSearch = false;
+            $scope.toggleSearch = function() {
+                $scope.showSearch = !$scope.showSearch;
+                if (!$scope.showSearch) {
+                    $scope.searchFilter.full_name = "";
+                }
+            };
+            $scope.$watch('searchFilter.full_name', function(newValue) {
+                $scope.residents.filter(newValue);
+            });
+
             api.Resident.query({
                 residents: true
             }).$promise.then(function(response) {
@@ -256,6 +268,18 @@
         }
     ]).controller('amenities.ListCtrl', ['$scope', 'api', 'notifier', 'paginator',
         function($scope, api, notifier, paginator) {
+            $scope.showSearch = false;
+            $scope.toggleSearch = function() {
+                $scope.showSearch = !$scope.showSearch;
+                if (!$scope.showSearch) {
+                    $scope.searchFilter.name = "";
+                }
+            };
+            $scope.$watch('searchFilter.name', function(newValue) {
+                $scope.amenities.filter(newValue);
+            });
+
+
             api.Amenity.query().$promise.then(function(response) {
                 $scope.amenities = paginator(response);
             });
@@ -447,9 +471,22 @@
                     $state.go('notices.list');
                 });
             };
+            $scope.cancel = function() {
+                $state.go('notices.list');
+            };
         }
-    ]).controller('notices.ListCtrl', ['$scope', 'api', 'notifier', 'paginator',
-        function($scope, api, notifier, paginator) {
+    ]).controller('notices.ListCtrl', ['$scope', 'api', 'paginator',
+        function($scope, api, paginator) {
+            $scope.showSearch = false;
+            $scope.toggleSearch = function() {
+                $scope.showSearch = !$scope.showSearch;
+                if (!$scope.showSearch) {
+                    $scope.searchFilter.searchTerms = "";
+                }
+            };
+            $scope.$watch('searchFilter.searchTerms', function(newValue) {
+                $scope.notices.filter(newValue);
+            });
             api.Notice.query().$promise.then(function(response) {
                 angular.forEach(response, function(item) {
                     item.searchTerms = item.title + " " + item.details + item.author.full_name;
@@ -711,6 +748,17 @@
         }
     ]).controller('documents.ListCtrl', ['$scope', 'api', 'paginator',
         function($scope, api, paginator) {
+            $scope.showSearch = false;
+            $scope.toggleSearch = function() {
+                $scope.showSearch = !$scope.showSearch;
+                if (!$scope.showSearch) {
+                    $scope.searchFilter.title = "";
+                }
+            };
+            $scope.$watch('searchFilter.title', function(newValue) {
+                $scope.documents.filter(newValue);
+            });
+
             api.Document.query().$promise.then(function(response) {
                 $scope.documents = paginator(response);
             });
@@ -793,6 +841,17 @@
         }
     ]).controller('complaints.ListCtrl', ['$scope', 'api', 'paginator',
         function($scope, api, paginator) {
+            $scope.showSearch = false;
+            $scope.toggleSearch = function() {
+                $scope.showSearch = !$scope.showSearch;
+                if (!$scope.showSearch) {
+                    $scope.searchFilter.complaint = "";
+                }
+            };
+            $scope.$watch('searchFilter.complaint', function(newValue) {
+                $scope.complaints.filter(newValue);
+            });
+
             api.Complaint.query().$promise.then(function(response) {
                 $scope.complaints = paginator(response);
             });
@@ -824,6 +883,17 @@
         }
     ]).controller('tickets.ListCtrl', ['$scope', 'api', 'paginator',
         function($scope, api, paginator) {
+            $scope.showSearch = false;
+            $scope.toggleSearch = function() {
+                $scope.showSearch = !$scope.showSearch;
+                if (!$scope.showSearch) {
+                    $scope.searchFilter.description = "";
+                }
+            };
+            $scope.$watch('searchFilter.description', function(newValue) {
+                $scope.tickets.filter(newValue);
+            });
+
             api.Ticket.query().$promise.then(function(response) {
                 $scope.tickets = paginator(response);
             });

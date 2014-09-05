@@ -1,11 +1,15 @@
-<div class="btn-toolbar" role="toolbar" has-role="manager">
-    <a class="btn btn-primary" ui-sref="amenities.newAmenity">
+<div class="btn-toolbar" role="toolbar">
+    <a class="btn btn-primary" ui-sref="amenities.newAmenity" has-role="manager">
         <icon name="plus" />Add new amenity</a>
+    <button class="btn btn-default" ng-click="toggleSearch()">
+        <icon name="search" text="Search" />
+    </button>
+
 </div>
 
-<form class="search-form voffset-2">
+<form class="search-form voffset-2" ng-show="showSearch">
     <div class="input-group">
-        <input class="form-control" type="search" ng-model="searchFilter.name" ng-change="amenities.filter(searchFilter)">
+        <input class="form-control" type="search" ng-model="searchFilter.name">
         <span class="input-group-addon"><icon name="search" /></span>
     </div>
     <span class="help-block" ng-show="!amenities.currentItems.length && searchFilter.name">
