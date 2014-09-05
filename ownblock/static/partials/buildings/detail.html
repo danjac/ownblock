@@ -2,7 +2,31 @@
 
 <tabset>
     <tab heading="Building details" active="tabs.building.active" select="generateMap()">
-        <div class="row voffset-2">
+        <table class="table table-striped table-hover table-bordered visible-xs visible-sm voffset-2">
+            <tbody>
+                <tr>
+                    <td>Street</td>
+                    <td>{{building.address_1}} {{building.address_2}}</td>
+                </tr>
+                <tr>
+                    <td>City</td>
+                    <td>{{building.city}}</td>
+                </tr>
+                <tr>
+                    <td>Postcode</td>
+                    <td>{{building.postcode}}</td>
+                </tr>
+                <tr ng-show="building.year">
+                    <td>Year</td>
+                    <td>{{building.year}}</td>
+                </tr>
+                <tr ng-show="building.num_floors">
+                    <td>Floors</td>
+                    <td>{{building.num_floors}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row visible-md visible-lg voffset-2">
             <div class="col-md-7">
                 <div id="map"></div>
             </div>

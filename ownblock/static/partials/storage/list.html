@@ -1,30 +1,24 @@
-<div class="row">
-    <div class="col-md-6">
-        <form class="search-form">
-            <div class="input-group">
-                <input class="form-control" type="search" ng-model="searchFilter.description" ng-change="items.filter(searchFilter)">
-                <span class="input-group-addon"><icon name="search" /></span>
-            </div>
+<div class="btn-toolbar" role="toolbar">
+    <a ui-sref="storage.newItem" class="btn btn-primary" has-role="resident">
+        <icon name="plus" />Add new item
+    </a>
+    <a ui-sref="storage.newPlace" class="btn btn-primary" has-role="manager">
+        <icon name="plus" />Add new place
+    </a>
 
-            <span class="help-block" ng-show="!items.currentItems.length && searchFilter.description">
-                Sorry, no items found for your search.
-            </span>
-        </form>
-    </div>
-    <div class="col-md-6">
-        <div class="btn-toolbar pull-right" role="toolbar">
-            <a ui-sref="storage.newItem" class="btn btn-primary" has-role="resident">
-                <icon name="plus" />Add new item
-            </a>
-            <a ui-sref="storage.newPlace" class="btn btn-primary" has-role="manager">
-                <icon name="plus" />Add new place
-            </a>
-
-        </div>
-    </div>
 </div>
 
 
+<form class="search-form voffset-2">
+    <div class="input-group">
+        <input class="form-control" type="search" ng-model="searchFilter.description" ng-change="items.filter(searchFilter)">
+        <span class="input-group-addon"><icon name="search" /></span>
+    </div>
+
+    <span class="help-block" ng-show="!items.currentItems.length && searchFilter.description">
+                Sorry, no items found for your search.
+            </span>
+</form>
 <table class="table table-bordered table-striped table-hover voffset-2" ng-show="items.currentItems.length">
     <thead>
         <tr>

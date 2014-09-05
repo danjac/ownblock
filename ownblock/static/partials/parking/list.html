@@ -1,25 +1,19 @@
-<div class="row">
-    <div class="col-md-6">
-        <form class="search-form">
-            <div class="input-group">
-                <input class="form-control" type="search" ng-model="searchFilter.searchTerms" ng-change="vehicles.filter(searchFilter)">
-                <span class="input-group-addon"><icon name="search" /></span>
-            </div>
-            <span class="help-block" ng-show="!vehicles.currentItems.length && searchFilter.searchTerms">
+<div role="toolbar" class="btn-toolbar" has-role="resident">
+    <a ui-sref="parking.new" class="btn btn-primary">
+        <icon name="plus" text="Add vehicle " />
+    </a>
+</div>
+
+<form class="search-form voffset-2">
+    <div class="input-group">
+        <input class="form-control" type="search" ng-model="searchFilter.searchTerms" ng-change="vehicles.filter(searchFilter)">
+        <span class="input-group-addon"><icon name="search" /></span>
+    </div>
+    <span class="help-block" ng-show="!vehicles.currentItems.length && searchFilter.searchTerms">
 Sorry, no vehicles found for your search.
 </span>
 
-        </form>
-    </div>
-    <div class="col-md-6" has-role="resident">
-        <div role="toolbar" class="btn-toolbar pull-right">
-            <a ui-sref="parking.new" class="btn btn-primary">
-                <icon name="plus" text="Add vehicle " />
-            </a>
-        </div>
-    </div>
-</div>
-
+</form>
 
 <table class="table table-bordered table-striped table-hover voffset-2" ng-show="vehicles.currentItems.length">
     <thead>

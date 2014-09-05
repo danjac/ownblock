@@ -1,25 +1,19 @@
-<div class="row">
-    <div class="col-md-6">
-        <form class="search-form">
-            <div class="input-group">
-                <input class="form-control" type="search" ng-model="searchFilter.title" ng-change="documents.filter(searchFilter)">
-                <span class="input-group-addon"><icon name="search" /></span>
-            </div>
-
-            <span class="help-block" ng-show="!documents.currentItems.length && searchFilter.title">
-                Sorry, no documents found for your search.
-            </span>
-        </form>
-    </div>
-    <div class="col-md-6" has-role="manager">
-        <div class="btn-toolbar pull-right" role="toolbar">
-            <a class="btn btn-primary" ui-sref="documents.upload">
-                <icon name="upload" text="Upload document">
-            </a>
-        </div>
-    </div>
+<div class="btn-toolbar" role="toolbar">
+    <a class="btn btn-primary" ui-sref="documents.upload">
+        <icon name="upload" text="Upload document">
+    </a>
 </div>
 
+<form class="search-form voffset-2">
+    <div class="input-group">
+        <input class="form-control" type="search" ng-model="searchFilter.title" ng-change="documents.filter(searchFilter)">
+        <span class="input-group-addon"><icon name="search" /></span>
+    </div>
+
+    <span class="help-block" ng-show="!documents.currentItems.length && searchFilter.title">
+                Sorry, no documents found for your search.
+            </span>
+</form>
 
 <table class="table table-bordered table-striped table-hover voffset-2" ng-show="documents.currentItems.length">
     <thead>
