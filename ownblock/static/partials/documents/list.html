@@ -2,30 +2,21 @@
     <a class="btn btn-primary" ui-sref="documents.upload" has-role="manager">
         <icon name="upload" text="Upload document" />
     </a>
-    <button class="btn btn-default" ng-click="toggleSearch()">
+    <button class="btn btn-default" ng-click="searchForm.toggle()">
         <icon name="search" text="Search" />
     </button>
 </div>
 
-<form class="search-form voffset-2" ng-show="showSearch">
-    <div class="input-group">
-        <input class="form-control" type="search" ng-model="searchFilter.title">
-        <span class="input-group-addon"><icon name="search" /></span>
-    </div>
+<search-form name="searchForm" paginator="paginator" filter="title" class="voffset-2"></search-form>
 
-    <span class="help-block" ng-show="!documents.currentItems.length && searchFilter.title">
-                Sorry, no documents found for your search.
-            </span>
-</form>
-
-<table class="table table-bordered table-striped table-hover voffset-2" ng-show="documents.currentItems.length">
+<table class="table table-bordered table-striped table-hover voffset-2" ng-show="!paginator.isEmpty">
     <thead>
         <th>Title</th>
         <th>Uploaded on</th>
         <th></th>
     </thead>
     <tbody>
-        <tr ng-repeat="document in documents.currentItems">
+        <tr ng-repeat="document in paginator.currentItems">
             <td><a ui-sref="documents.detail({id: document.id})">{{document.title}}</a>
             </td>
             <td>{{document.created|date:"fullDate"}}</td>
@@ -39,4 +30,4 @@
 
 </table>
 
-<pager total-items="documents.total" ng-model="documents.page" ng-change="documents.change()"></pager>
+<pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>

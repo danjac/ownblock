@@ -68,7 +68,7 @@
 
             var Paginator = function(items, maxSize) {
                 this.maxSize = maxSize || 10;
-                this.refresh(items);
+                this.reload(items);
             };
 
             Paginator.prototype.change = function() {
@@ -77,7 +77,7 @@
                 this.isEmpty = this.currentItems.length === 0;
             };
 
-            Paginator.prototype.refresh = function(items) {
+            Paginator.prototype.reload = function(items) {
                 this.items = this.filteredItems = items || [];
                 this.total = this.items.length;
                 this.page = 1;

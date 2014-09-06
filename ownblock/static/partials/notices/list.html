@@ -2,30 +2,22 @@
     <a class="btn btn-primary" ui-sref="notices.new">
         <icon name="plus" text="Add notice" />
     </a>
-    <button class="btn btn-default" ng-click="toggleSearch()">
+    <button class="btn btn-default" ng-click="searchForm.toggle()">
         <icon name="search" text="Search" />
     </button>
 
 </div>
 
-<form class="search-form voffset-2" ng-show="showSearch">
-    <div class="input-group">
-        <input class="form-control" type="search" ng-model="searchFilter.searchTerms">
-        <span class="input-group-addon"><icon name="search" /></span>
-    </div>
-    <span class="help-block" ng-show="!notices.currentItems.length && searchFilter.searchTerms">
-                Sorry, no notices found for your search.
-            </span>
-</form>
+<search-form name="searchForm" paginator="paginator" filter="searchTerms" class="voffset-2"></search-form>
 
-<table class="table table-bordered table-striped table-hover voffset-2" ng-show="notices.currentItems.length">
+<table class="table table-bordered table-striped table-hover voffset-2" ng-show="!paginator.isEmpty">
     <thead>
         <th>Notice</th>
         <th>Date</th>
         <th>Author</th>
     </thead>
     <tbody>
-        <tr ng-repeat="notice in notices.currentItems">
+        <tr ng-repeat="notice in paginator.currentItems">
             <td><a ui-sref="notices.detail({id: notice.id})">{{notice.title}}</a>
             </td>
             <td>{{notice.created|date}}</td>
@@ -36,4 +28,4 @@
     </tbody>
 </table>
 
-<pager total-items="notices.total" ng-model="notices.page" ng-change="notices.change()"></pager>
+<pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>

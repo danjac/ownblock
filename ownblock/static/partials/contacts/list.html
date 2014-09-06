@@ -1,23 +1,18 @@
 <tabset>
     <tab heading="Contacts">
-        <div role="toolbar" class="btn-toolbar voffset-2" has-role="manager">
-            <a ui-sref="contacts.new" class="btn btn-primary">
+        <div role="toolbar" class="btn-toolbar voffset-2">
+            <a ui-sref="contacts.new" class="btn btn-primary" has-role="manager">
                 <icon name="plus" text="Add contact" />
             </a>
+
+            <button class="btn btn-default" ng-click="searchForm.toggle()">
+                <icon name="search" text="Search" />
+            </button>
         </div>
 
-        <form class="search-form voffset-2">
-            <div class="input-group">
-                <input class="form-control" type="search" ng-model="searchFilter" ng-change="contacts.filter(searchFilter)">
-                <span class="input-group-addon"><icon name="search" /></span>
-            </div>
-            <span class="help-block" ng-show="!contacts.currentItems.length && searchFilter">
-                Sorry, no contacts found for your search.
-            </span>
-        </form>
+        <search-form name="searchForm" paginator="paginator" filter="name" class="voffset-2"></search-form>
 
-
-        <table class="table table-bordered table-striped table-hover voffset-2" ng-show="contacts.currentItems.length">
+        <table class="table table-bordered table-striped table-hover voffset-2" ng-show="!paginator.isEmpty">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -26,7 +21,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="contact in contacts.currentItems">
+                <tr ng-repeat="contact in paginator.currentItems">
                     <td><a ui-sref="contacts.detail({id: contact.id})">{{contact.name}}</a>
                     </td>
                     <td>{{contact.phone}}</td>
@@ -36,7 +31,7 @@
             </tbody>
         </table>
 
-        <pager total-items="contacts.total" ng-model="contacts.page" ng-change="contacts.change()"></pager>
+        <pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>
     </tab>
     <tab heading="Building management">
         <p class="well voffset-2" has-role="manager">
@@ -63,7 +58,6 @@
                 </tr>
             </tbody>
         </table>
-
 
     </tab>
 </tabset>

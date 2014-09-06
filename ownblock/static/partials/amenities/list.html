@@ -1,24 +1,16 @@
 <div class="btn-toolbar" role="toolbar">
     <a class="btn btn-primary" ui-sref="amenities.newAmenity" has-role="manager">
         <icon name="plus" />Add new amenity</a>
-    <button class="btn btn-default" ng-click="toggleSearch()">
+    <button class="btn btn-default" ng-click="searchForm.toggle()">
         <icon name="search" text="Search" />
     </button>
 
 </div>
 
-<form class="search-form voffset-2" ng-show="showSearch">
-    <div class="input-group">
-        <input class="form-control" type="search" ng-model="searchFilter.name">
-        <span class="input-group-addon"><icon name="search" /></span>
-    </div>
-    <span class="help-block" ng-show="!amenities.currentItems.length && searchFilter.name">
-                Sorry, no amenities found for your search.
-            </span>
-</form>
+<search-form name="searchForm" paginator="paginator" filter="name" class="voffset-2"></search-form>
 
 
-<table class="table table-striped table-bordered table-hover voffset-2" ng-show="amenities.currentItems.length">
+<table class="table table-striped table-bordered table-hover voffset-2" ng-show="!paginator.isEmpty">
     <thead>
         <tr>
             <th>Amenity</th>
@@ -27,7 +19,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="amenity in amenities.currentItems">
+        <tr ng-repeat="amenity in paginator.currentItems">
             <td><a ui-sref="amenities.detail({id: amenity.id})">{{amenity.name}}</a>
             </td>
             <td>
@@ -44,4 +36,4 @@
 
 </table>
 
-<pager total-items="amenities.total" ng-model="amenities.page" ng-change="amenities.change()"></pager>
+<pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>
