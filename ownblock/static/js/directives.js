@@ -25,6 +25,45 @@
             };
         }
     ]).
+    directive('searchForm', function(staticUrl) {
+        /*
+         *<search-form name="searchForm" paginator="complaints" filter="complaint" if-empty="Sorry, no complaints found for your search" />
+<
+         * */
+        var SearchForm = function() {
+            this.visible = false;
+            this.filter = {
+                value: ''
+            };
+        };
+        SearchForm.prototype.toggle = function() {
+            this.visible = !this.visible;
+            if (!this.visible) {
+                this.filter.value = '';
+            }
+        };
+        return {
+            restrict: 'E',
+            scope: {
+                paginator: '=',
+                filter: '=',
+                ifEmpty: '@'
+            },
+            replace: true,
+            templateUrl: staticUrl + '/partials/searchForm.html',
+            link: function(scope, element, attrs) {
+                console.log(scope.ifEmpty);
+                scope.$parent[attrs.name] = scope[attrs.name] = new SearchForm();
+                scope.$watch(attrs.name + '.filter.value', function(newValue) {
+
+                    var filterObj = {};
+                    filterObj[attrs.filter] = newValue;
+                    scope.paginator.filter(filterObj);
+                });
+
+            }
+        };
+    }).
     directive('userLink', function() {
         return {
             restrict: 'E',

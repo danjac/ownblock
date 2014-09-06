@@ -841,19 +841,9 @@
         }
     ]).controller('complaints.ListCtrl', ['$scope', 'api', 'paginator',
         function($scope, api, paginator) {
-            $scope.showSearch = false;
-            $scope.toggleSearch = function() {
-                $scope.showSearch = !$scope.showSearch;
-                if (!$scope.showSearch) {
-                    $scope.searchFilter.complaint = "";
-                }
-            };
-            $scope.$watch('searchFilter.complaint', function(newValue) {
-                $scope.complaints.filter(newValue);
-            });
-
+            $scope.paginator = paginator();
             api.Complaint.query().$promise.then(function(response) {
-                $scope.complaints = paginator(response);
+                $scope.paginator.refresh(response);
             });
         }
     ]).controller('complaints.DetailCtrl', ['$scope', '$state', 'api',

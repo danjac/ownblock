@@ -67,16 +67,21 @@
         function($filter) {
 
             var Paginator = function(items, maxSize) {
-                this.items = this.filteredItems = items;
-                this.total = this.items.length;
-                this.page = 1;
                 this.maxSize = maxSize || 10;
-                this.change();
+                this.refresh(items);
             };
 
             Paginator.prototype.change = function() {
                 var offset = (this.page - 1) * this.maxSize;
                 this.currentItems = this.filteredItems.slice(offset, offset + this.maxSize);
+                this.isEmpty = this.currentItems.length === 0;
+            };
+
+            Paginator.prototype.refresh = function(items) {
+                this.items = this.filteredItems = items || [];
+                this.total = this.items.length;
+                this.page = 1;
+                this.change();
             };
 
             Paginator.prototype.filter = function(value) {

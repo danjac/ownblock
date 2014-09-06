@@ -2,23 +2,13 @@
     <a ui-sref="complaints.new" class="btn btn-primary">
         <icon name="plus" text="Submit a complaint" />
     </a>
-    <button class="btn btn-default" ng-click="toggleSearch()">
+    <button class="btn btn-default" ng-click="searchForm.toggle()">
         <icon name="search" text="Search" />
     </button>
 </div>
 
-<form class="search-form voffset-2" ng-show="showSearch">
-    <div class="input-group">
-        <input class="form-control" type="search" ng-model="searchFilter.complaint">
-        <span class="input-group-addon"><icon name="search" /></span>
-    </div>
-    <span class="help-block" ng-show="!complaints.currentItems.length && searchFilter.complaint">
-Sorry, no complaints found for your search.
-</span>
-
-</form>
-
-<table class="table table-bordered table-striped table-hover voffset-2" ng-show="complaints.currentItems.length">
+<search-form name="searchForm" paginator="paginator" filter="complaint" if-empty="Sorry, no complaints found for your search"></search-form>
+<table class="table table-bordered table-striped table-hover voffset-2" ng-show="!paginator.isEmpty">
     <thead>
         <tr>
             <th>Complaint</th>
@@ -27,7 +17,7 @@ Sorry, no complaints found for your search.
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="complaint in complaints.currentItems">
+        <tr ng-repeat="complaint in paginator.currentItems">
             <td><a ui-sref="complaints.detail({id: complaint.id})">{{complaint.complaint|limitTo:30}}</a>
             </td>
             <td>{{complaint.created|date:"short"}}</td>
@@ -39,4 +29,4 @@ Sorry, no complaints found for your search.
 
 </table>
 
-<pager total-items="tickets.total" ng-model="tickets.page" ng-change="tickets.change()"></pager>
+<pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>
