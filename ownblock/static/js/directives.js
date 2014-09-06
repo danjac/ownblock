@@ -26,10 +26,6 @@
         }
     ]).
     directive('searchForm', function(staticUrl) {
-        /*
-         *<search-form name="searchForm" paginator="complaints" filter="complaint" if-empty="Sorry, no complaints found for your search" />
-<
-         * */
         var SearchForm = function() {
             this.visible = false;
             this.filter = {
@@ -46,21 +42,26 @@
             restrict: 'E',
             scope: {
                 paginator: '=',
-                filter: '=',
                 ifEmpty: '@'
             },
             replace: true,
             templateUrl: staticUrl + '/partials/searchForm.html',
-            link: function(scope, element, attrs) {
-                console.log(scope.ifEmpty);
-                scope.$parent[attrs.name] = scope[attrs.name] = new SearchForm();
-                scope.$watch(attrs.name + '.filter.value', function(newValue) {
+            compile: function() {
+                return {
+                    pre: function(scope, element, attrs) {
+                        attrs.ifEmpty = attrs.ifEmpty || 'Sorry, no results found for your search';
+                    },
+                    post: function(scope, element, attrs) {
+                        scope.$parent[attrs.name] = scope[attrs.name] = new SearchForm();
+                        scope.$watch(attrs.name + '.filter.value', function(newValue) {
 
-                    var filterObj = {};
-                    filterObj[attrs.filter] = newValue;
-                    scope.paginator.filter(filterObj);
-                });
+                            var filterObj = {};
+                            filterObj[attrs.filter] = newValue;
+                            scope.paginator.filter(filterObj);
+                        });
 
+                    }
+                };
             }
         };
     }).
