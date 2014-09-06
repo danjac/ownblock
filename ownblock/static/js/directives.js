@@ -52,12 +52,19 @@
                         attrs.ifEmpty = attrs.ifEmpty || 'Sorry, no results found for your search';
                     },
                     post: function(scope, element, attrs) {
-                        scope.$parent[attrs.name] = scope[attrs.name] = new SearchForm();
+                        var form = new SearchForm();
+                        if (angular.isDefined(attrs.isVisible)) {
+                            form.visible = true;
+                        }
+                        if (attrs.name) {
+                            scope.$parent[attrs.name] = scope[attrs.name] = form;
+                        }
                         scope.$watch(attrs.name + '.filter.value', function(newValue) {
-
                             var filterObj = {};
                             filterObj[attrs.filter] = newValue;
-                            scope.paginator.filter(filterObj);
+                            if (scope.paginator) {
+                                scope.paginator.filter(filterObj);
+                            }
                         });
 
                     }

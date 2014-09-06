@@ -2,23 +2,14 @@
     <a class="btn btn-primary" ui-sref="residents.new" has-role="manager">
         <icon name="plus" text="Add resident">
     </a>
-    <button class="btn btn-default" ng-click="toggleSearch()">
+    <button class="btn btn-default" ng-click="searchForm.toggle()">
         <icon name="search" text="Search" />
     </button>
 </div>
+<search-form name="searchForm" paginator="paginator" filter="full_name" class="voffset-2"></search-form>
 
-<form class="search-form voffset-2" ng-show="showSearch">
-    <div class="input-group">
-        <input class="form-control" type="search" ng-model="searchFilter.full_name">
-        <span class="input-group-addon"><icon name="search" /></span>
-    </div>
 
-    <span class="help-block" ng-show="!residents.currentItems.length && searchFilter.full_name">
-                Sorry, no residents found for your search.
-            </span>
-</form>
-
-<table class="table table-striped table-hover table-bordered voffset-2" ng-show="residents.currentItems.length">
+<table class="table table-striped table-hover table-bordered voffset-2" ng-show="!paginator.isEmpty">
     <thead>
         <tr>
             <th>Resident</th>
@@ -27,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="resident in residents.currentItems">
+        <tr ng-repeat="resident in paginator.currentItems">
             <td>
                 <user-link user="resident" />
             </td>
@@ -42,5 +33,4 @@
     </tbody>
 </table>
 
-<pager total-items="residents.total" ng-model="residents.page" ng-change="residents.change()"></pager>
-
+<pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>

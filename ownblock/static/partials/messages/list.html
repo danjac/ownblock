@@ -2,16 +2,8 @@
 
     <tab heading="Inbox">
 
-        <form class="search-form voffset-2">
-            <div class="input-group">
-                <input class="form-control" type="search" ng-model="receivedSearchFilter.searchTerms" ng-change="receivedMessages.filter(receivedSearchFilter)">
-                <span class="input-group-addon"><icon name="search" /></span>
+        <search-form paginator="receivedMessages" filter="searchTerms" is-visible class="voffset-2"></search-form>
 
-            </div>
-            <span class="help-block" ng-show="!receivedMessages.currentItems.length && receivedSearchFilter.searchTerms">
-                Sorry, no messages found for your search.
-            </span>
-        </form>
 
         <table class="table table-bordered table-striped table-hover voffset-2" ng-show="receivedMessages.currentItems.length">
             <thead>
@@ -35,15 +27,7 @@
         <pager total-items="receivedMessages.total " ng-model="receivedMessages.page " ng-change="receivedMessages.change() "></pager>
     </tab>
     <tab heading="Outbox ">
-        <form class="search-form voffset-2">
-            <div class="input-group">
-                <input class="form-control" type="search " ng-model="sentSearchFilter.searchTerms " ng-change="sentMessages.filter(sentSearchFilter) ">
-                <span class="input-group-addon"><icon name="search" /></span>
-            </div>
-            <span class="help-block" ng-show="!sentMessages.currentItems.length && sentSearchFilter.searchTerms">
-                Sorry, no messages found for your search.
-            </span>
-        </form>
+        <search-form paginator="sentMessages" filter="searchTerms" is-visible class="voffset-2"></search-form>
 
         <table class="table table-bordered table-striped table-hover voffset-2" ng-show="sentMessages.currentItems.length">
             <thead>

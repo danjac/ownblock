@@ -187,24 +187,13 @@
         }
     ]).controller('residents.ListCtrl', ['$scope', 'api', 'auth', 'paginator',
         function($scope, api, auth, paginator) {
-            $scope.residents = [];
             $scope.user = auth.user;
 
-            $scope.showSearch = false;
-            $scope.toggleSearch = function() {
-                $scope.showSearch = !$scope.showSearch;
-                if (!$scope.showSearch) {
-                    $scope.searchFilter.full_name = "";
-                }
-            };
-            $scope.$watch('searchFilter.full_name', function(newValue) {
-                $scope.residents.filter(newValue);
-            });
-
+            $scope.paginator = paginator();
             api.Resident.query({
                 residents: true
             }).$promise.then(function(response) {
-                $scope.residents = paginator(response);
+                $scope.paginator.reload(response);
             });
         }
     ]).controller('residents.NewCtrl', ['$scope', '$state', 'api', 'notifier',
@@ -514,7 +503,6 @@
         }
     ]).controller('messages.ListCtrl', ['$scope', 'api', 'auth', 'paginator',
         function($scope, api, auth, paginator) {
-
             api.Message.query().$promise.then(function(response) {
                 var received = [],
                     sent = [];
@@ -754,11 +742,12 @@
         }
     ]).controller('parking.ListCtrl', ['$scope', 'api', 'paginator',
         function($scope, api, paginator) {
+            $scope.paginator = paginator();
             api.Vehicle.query().$promise.then(function(response) {
                 angular.forEach(response, function(item) {
                     item.searchTerms = item.description + " " + item.registration_number + item.resident.full_name;
                 });
-                $scope.vehicles = paginator(response);
+                $scope.paginator.reload(response);
             });
 
         }
