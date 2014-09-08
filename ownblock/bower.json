@@ -18,6 +18,8 @@
     "fontawesome": "~4.1.0",
     "openlayers": "*",
     "bootswatch": "*",
-    "angular-messages": "*"
+    "angular-messages": "*",
+    "angular-mocks": "~1.2.23",
+    "angular-scenario": "~1.2.23"
   }
 }

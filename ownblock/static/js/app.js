@@ -4,7 +4,6 @@
         'ngResource',
         'ngSanitize',
         'ngCookies',
-        'ngMessages',
         'ui.router',
         'ui.calendar',
         'ui.bootstrap',
@@ -39,6 +38,7 @@
             $httpProvider.interceptors.push(function($q, $location, notifier) {
                 return {
                     'responseError': function(response) {
+                        console.log(response);
                         var warning = "Sorry, an error has occurred",
                             result = $q.reject(response);
                         switch (response.status) {
@@ -433,18 +433,19 @@
                     acess: 'manager'
                 }
             }).
-            state('buildings.detail', {
-                url: '/building',
+            state('buildings.apartment', {
+                url: '/building/:id',
                 templateUrl: urls.partials + 'buildings/detail.html',
                 controller: 'buildings.DetailCtrl'
             }).
-            state('buildings.apartment', {
-                url: '/building/:id',
+            state('buildings.detail', {
+                url: '/building',
                 templateUrl: urls.partials + 'buildings/detail.html',
                 controller: 'buildings.DetailCtrl'
             });
 
             $urlRouterProvider.otherwise('/building');
+
         }
     ]).run(function($rootScope, $state, auth) {
 

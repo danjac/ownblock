@@ -6,21 +6,20 @@ module.exports = function(config) {
         basePath: '../',
 
         files: [
-            'public/bower_components/jquery/dist/jquery.min.js',
-            'public/bower_components/sockjs/sockjs.min.js',
-            'public/bower_components/bootstrap/dist/js/bootstrap.min.js',
-            'public/bower_components/angular/angular.js',
-            'public/bower_components/angular-cookies/angular-cookies.js',
-            'public/bower_components/angular-animate/angular-animate.js',
-            'public/bower_components/angular-ui-router/release/angular-ui-router.min.js',
-            'public/bower_components/angular-bootstrap/ui-bootstrap.min.js',
-            'public/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
-            'public/bower_components/angular-sanitize/angular-sanitize.js',
-            'public/bower_components/angular-resource/angular-resource.js',
-            'public/bower_components/angular-gravatar/build/md5.js',
-            'public/bower_components/angular-gravatar/build/angular-gravatar.js',
-            'public/bower_components/angular-mocks/angular-mocks.js',
-            'public/js/**/*.js',
+            'static/bower_components/jquery/dist/jquery.min.js',
+            'static/bower_components/bootstrap/dist/js/bootstrap.min.js',
+            'static/bower_components/angular/angular.js',
+            'static/bower_components/angular-cookies/angular-cookies.js',
+            'static/bower_components/angular-ui-router/release/angular-ui-router.min.js',
+            'static/bower_components/angular-ui-calendar/src/calendar.js',
+            'static/bower_components/angular-bootstrap/ui-bootstrap.min.js',
+            'static/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
+            'static/bower_components/angular-sanitize/angular-sanitize.js',
+            'static/bower_components/angular-resource/angular-resource.js',
+            'static/bower_components/angular-mocks/angular-mocks.js',
+            //'static/bower_components/angular-scenario/angular-scenario.js',
+            'static/js/**/*.js',
+            'test/mock/**/*.js',
             'test/unit/**/*.js'
         ],
 
@@ -28,11 +27,10 @@ module.exports = function(config) {
 
         frameworks: ['jasmine'],
 
-        browsers: ['Firefox'],
+        browsers: ['PhantomJS'],
 
         plugins: [
-            'karma-chrome-launcher',
-            'karma-firefox-launcher',
+            'karma-phantomjs-launcher',
             'karma-jasmine',
             'karma-junit-reporter'
         ],
@@ -40,7 +38,9 @@ module.exports = function(config) {
         junitReporter: {
             outputFile: 'test_out/unit.xml',
             suite: 'unit'
-        }
+        },
+
+        logLevel: config.LOG_INFO
 
     });
 };
