@@ -76,8 +76,8 @@
         '$modal',
         'api',
         'auth',
-        'staticUrl',
-        function($scope, $state, $window, $modal, api, auth, staticUrl) {
+        'urls',
+        function($scope, $state, $window, $modal, api, auth, urls) {
 
             var apartmentId = null;
             if ($state.params.id) {
@@ -117,7 +117,7 @@
                     markers = new OL.Layer.Markers('Markers'),
                     size = new OL.Size(21, 25),
                     offset = new OL.Pixel(-(size.w / 2), -size.h),
-                    icon = new OL.Icon('/static/bower_components/openlayers/build/img/marker.png', size, offset);
+                    icon = new OL.Icon(urls.components + 'openlayers/build/img/marker.png', size, offset);
                 map.addLayer(layer);
                 map.addLayer(markers);
                 map.setCenter(point, 15);
@@ -172,7 +172,7 @@
                         };
                     },
                     modalInstance = $modal.open({
-                        templateUrl: staticUrl + '/partials/buildings/modalResidentForm.html',
+                        templateUrl: urls.partials + 'buildings/modalResidentForm.html',
                         controller: modalInstanceCtrl
                     });
                 modalInstance.result.then(function(resident) {
@@ -760,6 +760,9 @@
                     $state.go('parking.list');
                 });
             };
+            $scope.cancel = function() {
+                $state.go('parking.list');
+            };
         }
     ]).controller('parking.EditCtrl', ['$scope', '$state', 'api', 'notifier',
         function($scope, $state, api, notifier) {
@@ -768,10 +771,25 @@
             }, function(response) {
                 $scope.vehicle = response;
             });
+
+            $scope.deleteVehicle = function() {
+                $scope.vehicle.$remove(function() {
+                    notifier.success('Your vehicle has been removed');
+                    $state.go('parking.list');
+                });
+            };
+
             $scope.save = function() {
                 $scope.vehicle.$update(function() {
                     notifier.success('Your vehicle has been updated');
-                    $state.go('parking.list');
+                    $state.go('parking.detail', {
+                        id: $scope.vehicle.id
+                    });
+                });
+            };
+            $scope.cancel = function() {
+                $state.go('parking.detail', {
+                    id: $scope.vehicle.id
                 });
             };
         }

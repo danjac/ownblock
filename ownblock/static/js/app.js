@@ -13,21 +13,23 @@
         'ownblock.directives'
     ]).
     constant({
-        staticUrl: '/static'
+        urls: {
+            static: '/static/',
+            partials: '/static/partials/',
+            components: '/static/bower_components/'
+        }
     }).
     config(['$httpProvider',
         '$resourceProvider',
         '$stateProvider',
         '$urlRouterProvider',
-        'staticUrl',
+        'urls',
         function(
             $httpProvider,
             $resourceProvider,
             $stateProvider,
             $urlRouterProvider,
-            staticUrl) {
-
-            var partialsUrl = staticUrl + '/partials/';
+            urls) {
 
             $resourceProvider.defaults.stripTrailingSlashes = true;
 
@@ -99,7 +101,7 @@
             $stateProvider.
             state('site', {
                 'abstract': true,
-                templateUrl: partialsUrl + 'base.html',
+                templateUrl: urls.partials + 'base.html',
                 resolve: {
                     auth: ['auth',
                         function(auth) {
@@ -110,38 +112,38 @@
             }).
             state('accessdenied', {
                 url: '/accessdenied',
-                templateUrl: partialsUrl + 'accessDenied.html',
+                templateUrl: urls.partials + 'accessDenied.html',
             }).
             state('notfound', {
                 url: '/notfound',
-                templateUrl: partialsUrl + 'notfound.html',
+                templateUrl: urls.partials + 'notfound.html',
             }).
             state('account', {
-                templateUrl: partialsUrl + 'account/base.html',
+                templateUrl: urls.partials + 'account/base.html',
                 parent: 'site'
             }).
             state('account.edit', {
                 url: '/account',
-                templateUrl: partialsUrl + 'account/edit.html',
+                templateUrl: urls.partials + 'account/edit.html',
                 controller: 'account.EditCtrl'
             }).
             state('account.password', {
                 url: '/account/pass',
-                templateUrl: partialsUrl + 'account/passwordForm.html',
+                templateUrl: urls.partials + 'account/passwordForm.html',
                 controller: 'account.ChangePasswordCtrl'
             }).
             state('residents', {
-                templateUrl: partialsUrl + 'residents/base.html',
+                templateUrl: urls.partials + 'residents/base.html',
                 parent: 'site'
             }).
             state('residents.list', {
                 url: '/residents',
-                templateUrl: partialsUrl + 'residents/list.html',
+                templateUrl: urls.partials + 'residents/list.html',
                 controller: 'residents.ListCtrl'
             }).
             state('residents.new', {
                 url: '/residents/new',
-                templateUrl: partialsUrl + 'residents/form.html',
+                templateUrl: urls.partials + 'residents/form.html',
                 controller: 'residents.NewCtrl',
                 data: {
                     access: 'manager'
@@ -149,7 +151,7 @@
             }).
             state('residents.edit', {
                 url: '/residents/:id/edit',
-                templateUrl: partialsUrl + 'residents/form.html',
+                templateUrl: urls.partials + 'residents/form.html',
                 controller: 'residents.EditCtrl',
                 data: {
                     access: 'manager'
@@ -157,69 +159,69 @@
             }).
             state('residents.detail', {
                 url: '/residents/:id',
-                templateUrl: partialsUrl + 'residents/detail.html',
+                templateUrl: urls.partials + 'residents/detail.html',
                 controller: 'residents.DetailCtrl'
             }).
             state('messages', {
-                templateUrl: partialsUrl + 'messages/base.html',
+                templateUrl: urls.partials + 'messages/base.html',
                 parent: 'site'
             }).
             state('messages.list', {
                 url: '/messages',
-                templateUrl: partialsUrl + 'messages/list.html',
+                templateUrl: urls.partials + 'messages/list.html',
                 controller: 'messages.ListCtrl',
             }).
             state('messages.detail', {
                 url: '/messages/:id',
-                templateUrl: partialsUrl + 'messages/detail.html',
+                templateUrl: urls.partials + 'messages/detail.html',
                 controller: 'messages.DetailCtrl',
             }).
             state('messages.send', {
                 url: '/messages/send/:recipient',
-                templateUrl: partialsUrl + 'messages/form.html',
+                templateUrl: urls.partials + 'messages/form.html',
                 controller: 'messages.SendCtrl'
             }).
             state('messages.reply', {
                 url: '/messages/reply/:parent',
-                templateUrl: partialsUrl + 'messages/form.html',
+                templateUrl: urls.partials + 'messages/form.html',
                 controller: 'messages.ReplyCtrl'
             }).
             state('notices', {
-                templateUrl: partialsUrl + 'notices/base.html',
+                templateUrl: urls.partials + 'notices/base.html',
                 parent: 'site'
             }).
             state('notices.list', {
                 url: '/notices',
-                templateUrl: partialsUrl + 'notices/list.html',
+                templateUrl: urls.partials + 'notices/list.html',
                 controller: 'notices.ListCtrl'
             }).
             state('notices.new', {
                 url: '/notices/new',
-                templateUrl: partialsUrl + 'notices/form.html',
+                templateUrl: urls.partials + 'notices/form.html',
                 controller: 'notices.NewCtrl'
             }).
             state('notices.detail', {
                 url: '/notices/:id',
-                templateUrl: partialsUrl + 'notices/detail.html',
+                templateUrl: urls.partials + 'notices/detail.html',
                 controller: 'notices.DetailCtrl'
             }).
             state('notices.edit', {
                 url: '/notices/:id/edit',
-                templateUrl: partialsUrl + 'notices/form.html',
+                templateUrl: urls.partials + 'notices/form.html',
                 controller: 'notices.EditCtrl'
             }).
             state('amenities', {
-                templateUrl: partialsUrl + 'amenities/base.html',
+                templateUrl: urls.partials + 'amenities/base.html',
                 parent: 'site'
             }).
             state('amenities.list', {
                 url: '/amenities',
-                templateUrl: partialsUrl + 'amenities/list.html',
+                templateUrl: urls.partials + 'amenities/list.html',
                 controller: 'amenities.ListCtrl'
             }).
             state('amenities.newAmenity', {
                 url: '/amenities/new',
-                templateUrl: partialsUrl + 'amenities/amenityForm.html',
+                templateUrl: urls.partials + 'amenities/amenityForm.html',
                 controller: 'amenities.NewAmenityCtrl',
                 data: {
                     access: 'manager'
@@ -227,44 +229,44 @@
             }).
             state('amenities.edit', {
                 url: '/amenities/:id/edit',
-                templateUrl: partialsUrl + 'amenities/amenityForm.html',
+                templateUrl: urls.partials + 'amenities/amenityForm.html',
                 controller: 'amenities.EditAmenityCtrl'
             }).
             state('amenities.detail', {
                 url: '/amenities/:id',
-                templateUrl: partialsUrl + 'amenities/detail.html',
+                templateUrl: urls.partials + 'amenities/detail.html',
                 controller: 'amenities.DetailCtrl'
             }).
             state('amenities.bookingDetail', {
                 url: '/amenities/bookings/:id',
-                templateUrl: partialsUrl + 'amenities/bookingDetail.html',
+                templateUrl: urls.partials + 'amenities/bookingDetail.html',
                 controller: 'amenities.BookingDetailCtrl'
             }).
             state('amenities.editBooking', {
                 url: '/amenities/bookings/:id/edit',
-                templateUrl: partialsUrl + 'amenities/bookingForm.html',
+                templateUrl: urls.partials + 'amenities/bookingForm.html',
                 controller: 'amenities.EditBookingCtrl'
             }).
             state('amenities.newBooking', {
                 url: '/amenities/:id/bookings/new',
-                templateUrl: partialsUrl + 'amenities/bookingForm.html',
+                templateUrl: urls.partials + 'amenities/bookingForm.html',
                 controller: 'amenities.NewBookingCtrl',
                 data: {
                     access: 'resident'
                 }
             }).
             state('complaints', {
-                templateUrl: partialsUrl + 'complaints/base.html',
+                templateUrl: urls.partials + 'complaints/base.html',
                 parent: 'site'
             }).
             state('complaints.list', {
                 url: '/complaints',
-                templateUrl: partialsUrl + 'complaints/list.html',
+                templateUrl: urls.partials + 'complaints/list.html',
                 controller: 'complaints.ListCtrl'
             }).
             state('complaints.new', {
                 url: '/complaints/new',
-                templateUrl: partialsUrl + 'complaints/form.html',
+                templateUrl: urls.partials + 'complaints/form.html',
                 controller: 'complaints.NewCtrl',
                 data: {
                     access: 'resident'
@@ -272,45 +274,45 @@
             }).
             state('complaints.detail', {
                 url: '/complaints/:id',
-                templateUrl: partialsUrl + 'complaints/detail.html',
+                templateUrl: urls.partials + 'complaints/detail.html',
                 controller: 'complaints.DetailCtrl'
             }).
             state('tickets', {
-                templateUrl: partialsUrl + 'tickets/base.html',
+                templateUrl: urls.partials + 'tickets/base.html',
                 parent: 'site'
             }).
             state('tickets.list', {
                 url: '/tickets',
-                templateUrl: partialsUrl + 'tickets/list.html',
+                templateUrl: urls.partials + 'tickets/list.html',
                 controller: 'tickets.ListCtrl'
             }).
             state('tickets.new', {
                 url: '/tickets/new',
-                templateUrl: partialsUrl + 'tickets/form.html',
+                templateUrl: urls.partials + 'tickets/form.html',
                 controller: 'tickets.NewCtrl'
             }).
             state('tickets.detail', {
                 url: '/tickets/:id',
-                templateUrl: partialsUrl + 'tickets/detail.html',
+                templateUrl: urls.partials + 'tickets/detail.html',
                 controller: 'tickets.DetailCtrl'
             }).
             state('tickets.edit', {
                 url: '/tickets/:id/edit',
-                templateUrl: partialsUrl + 'tickets/form.html',
+                templateUrl: urls.partials + 'tickets/form.html',
                 controller: 'tickets.EditCtrl'
             }).
             state('storage', {
-                templateUrl: partialsUrl + 'storage/base.html',
+                templateUrl: urls.partials + 'storage/base.html',
                 parent: 'site'
             }).
             state('storage.list', {
                 url: '/storage',
-                templateUrl: partialsUrl + 'storage/list.html',
+                templateUrl: urls.partials + 'storage/list.html',
                 controller: 'storage.ListCtrl'
             }).
             state('storage.newItem', {
                 url: '/storage/items/new',
-                templateUrl: partialsUrl + 'storage/itemForm.html',
+                templateUrl: urls.partials + 'storage/itemForm.html',
                 controller: 'storage.NewItemCtrl',
                 data: {
                     access: 'resident'
@@ -318,7 +320,7 @@
             }).
             state('storage.newPlace', {
                 url: '/storage/places/new',
-                templateUrl: partialsUrl + 'storage/placeForm.html',
+                templateUrl: urls.partials + 'storage/placeForm.html',
                 controller: 'storage.NewPlaceCtrl',
                 data: {
                     access: 'manager'
@@ -326,36 +328,36 @@
             }).
             state('storage.itemDetail', {
                 url: '/storage/:id',
-                templateUrl: partialsUrl + 'storage/itemDetail.html',
+                templateUrl: urls.partials + 'storage/itemDetail.html',
                 controller: 'storage.ItemDetailCtrl'
             }).
             state('storage.placeDetail', {
                 url: '/storage/places/:id',
-                templateUrl: partialsUrl + 'storage/placeDetail.html',
+                templateUrl: urls.partials + 'storage/placeDetail.html',
                 controller: 'storage.PlaceDetailCtrl'
             }).
             state('storage.editItem', {
                 url: '/storage/:id/edit',
-                templateUrl: partialsUrl + 'storage/itemForm.html',
+                templateUrl: urls.partials + 'storage/itemForm.html',
                 controller: 'storage.EditItemCtrl'
             }).
             state('storage.editPlace', {
                 url: '/storage/places/:id/edit',
-                templateUrl: partialsUrl + 'storage/placeForm.html',
+                templateUrl: urls.partials + 'storage/placeForm.html',
                 controller: 'storage.EditPlaceCtrl'
             }).
             state('documents', {
-                templateUrl: partialsUrl + 'documents/base.html',
+                templateUrl: urls.partials + 'documents/base.html',
                 parent: 'site'
             }).
             state('documents.list', {
                 url: '/docs',
-                templateUrl: partialsUrl + 'documents/list.html',
+                templateUrl: urls.partials + 'documents/list.html',
                 controller: 'documents.ListCtrl'
             }).
             state('documents.upload', {
                 url: '/docs/upload',
-                templateUrl: partialsUrl + 'documents/form.html',
+                templateUrl: urls.partials + 'documents/form.html',
                 controller: 'documents.UploadCtrl',
                 data: {
                     access: 'manager'
@@ -363,45 +365,45 @@
             }).
             state('documents.detail', {
                 url: '/docs/:id',
-                templateUrl: partialsUrl + 'documents/detail.html',
+                templateUrl: urls.partials + 'documents/detail.html',
                 controller: 'documents.DetailCtrl'
             }).
             state('parking', {
-                templateUrl: partialsUrl + 'parking/base.html',
+                templateUrl: urls.partials + 'parking/base.html',
                 parent: 'site'
             }).
             state('parking.list', {
                 url: '/parking',
-                templateUrl: partialsUrl + 'parking/list.html',
+                templateUrl: urls.partials + 'parking/list.html',
                 controller: 'parking.ListCtrl'
             }).
             state('parking.new', {
                 url: '/parking/new',
-                templateUrl: partialsUrl + 'parking/vehicleForm.html',
+                templateUrl: urls.partials + 'parking/vehicleForm.html',
                 controller: 'parking.NewCtrl'
             }).
             state('parking.detail', {
                 url: '/parking/:id',
-                templateUrl: partialsUrl + 'parking/detail.html',
+                templateUrl: urls.partials + 'parking/detail.html',
                 controller: 'parking.DetailCtrl'
             }).
             state('parking.edit', {
                 url: '/parking/:id/edit',
-                templateUrl: partialsUrl + 'parking/vehicleForm.html',
+                templateUrl: urls.partials + 'parking/vehicleForm.html',
                 controller: 'parking.EditCtrl'
             }).
             state('contacts', {
-                templateUrl: partialsUrl + 'contacts/base.html',
+                templateUrl: urls.partials + 'contacts/base.html',
                 parent: 'site'
             }).
             state('contacts.list', {
                 url: '/contacts',
-                templateUrl: partialsUrl + 'contacts/list.html',
+                templateUrl: urls.partials + 'contacts/list.html',
                 controller: 'contacts.ListCtrl'
             }).
             state('contacts.new', {
                 url: '/contacts/new',
-                templateUrl: partialsUrl + 'contacts/form.html',
+                templateUrl: urls.partials + 'contacts/form.html',
                 controller: 'contacts.NewCtrl',
                 data: {
                     access: 'manager'
@@ -409,23 +411,23 @@
             }).
             state('contacts.detail', {
                 url: '/contacts/:id',
-                templateUrl: partialsUrl + 'contacts/detail.html',
+                templateUrl: urls.partials + 'contacts/detail.html',
                 controller: 'contacts.DetailCtrl'
             }).
             state('contacts.edit', {
                 url: '/contacts/:id/edit',
-                templateUrl: partialsUrl + 'contacts/form.html',
+                templateUrl: urls.partials + 'contacts/form.html',
                 controller: 'contacts.EditCtrl',
                 data: {
                     access: 'manager'
                 }
             }).
             state('buildings', {
-                templateUrl: partialsUrl + 'buildings/base.html',
+                templateUrl: urls.partials + 'buildings/base.html',
                 parent: 'site'
             }).
             state('buildings.list', {
-                templateUrl: partialsUrl + 'buildings/list.html',
+                templateUrl: urls.partials + 'buildings/list.html',
                 controller: 'buildings.ListCtrl',
                 data: {
                     acess: 'manager'
@@ -433,12 +435,12 @@
             }).
             state('buildings.detail', {
                 url: '/building',
-                templateUrl: partialsUrl + 'buildings/detail.html',
+                templateUrl: urls.partials + 'buildings/detail.html',
                 controller: 'buildings.DetailCtrl'
             }).
             state('buildings.apartment', {
                 url: '/building/:id',
-                templateUrl: partialsUrl + 'buildings/detail.html',
+                templateUrl: urls.partials + 'buildings/detail.html',
                 controller: 'buildings.DetailCtrl'
             });
 

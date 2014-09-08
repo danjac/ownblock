@@ -25,7 +25,7 @@
             };
         }
     ]).
-    directive('searchForm', function(staticUrl) {
+    directive('searchForm', function(urls) {
         var SearchForm = function() {
             this.visible = false;
             this.filter = {
@@ -45,7 +45,7 @@
                 ifEmpty: '@'
             },
             replace: true,
-            templateUrl: staticUrl + '/partials/searchForm.html',
+            templateUrl: urls.partials + 'searchForm.html',
             compile: function() {
                 return {
                     pre: function(scope, element, attrs) {
@@ -106,8 +106,8 @@
             }
         };
     }).
-    directive('confirmDialog', ['$modal', 'staticUrl',
-        function($modal, staticUrl) {
+    directive('confirmDialog', ['$modal', 'urls',
+        function($modal, urls) {
             var modalInstanceCtrl = function($scope, $modalInstance, header, text) {
                     $scope.header = header;
                     $scope.text = text;
@@ -120,7 +120,7 @@
                 },
                 openModal = function(header, text, onConfirm) {
                     var modalInstance = $modal.open({
-                        templateUrl: staticUrl + '/partials/confirmDialog.html',
+                        templateUrl: urls.partials + 'confirmDialog.html',
                         controller: modalInstanceCtrl,
                         resolve: {
                             header: function() {
@@ -154,8 +154,8 @@
             };
 
         }
-    ]).directive('sendMessage', ['$modal', 'auth', 'api', 'notifier', 'staticUrl',
-        function($modal, auth, api, notifier, staticUrl) {
+    ]).directive('sendMessage', ['$modal', 'auth', 'api', 'notifier', 'urls',
+        function($modal, auth, api, notifier, urls) {
             var modalInstanceCtrl = function($scope, $modalInstance, recipient, header) {
 
                     $scope.recipient = recipient;
@@ -172,7 +172,7 @@
                 },
                 openModal = function(recipient, header) {
                     var modalInstance = $modal.open({
-                        templateUrl: staticUrl + '/partials/messages/modalForm.html',
+                        templateUrl: urls.partials + 'messages/modalForm.html',
                         controller: modalInstanceCtrl,
                         resolve: {
                             recipient: function() {

@@ -5,6 +5,9 @@
     <send-message class="btn btn-default" recipient="vehicle.resident" header="Re:{{vehicle.description}}">
         <icon name="send" text="Send message to owner" />
     </send-message>
+    <a ui-sref="parking.edit({id: vehicle.id})" class="btn btn-default" ng-show="vehicle.is_editable">
+        <icon name="edit" text="Edit" />
+    </a>
 </div>
 
 <h2>{{vehicle.description}}</h2>
