@@ -22,6 +22,9 @@ def bower_update():
             api.run("ln -s ../img .")
             api.run("ln -s ../theme .")
 
+        with api.prefix(api.env.activate):
+            manage("collectstatic --noinput")
+
 
 @api.task
 def deploy():
@@ -37,5 +40,4 @@ def deploy():
             manage("collectstatic --noinput")
             manage("migrate")
 
-    bower_update()
     api.sudo("supervisorctl restart webapp")
