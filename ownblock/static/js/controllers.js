@@ -545,19 +545,21 @@
                     $state.go('messages.list');
                 }, function(response) {});
             };
+            $scope.cancel = function() {
+                $state.go('messages.list');
+            };
         }
     ]).controller('messages.ReplyCtrl', [
         '$scope',
         '$state',
-        '$stateParams',
         'api',
         'notifier',
-        function($scope, $state, $stateParams, api, notifier) {
+        function($scope, $state, api, notifier) {
             $scope.message = new api.Message({
-                parent: $stateParams.parent
+                parent: $state.params.parent
             });
             api.Message.get({
-                id: $stateParams.parent
+                id: $state.params.parent
             }).$promise.then(function(response) {
                 $scope.message.header = "Re: " + response.header;
                 if (response.details) {
@@ -569,6 +571,11 @@
                 $scope.message.$save(function() {
                     notifier.success('Your message has been sent');
                     $state.go('messages.list');
+                });
+            };
+            $scope.cancel = function() {
+                $state.go('messages.detail', {
+                    id: $state.params.parent
                 });
             };
         }
