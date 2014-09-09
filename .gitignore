@@ -12,3 +12,4 @@ ownblock/.env
 logs
 *.sublime-project
 *.sublime-workspace
+:w
