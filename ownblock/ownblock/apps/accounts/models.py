@@ -126,6 +126,8 @@ class User(AbstractBaseUser):
             'notices.change_notice',
             'notices.delete_notice',
             'storage.add_place',
+            'storage.change_place',
+            'storage.delete_place',
             'storage.change_item',
             'storage.delete_item',
             'tickets.add_ticket',
