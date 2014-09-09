@@ -430,6 +430,7 @@
                 parent: 'site'
             }).
             state('buildings.list', {
+                url: '/building/list',
                 templateUrl: urls.partials + 'buildings/list.html',
                 controller: 'buildings.ListCtrl',
                 data: {
