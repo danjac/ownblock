@@ -45,7 +45,7 @@
                             case 401:
                             case 403:
                                 // we're out of sync with server, logout 
-                                $location.path("/account/login/");
+                                $location.path("accessdenied");
                                 return result;
                             case 404:
                                 $location.path("notfound");
