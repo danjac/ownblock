@@ -344,7 +344,10 @@
             state('storage.editPlace', {
                 url: '/storage/places/:id/edit',
                 templateUrl: urls.partials + 'storage/placeForm.html',
-                controller: 'storage.EditPlaceCtrl'
+                controller: 'storage.EditPlaceCtrl',
+                data: {
+                    access: 'manager'
+                }
             }).
             state('documents', {
                 templateUrl: urls.partials + 'documents/base.html',

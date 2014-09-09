@@ -586,6 +586,9 @@
             api.StorageItem.query().$promise.then(function(response) {
                 $scope.paginator.reload(response);
             });
+            api.Place.query().$promise.then(function(response) {
+                $scope.places = response;
+            });
 
         }
     ]).controller('storage.NewPlaceCtrl', ['$scope', '$state', 'api', 'notifier',
@@ -593,7 +596,7 @@
             $scope.place = new api.Place();
             $scope.save = function() {
                 $scope.place.$save(function() {
-                    notifier.success('The place has been saved');
+                    notifier.success('The storage area has been added');
                     $state.go('storage.list');
                 });
             };
@@ -613,6 +616,10 @@
                     notifier.success('Your item has been added');
                     $state.go('storage.list');
                 });
+            };
+            $scope.cancel = function() {
+
+                $state.go('storage.list');
             };
 
         }
@@ -634,7 +641,14 @@
             $scope.save = function() {
                 $scope.item.$update(function() {
                     notifier.success('Your item has been updated');
-                    $state.go('storage.list');
+                    $state.go('storage.itemDetail', {
+                        id: $scope.item.id
+                    });
+                });
+            };
+            $scope.cancel = function() {
+                $state.go('storage.itemDetail', {
+                    id: $scope.item.id
                 });
             };
         }
@@ -652,13 +666,43 @@
                 });
             };
         }
-    ]).controller('storage.PlaceDetailCtrl', ['$scope', '$state', 'api',
-        function($scope, $state, api) {
+    ]).controller('storage.PlaceDetailCtrl', ['$scope', '$state', 'api', 'paginator', 'notifier',
+        function($scope, $state, api, paginator, notifier) {
+            $scope.paginator = paginator();
+            api.Place.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.place = response;
+                $scope.paginator.reload($scope.place.items);
+            });
+            $scope.deletePlace = function() {
+                $scope.place.$delete(function() {
+                    notifier.success('Storage area has been removed');
+                    $state.go('storage.list');
+                });
+            };
+        }
+    ]).controller('storage.EditPlaceCtrl', ['$scope', '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
             api.Place.get({
                 id: $state.params.id
             }, function(response) {
                 $scope.place = response;
             });
+            $scope.save = function() {
+                $scope.place.$update(function() {
+                    notifier.success('The storage area has been updated');
+                    $state.go('storage.placeDetail', {
+                        id: $scope.place.id
+                    });
+                });
+            };
+            $scope.cancel = function() {
+
+                $state.go('storage.placeDetail', {
+                    id: $scope.place.id
+                });
+            };
         }
     ]).controller('contacts.ListCtrl', ['$scope', 'api', 'paginator',
         function($scope, api, paginator) {
@@ -745,6 +789,9 @@
                     notifier.success("Your document has been uploaded");
                     $state.go('documents.list');
                 });
+            };
+            $scope.cancel = function() {
+                $state.go('documents.list');
             };
         }
     ]).controller('parking.ListCtrl', ['$scope', 'api', 'paginator',

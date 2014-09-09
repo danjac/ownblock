@@ -1,42 +1,60 @@
-<div class="btn-toolbar" role="toolbar">
-    <a ui-sref="storage.newItem" class="btn btn-primary" has-role="resident">
-        <icon name="plus" />Add new item
-    </a>
-    <a ui-sref="storage.newPlace" class="btn btn-primary" has-role="manager">
-        <icon name="plus" />Add new place
-    </a>
+<tabset>
+    <tab heading="Items">
+        <div class="btn-toolbar voffset-2" role="toolbar">
+            <a ui-sref="storage.newItem" class="btn btn-primary" has-role="resident">
+                <icon name="plus" />Add new item
+            </a>
+            <button class="btn btn-default" ng-click="searchForm.toggle()">
+                <icon name="search" text="Search" />
+            </button>
+        </div>
 
+        <search-form name="searchForm" paginator="paginator" filter="description" class="voffset-2"></search-form>
 
-    <button class="btn btn-default" ng-click="searchForm.toggle()">
-        <icon name="search" text="Search" />
-    </button>
-</div>
+        <table class="table table-bordered table-striped table-hover voffset-2" ng-show="!paginator.isEmpty">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Place</th>
+                    <th>Owner</th>
+                    <th>Apartment</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in paginator.currentItems">
+                    <td><a ui-sref="storage.itemDetail({id: item.id})">{{item.description}}</a>
+                    </td>
+                    <td><a ui-sref="storage.placeDetail({id: item.place})">{{item.place_name}}</a>
+                    </td>
+                    <td>
+                        <user-link user="item.resident" />
+                    </td>
+                    <td><a ui-sref="buildings.apartment({id: item.apartment.id})">{{item.apartment.number}}</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-<search-form name="searchForm" paginator="paginator" filter="description" class="voffset-2"></search-form>
-
-
-<table class="table table-bordered table-striped table-hover voffset-2" ng-show="!paginator.isEmpty">
-    <thead>
-        <tr>
-            <th>Item</th>
-            <th>Place</th>
-            <th>Owner</th>
-            <th>Apartment</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="item in paginator.currentItems">
-            <td><a ui-sref="storage.itemDetail({id: item.id})">{{item.description}}</a>
-            </td>
-            <td><a ui-sref="storage.placeDetail({id: item.place})">{{item.place_name}}</a>
-            </td>
-            <td>
-                <user-link user="item.resident" />
-            </td>
-            <td><a ui-sref="buildings.apartment({id: item.apartment.id})">{{item.apartment.number}}</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
-
-<pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>
+        <pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>
+    </tab>
+    <tab heading="Storage areas">
+        <div class="btn-toolbar voffset-2" role="toolbar">
+            <a ui-sref="storage.newPlace" class="btn btn-primary" has-role="manager">
+                <icon name="plus" />Add new area
+            </a>
+        </div>
+        <table class="table table-bordered table-striped table-hover voffset-2" ng-show="places.length">
+            <tbody>
+                <tr ng-repeat="place in places">
+                    <td><a ui-sref="storage.placeDetail({id: place.id})">{{place.name}}</a>
+                    </td>
+                    <td has-role="manager">
+                        <a ui-sref="storage.editPlace({id: place.id})" class="btn btn-default">
+                            <icon name="edit" text="Edit" />
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </tab>
+</tabset>

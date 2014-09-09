@@ -1,5 +1,23 @@
+<div class="btn-toolbar voffset-2" role="toolbar">
+    <a ui-sref="storage.newItem" class="btn btn-primary" has-role="resident">
+        <icon name="plus" />Add new item
+    </a>
+    <a ui-sref="storage.editPlace({id: place.id})" class="btn btn-default" has-role="manager">
+        <icon name="edit" />Edit
+    </a>
+    <confirm-dialog class="btn btn-danger" header="Remove storage area" text="Are you sure you want to remove this? Any items stored here will also be removed!" on-confirm="deletePlace()" has-role="manager">
+        <icon name="trash-o" text="Remove" />
+    </confirm-dialog>
+    <button class="btn btn-default" ng-click="searchForm.toggle()">
+        <icon name="search" text="Search" />
+    </button>
+</div>
+
+<search-form name="searchForm" paginator="paginator" filter="description" class="voffset-2"></search-form>
+
 <h2>{{place.name}}</h2>
-<table class="table table-bordered table-striped table-hover">
+
+<table class="table table-bordered table-striped table-hover" ng-show="!paginator.isEmpty">
     <thead>
         <tr>
             <th>Item</th>
@@ -9,7 +27,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="item in place.items">
+        <tr ng-repeat="item in paginator.currentItems">
             <td><a ui-sref="storage.itemDetail({id: item.id})">{{item.description}}</a>
             </td>
             <td>
@@ -21,3 +39,5 @@
         </tr>
     </tbody>
 </table>
+
+<pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>
