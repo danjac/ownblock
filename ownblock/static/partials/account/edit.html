@@ -1,3 +1,8 @@
+<div class="btn btn-toolbar">
+    <a class="btn btn-default" ui-sref="account.password">
+        <icon name="edit" text="Change password" />
+    </a>
+</div>
 <form role="form" name="form" novalidate>
     <div class="form-group">
         <label for="" class="control-label">First name</label>
@@ -21,5 +26,5 @@
     </div>
 
     <button type="submit" class="btn btn-primary" role="button" ng-click="save()" ng-disabled="form.$invalid">Save</button>
-    <a ui-sref="account.password">Change your password</a>
+    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
 </form>

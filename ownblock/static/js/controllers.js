@@ -273,6 +273,9 @@
                     $state.go('amenities.list');
                 });
             };
+            $scope.cancel = function() {
+                $state.go('amenities.list');
+            };
         }
     ]).controller('amenities.EditAmenityCtrl', ['$scope', '$state', 'api', 'notifier',
         function($scope, $state, api, notifier) {
@@ -287,6 +290,11 @@
                     $state.go('amenities.detail', {
                         id: $scope.amenity.id
                     });
+                });
+            };
+            $scope.cancel = function() {
+                $state.go('amenities.detail', {
+                    id: $scope.amenity.id
                 });
             };
         }
@@ -498,6 +506,11 @@
                     $state.go('notices.detail', {
                         id: $scope.notice.id
                     });
+                });
+            };
+            $scope.cancel = function() {
+                $state.go('notices.detail', {
+                    id: $scope.notice.id
                 });
             };
         }
@@ -739,6 +752,9 @@
                     $state.go('contacts.list');
                 });
             };
+            $scope.cancel = function() {
+                $state.go('contacts.list');
+            };
         }
     ]).controller('contacts.EditCtrl', ['$scope', '$state', 'api', 'notifier',
         function($scope, $state, api, notifier) {
@@ -753,6 +769,11 @@
                     $state.go('contacts.detail', {
                         id: $scope.contact.id
                     });
+                });
+            };
+            $scope.cancel = function() {
+                $state.go('contacts.detail', {
+                    id: $scope.contact.id
                 });
             };
         }
@@ -976,6 +997,11 @@
                     $scope.serverErrors = response.data;
                 });
             };
+            $scope.cancel = function() {
+                $state.go('residents.detail', {
+                    id: auth.user.id
+                });
+            };
         }
     ]).controller('account.ChangePasswordCtrl', ['$scope', '$state', 'api', 'auth', 'notifier',
         function($scope, $state, api, auth, notifier) {
@@ -1003,6 +1029,12 @@
                     });
                 });
             };
+            $scope.cancel = function() {
+                $state.go('residents.detail', {
+                    id: auth.user.id
+                });
+            };
+
         }
     ]);
 }());
