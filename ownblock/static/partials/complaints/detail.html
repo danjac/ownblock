@@ -1,4 +1,7 @@
 <div class="btn-toolbar" role="toolbar">
+    <a ui-sref="complaints.list" class="btn btn-default">
+        <icon name="arrow-left" text="See all complaints" />
+    </a>
     <send-message recipient="complaint.resident_detail" class="btn btn-default" header="Re:complaint">
         <icon name="send" text="Send message to {{complaint.resident_detail.full_name}}" />
     </send-message>

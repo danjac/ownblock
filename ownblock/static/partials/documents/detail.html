@@ -1,4 +1,7 @@
 <div role="toolbar" class="btn-toolbar">
+    <a ui-sref="documents.list" class="btn btn-default">
+        <icon name="arrow-left" text="See all documents" />
+    </a>
     <confirm-dialog has-role="manager" class="btn btn-danger" on-confirm="deleteDocument()" text="Are you sure you want to delete this document?" header="Remove document">
         <icon name="trash-o" text="Remove document" />
     </confirm-dialog>

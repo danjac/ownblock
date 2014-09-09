@@ -1,8 +1,11 @@
-<div class="btn-toolbar" role="toolbar" has-role="manager">
-    <a ui-sref="contacts.edit({id: contact.id})" class="btn btn-default">
+<div class="btn-toolbar" role="toolbar">
+    <a ui-sref="contacts.list" class="btn btn-default">
+        <icon name="arrow-left" text="See all contacts" />
+    </a>
+    <a ui-sref="contacts.edit({id: contact.id})" class="btn btn-default" has-role="manager">
         <icon name="edit" text="Edit" />
     </a>
-    <confirm-dialog class="btn btn-danger" on-confirm="deleteContact()" header="Remove contact" text="Are you sure you want to remove this contact?">
+    <confirm-dialog class="btn btn-danger" on-confirm="deleteContact()" header="Remove contact" text="Are you sure you want to remove this contact?" has-role="manager">
         <icon name="trash-o" text="Delete" />
     </confirm-dialog>
 

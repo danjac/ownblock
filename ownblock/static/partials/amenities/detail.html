@@ -1,4 +1,7 @@
 <div class="btn-toolbar" role="toolbar">
+    <a ui-sref="amenities.list" class="btn btn-default">
+        <icon name="arrow-left" text="See all amenities" />
+    </a>
     <a has-role="resident" class="btn btn-primary" ng-show="amenity.is_available" ui-sref="amenities.newBooking({id: amenity.id})">
         <icon name="calendar" />Make a reservation
     </a>

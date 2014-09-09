@@ -1,4 +1,7 @@
 <div class="btn-toolbar" role="toolbar">
+    <a ui-sref="notices.list" class="btn btn-default">
+        <icon name="arrow-left" text="See all notices" />
+    </a>
     <send-message recipient="notice.author" class="btn btn-default" header="Re:{{notice.title}}">
         <icon name="send" text="Send message to {{notice.author.full_name}}" />
     </send-message>

@@ -1,5 +1,8 @@
-<div class="btn-toolbar" role="toolbar" ng-show="message.sender.id !== auth.user.id">
-    <a class="btn btn-primary" ui-sref="messages.reply({parent: message.id})">
+<div class="btn-toolbar" role="toolbar">
+    <a ui-sref="messages.list" class="btn btn-default">
+        <icon name="arrow-left" text="See all messages" />
+    </a>
+    <a class="btn btn-primary" ui-sref="messages.reply({parent: message.id})" ng-show="message.sender.id !== auth.user.id">
         <icon name="reply" text="Reply">
     </a>
 </div>
