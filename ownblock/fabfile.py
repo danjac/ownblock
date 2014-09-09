@@ -14,14 +14,9 @@ def manage(cmd):
 def bower_update():
 
     with api.cd(api.env.directory):
+        api.run("git pull")
         api.run("bower update")
-        with api.cd(api.env.directory +
-                    "/static/bower_components/openlayers/build"):
-
-            api.run("python build.py")
-            api.run("ln -s ../img .")
-            api.run("ln -s ../theme .")
-
+        api.run("./open-layer.sh")
         with api.prefix(api.env.activate):
             manage("collectstatic --noinput")
 
