@@ -3,36 +3,6 @@
         <icon name="building" text="My building" />
     </a>
 </li>
-<li ng-class="{active: includes('notices')}">
-    <a ui-sref="notices.list">
-        <icon name="bullhorn" text="Notice board" />
-    </a>
-</li>
-<li ng-class="{active: includes('messages')}">
-    <a ui-sref="messages.list">
-        <icon name="envelope" text="Messages" />
-    </a>
-</li>
-<li ng-class="{active: includes('residents')}">
-    <a ui-sref="residents.list">
-        <icon name="users" text="Residents" />
-    </a>
-</li>
-<li ng-class="{active: includes('documents')}">
-    <a ui-sref="documents.list">
-        <icon name="archive" text="Documents" />
-    </a>
-</li>
-<li ng-class="{active: includes('amenities')}">
-    <a ui-sref="amenities.list">
-        <icon name="calendar" text="Reservations" />
-    </a>
-</li>
-<li ng-class="{active: includes('tickets')}">
-    <a ui-sref="tickets.list">
-        <icon name="wrench" text="Maintenance" />
-    </a>
-</li>
 <li ng-class="{active: includes('complaints')}">
     <a ui-sref="complaints.list">
         <icon name="thumbs-down" text="Complaints" />
@@ -43,9 +13,39 @@
         <icon name="phone" text="Contacts" />
     </a>
 </li>
+<li ng-class="{active: includes('documents')}">
+    <a ui-sref="documents.list">
+        <icon name="archive" text="Documents" />
+    </a>
+</li>
+<li ng-class="{active: includes('tickets')}">
+    <a ui-sref="tickets.list">
+        <icon name="wrench" text="Maintenance" />
+    </a>
+</li>
+<li ng-class="{active: includes('messages')}">
+    <a ui-sref="messages.list">
+        <icon name="envelope" text="Messages" />
+    </a>
+</li>
+<li ng-class="{active: includes('notices')}">
+    <a ui-sref="notices.list">
+        <icon name="bullhorn" text="Notice board" />
+    </a>
+</li>
 <li ng-class="{active: includes('parking')}">
     <a ui-sref="parking.list">
         <icon name="automobile" text="Parking" />
+    </a>
+</li>
+<li ng-class="{active: includes('amenities')}">
+    <a ui-sref="amenities.list">
+        <icon name="calendar" text="Reservations" />
+    </a>
+</li>
+<li ng-class="{active: includes('residents')}">
+    <a ui-sref="residents.list">
+        <icon name="users" text="Residents" />
     </a>
 </li>
 <li ng-class="{active: includes('storage')}">
