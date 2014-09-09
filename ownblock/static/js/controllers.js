@@ -8,7 +8,8 @@
         '$timeout',
         'auth',
         'notifier',
-        function($scope, $location, $state, $timeout, auth, notifier) {
+        'urls',
+        function($scope, $location, $state, $timeout, auth, notifier, urls) {
 
             $scope.auth = auth;
             $scope.notifier = notifier;
@@ -30,6 +31,8 @@
                 }, 3000);
 
             });
+
+            $scope.menuTpl = urls.partials + 'menu.html';
 
 
         }
