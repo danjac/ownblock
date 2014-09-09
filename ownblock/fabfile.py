@@ -11,15 +11,31 @@ def manage(cmd):
 
 
 @api.task
+def bower_update():
+
+    with api.cd(api.env.directory):
+        api.run("bower update")
+        with api.cd(api.env.directory +
+                    "/static/bower_components/openlayers/build"):
+
+            api.run("python build.py")
+            api.run("ln -s ../img .")
+            api.run("ln -s ../theme .")
+
+
+@api.task
 def deploy():
-    with api.cd(api.env.directory),\
-            api.prefix(api.env.activate):
+    with api.cd(api.env.directory):
 
         api.run("git pull")
-        api.run("pip install -r ../requirements/production.txt")
 
-        manage("check")
-        manage("collectstatic --noinput")
-        manage("migrate")
+        with api.prefix(api.env.activate):
 
+            api.run("pip install -r ../requirements/production.txt")
+
+            manage("check")
+            manage("collectstatic --noinput")
+            manage("migrate")
+
+    bower_update()
     api.sudo("supervisorctl restart webapp")
