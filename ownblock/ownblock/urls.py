@@ -1,73 +1,14 @@
-import json
 
-from django import forms
 from django.conf import settings
 from django.conf.urls import patterns, include, url
-from django.http import HttpResponseRedirect
-from django.core.mail import mail_admins
-from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
-from django.views.generic.edit import FormView
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
+from django.contrib.sitemaps.views import sitemap
 
-from ownblock.apps.accounts.serializers import AuthUserSerializer
+from . import views, sitemaps
 
 admin.autodiscover()
-
-
-class AppView(TemplateView):
-    template_name = 'app.html'
-
-    def get(self, request, *args, **kwargs):
-        if request.building:
-            return super().get(request, *args, **kwargs)
-        if request.user.is_staff:
-            redirect_url = reverse('admin:index')
-        else:
-            redirect_url = reverse('index')
-        return HttpResponseRedirect(redirect_url)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # bootstrap data
-        user_data = AuthUserSerializer(self.request.user,
-                                       context={'request': self.request}).data
-
-        user_data['site_name'] = self.request.site.name
-        context['user_data'] = json.dumps(user_data)
-        return context
-
-
-class ContactForm(forms.Form):
-    name = forms.CharField()
-    question = forms.CharField(required=False)
-    email = forms.EmailField()
-
-
-class ContactView(FormView):
-
-    form_class = ContactForm
-    template_name = "contact.html"
-
-    def form_valid(self, form):
-
-        message = """
-        Someone has asked a question:
-
-        Name: %(name)s
-        Email: %(email)s
-        Question:
-        %(question)s
-        """ % form.cleaned_data
-        mail_admins("Contact message", message)
-
-        return HttpResponseRedirect(self.request.path + "?sent=1")
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['sent'] = 'sent' in self.request.GET
-        return context
 
 
 urlpatterns = patterns('',
@@ -81,10 +22,11 @@ urlpatterns = patterns('',
                            name='about'),
 
                        url(r'^contact$',
-                           ContactView.as_view(), name='contact'),
+                           views.ContactView.as_view(), name='contact'),
 
                        # Application container
-                       url(r'^app$', login_required(AppView.as_view()),
+                       url(r'^app$', login_required(
+                           views.AppView.as_view()),
                            name='app'),
 
                        # REST API
@@ -114,6 +56,11 @@ urlpatterns = patterns('',
 
                        # Admin site
                        url(r'^backend/', include(admin.site.urls)),
+
+                       # Sitemaps
+                       url(r'^sitemap\.xml$', sitemap,
+                           {'sitemaps': sitemaps.sitemaps},
+                           name='django.contrib.sitemaps.views.sitemap')
                        )
 
 # Authentication

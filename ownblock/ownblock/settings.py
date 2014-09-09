@@ -108,6 +108,7 @@ class Base(Configuration):
         'django.contrib.messages',
         'django.contrib.staticfiles',
         'django.contrib.admin',
+        'django.contrib.sitemaps',
     )
 
     THIRD_PARTY_APPS = (
