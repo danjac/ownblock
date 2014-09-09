@@ -8,6 +8,7 @@ from ..buildings.models import Building
 class Place(models.Model):
 
     name = models.CharField(max_length=60)
+    location = models.TextField(blank=True)
     building = models.ForeignKey(Building)
 
     def __str__(self):

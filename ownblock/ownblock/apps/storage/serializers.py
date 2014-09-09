@@ -15,6 +15,7 @@ class PlaceSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
+            'location',
             'is_editable',
             'is_removable',
         )
