@@ -3,23 +3,15 @@
         <icon name="plus" text="Submit an issue" />
     </a>
 
-    <button class="btn btn-default" ng-click="toggleSearch()">
+
+    <button class="btn btn-default" ng-click="searchForm.toggle()">
         <icon name="search" text="Search" />
     </button>
 </div>
 
-<form class="search-form voffset-2" ng-show="showSearch">
-    <div class="input-group">
-        <input class="form-control" type="search" ng-model="searchFilter.description">
-        <span class="input-group-addon"><icon name="search" /></span>
-    </div>
-    <span class="help-block" ng-show="!tickets.currentItems.length && (searchFilter.description || searchFilter.status)">
-Sorry, no tickets found for your search.
-</span>
+<search-form name="searchForm" paginator="paginator" filter="description" class="voffset-2"></search-form>
+<table class="table table-bordered table-striped table-hover voffset-2" ng-show="!paginator.isEmpty">
 
-</form>
-
-<table class="table table-bordered table-striped table-hover voffset-2" ng-show="tickets.currentItems.length">
     <thead>
         <tr>
             <th>Description</th>
@@ -29,7 +21,7 @@ Sorry, no tickets found for your search.
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="ticket in tickets.currentItems">
+        <tr ng-repeat="ticket in paginator.currentItems">
             <td><a ui-sref="tickets.detail({id: ticket.id})">{{ticket.description|limitTo:30}}</a>
             </td>
             <td><span class="label" ng-class="{'label-success': ticket.status == 'new', 'label-warning': ticket.status == 'accepted', 'label-danger': ticket.status == 'resolved'}">{{ticket.status}}</td>
@@ -40,4 +32,4 @@ Sorry, no tickets found for your search.
 
 </table>
 
-<pager total-items="tickets.total" ng-model="tickets.page" ng-change="tickets.change()"></pager>
+<pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>

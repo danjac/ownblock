@@ -919,19 +919,9 @@
         }
     ]).controller('tickets.ListCtrl', ['$scope', 'api', 'paginator',
         function($scope, api, paginator) {
-            $scope.showSearch = false;
-            $scope.toggleSearch = function() {
-                $scope.showSearch = !$scope.showSearch;
-                if (!$scope.showSearch) {
-                    $scope.searchFilter.description = "";
-                }
-            };
-            $scope.$watch('searchFilter.description', function(newValue) {
-                $scope.tickets.filter(newValue);
-            });
-
+            $scope.paginator = paginator();
             api.Ticket.query().$promise.then(function(response) {
-                $scope.tickets = paginator(response);
+                $scope.paginator.reload(response);
             });
         }
     ]).controller('tickets.NewCtrl', ['$scope', '$state', 'auth', 'api', 'notifier',
