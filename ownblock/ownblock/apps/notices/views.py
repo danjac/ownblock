@@ -44,7 +44,7 @@ class NoticeViewSet(viewsets.ModelViewSet):
             messages.append((subject,
                              message,
                              settings.DEFAULT_FROM_EMAIL,
-                             recipient.email))
+                             [recipient.email]))
 
         send_mass_mail(tuple(messages))
 
