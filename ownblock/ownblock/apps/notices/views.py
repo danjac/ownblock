@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import send_mass_mail
 from django.template import Context, loader
 from django.contrib.auth import get_user_model
 
@@ -30,18 +30,23 @@ class NoticeViewSet(viewsets.ModelViewSet):
         site = self.request.site
 
         template = loader.get_template('notices/emails/new_notice.txt')
+        messages = []
+        subject = '%s: %s' % (site.name, obj.title)
 
         for recipient in recipients:
-
-            send_mail('%s: %s' % (site.name, obj.title),
-                      template.render(Context({
+            message = template.render(Context({
                                               'notice': obj,
                                               'site': site,
                                               'recipient': recipient,
                                               }),
                                       ),
-                      settings.DEFAULT_FROM_EMAIL,
-                      [recipient.email])
+
+            messages.append((subject,
+                             message,
+                             settings.DEFAULT_FROM_EMAIL,
+                             recipient.email))
+
+        send_mass_mail(tuple(messages))
 
     def get_queryset(self):
         return super().get_queryset().filter(
