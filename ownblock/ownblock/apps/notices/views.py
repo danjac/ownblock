@@ -39,7 +39,7 @@ class NoticeViewSet(viewsets.ModelViewSet):
                                               'site': site,
                                               'recipient': recipient,
                                               }),
-                                      ),
+                                      )
 
             messages.append((subject,
                              message,
