@@ -113,6 +113,8 @@ class User(AbstractBaseUser):
             'accounts.change_user',
             'accounts.delete_user',
             'amenities.add_amenity',
+            'amenities.change_amenity',
+            'amenities.delete_amenity',
             'amenities.change_booking',
             'amenities.delete_booking',
             'contacts.add_contact',
