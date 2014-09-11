@@ -1,31 +1,34 @@
-{% extends "registration/registration_base.html" %} {% block content %} {% if form.errors %}
+
+{% extends "registration/registration_base.html" %} {% block content %} 
+
+<div class="page-header">
+    <h1>Sign in</h1>
+</div>
+{% if form.errors %}
 <div class="alert alert-warning">Your username and password didn't match. Please try again.</div>
 {% endif %}
 
-<p class="well">
-Sign into {{ site.name }} with your email address and password.
-</p>
 <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
     {% csrf_token %}
     <input type="hidden" name="next" value="{{ next }}" />
     <div class="form-group">
         <label for="" class="label-control">Email address</label>
         <input type="text" name="username" class="form-control" />
-        <span class="help-block">Demo resident: resident@ownblock.com</span>
-        <span class="help-block">Demo manager: manager@ownblock.com</span>
+        <span class="help-block">Demo email address: <b>resident@ownblock.com</b> or <b>manager@ownblock.com</b></span>
     </div>
     <div class="form-group">
         <label for="" class="label-control">Password</label>
         <input type="password" name="password" class="form-control" />
-        <span class="help-block">Passwords are case-sensitive!</span>
-        <span class="help-block">Demo password: testpass</span>
+        <span class="help-block">Demo password: <b>testpass</b></span>
     </div>
     <button type="submit" class="btn btn-primary">Sign in</button>
-    <a href="{% url 'django.contrib.auth.views.password_reset' %}">Forgot your password?</a>
+    <a class="btn btn-default" href="{% url 'django.contrib.auth.views.password_reset' %}">Forgot your password?</a>
 </form>
 
-<div class="alert alert-info voffset-2">
-    Use of this site, including the demo, requires the use of <a target="_blank" href="https://en.wikipedia.org/wiki/HTTP_cookie">cookies</a>.
+
+<div class="alert alert-warning alert-dismissible voffset-2">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    Use of this site, including the demo, requires the use of cookies</a>.
 </div>
 
 
