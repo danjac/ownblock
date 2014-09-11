@@ -1,89 +1,117 @@
 {% extends "base.html" %} {% block content %}
 
 <div class="container">
-    <h1>Pricing</h1>
+    <div class="page-header">
+        <h1>Pricing</h1>
+    </div>
 
-    <p class="larger-text">
-    You pay a once-only set up fee when you get started, followed by a monthly subscription. The setup fee includes the first month.
-    </p>
+    <div class="panel panel-info">
+        <div class="panel-body">
 
-    <h2>Set up fee</h2>
+            <h2>Set up fee</h2>
+            <p class="well">This is a once-only fee paid when an apartment block is added to the <b>Ownblock</b> system.</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Non-profit/charity</h3>
+                    <p class="larger-text"><i>Includes registered housing charities, residents' associations, religious organizations and co-operatives</i></p>
+                    <p class="larger-text"><span class="label label-info">FREE</span>
+                    </p>
+                </div>
 
-    <h3>Non-profit/charity</h3>
-    <p class="larger-text"><i>Includes registered housing charities, residents' associations, religious organizations and co-operatives</i></p>
-    <p class="larger-text"><span class="label label-info">FREE</span>
-    </p>
+                <div class="col-md-6">
+                    <h3>For-profit/government</h3>
+                    <p class="larger-text"><i>Includes private landlords, central or municipal governments and housing authorities</i></p>
+                    <p class="larger-text">
+                    <span class="label label-info">1 EURO</span> per <b>apartment</b>
+                    </p>
 
-    <h3>For-profit/government</h3>
-    <p class="larger-text"><i>Includes private landlords, central or municipal governments and housing authorities</i></p>
-    <p class="larger-text">
-    <span class="label label-info">1 EURO</span> per <b>apartment</b>
-    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <hr>
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <h2>Monthly subscription</h2>
+            <p class="well">This does not include the first month of use.</p>
+            <div class="row">
+                <div class="col-md-6">
 
-    <h2>Monthly subscription</h2>
+                    <h3>Non-profit/charity</h3>
+                    <p class="larger-text">
+                    <span class="label label-info">1 EURO</span> per <b>apartment</b> per month
+                    </p>
+                </div>
 
-    <h3>Non-profit/charity</h3>
-    <p class="larger-text">
-    <span class="label label-info">1 EURO</span> per <b>apartment</b> per month
-    </p>
+                <div class="col-md-6">
 
-    <h3>For-profit organization</h3>
-    <p class="larger-text">
-    <span class="label label-info">2 EURO</span> per <b>apartment</b> per month
-    </p>
+                    <h3>For-profit organization</h3>
+                    <p class="larger-text">
+                    <span class="label label-info">2 EURO</span> per <b>apartment</b> per month
+                    </p>
 
-    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <h2>Examples</h2>
-    <table class="table table-hover table-striped table-bordered">
-        <thead>
-            <tr>
-                <th rowspan=2>Example</th>
-                <th rowspan=2>Total apartments</th>
-                <th colspan=2>Nonprofit/charity</th>
-                <th colspan=2>For-profit/government</th>
-            </tr>
-            <tr>
-                <th>Setup fee (EUR)</th>
-                <th>Cost per month (EUR)*</th>
-                <th>Setup fee (EUR)</th>
-                <th>Cost per month (EUR)*</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Single apartment block, 20 apartments</td>
-                <td>20</td>
-                <td>0</td>
-                <td>20</td>
-                <td>20</td>
-                <td>40</td>
-            </tr>
-            <tr>
-                <td>2 apartment blocks, 20 apartments + 30 apartments</td>
-                <td>50</td>
-                <td>0</td>
-                <td>50</td>
-                <td>50</td>
-                <td>100</td>
-            </tr>
-            <tr>
-                <td>10 apartment blocks, 20 apartments in each</td>
-                <td>200</td>
-                <td>0</td>
-                <td>200</td>
-                <td>200</td>
-                <td>400</td>
-            </tr>
-            <tbody>
-    </table>
-    <i>* Not including the first month</i><br>
-    <i>Prices do not include VAT. All prices subject to change.</i>
-    <h2>Sign up today!</h2>
-    <p class="larger-text">
-    Fill in <a href="{% url 'signups:signup' %}">this form</a> and we'll get back in touch with you. Your <b>Ownblock</b> site will be up and running in no time!
-    </p>
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <h2>Examples</h2>
+            <table class="table table-hover table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th rowspan=2>Example</th>
+                        <th rowspan=2>Total apartments</th>
+                        <th colspan=2>Nonprofit/charity</th>
+                        <th colspan=2>For-profit/government</th>
+                    </tr>
+                    <tr>
+                        <th>Setup fee (EUR)</th>
+                        <th>Cost per month (EUR)*</th>
+                        <th>Setup fee (EUR)</th>
+                        <th>Cost per month (EUR)*</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Single apartment block, 20 apartments</td>
+                        <td>20</td>
+                        <td>0</td>
+                        <td>20</td>
+                        <td>20</td>
+                        <td>40</td>
+                    </tr>
+                    <tr>
+                        <td>2 apartment blocks, 20 apartments + 30 apartments</td>
+                        <td>50</td>
+                        <td>0</td>
+                        <td>50</td>
+                        <td>50</td>
+                        <td>100</td>
+                    </tr>
+                    <tr>
+                        <td>10 apartment blocks, 20 apartments in each</td>
+                        <td>200</td>
+                        <td>0</td>
+                        <td>200</td>
+                        <td>200</td>
+                        <td>400</td>
+                    </tr>
+                    <tbody>
+            </table>
+            <i>* Not including the first month</i><br>
+            <i>Prices do not include VAT. All prices subject to change.</i>
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <h2>Sign up today!</h2>
+            <p class="larger-text">
+            Fill in <a href="{% url 'signups:signup' %}">this form</a> and we'll get back in touch with you. Your <b>Ownblock</b> site will be up and running in no time!
+            </p>
+        </div>
+    </div>
 </div>
 {% endblock %}

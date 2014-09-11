@@ -1,7 +1,9 @@
 {% extends "base.html" %} {% block content %}
 <div class="container">
-    <h1>Sign up</h1>
-    <p class="larger-text">
+    <div class="page-header">
+        <h1>Sign up</h1>
+    </div>
+    <p class="lead">
     Please fill in the form below. When <b>Ownblock</b> officially launches, we'll get in touch with you to find out more about the properties you wish to include in <b>Ownblock</b> so we can get your site set up. Don't worry - we'll help you get started!
     </p>
     {% if form.errors %}
@@ -45,7 +47,7 @@
                         <input name="domain" type="" class="form-control"  value="{{ form.domain.value|default:'' }}" required />
                         <div class="input-group-addon">.ownblock.com</div>
                     </div>
-                    {% if not form.errors.domain %}<span class="help-block">Required. Sould only contain <b>letters and numbers</b>.</span>{% endif %}
+                    {% if not form.errors.domain %}<span class="help-block">Required. Should only contain <b>letters and numbers</b>.</span>{% endif %}
                     {% for error in form.errors.domain %}
                     <span class="help-block">{{ error }}</span>
                     {% endfor %}
