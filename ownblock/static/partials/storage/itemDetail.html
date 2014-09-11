@@ -14,6 +14,11 @@
 
 </div>
 <h2>{{item.description}}</h2>
+<div class="thumbnail" ng-if="item.photo">
+    <a href="{{item.photo_url}}" target="_blank">
+        <img ng-src="{{item.thumbnail_url}}">
+    </a>
+</div>
 <table class="table table-condensed">
     <tbody>
         <tr>

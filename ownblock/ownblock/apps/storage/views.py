@@ -1,4 +1,7 @@
-from rest_framework import viewsets
+from django.http import Http404, HttpResponse
+
+from rest_framework import viewsets, parsers
+from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
 
@@ -41,6 +44,43 @@ class ItemViewSet(viewsets.ModelViewSet):
 
     model = Item
     serializer_class = ItemSerializer
+    parser_classes = (parsers.MultiPartParser, )
+
+    @detail_route(methods=('PATCH',))
+    def remove_photo(self, request, pk, *args, **kwargs):
+        try:
+            obj = self.get_queryset().filter(photo__isnull=False).get(pk=pk)
+        except self.model.DoesNotExist():
+            raise Http404()
+
+        obj.delete_photo()
+        return Response()
+
+    @detail_route()
+    def photo(self, request, pk, *args, **kwargs):
+        try:
+            obj = self.get_queryset().filter(photo__isnull=False).get(pk=pk)
+        except self.model.DoesNotExist():
+            raise Http404()
+
+        response = HttpResponse(
+            obj.photo, content_type=obj.get_photo_content_type())
+        return response
+
+    @detail_route()
+    def thumbnail(self, request, pk, *args, **kwargs):
+        try:
+            obj = self.get_queryset().filter(photo__isnull=False).get(pk=pk)
+        except self.model.DoesNotExist():
+            raise Http404()
+
+        tn = obj.get_thumbnail()
+        if tn is None:
+            raise Http404()
+
+        response = HttpResponse(
+            tn.read(), content_type=obj.get_photo_content_type())
+        return response
 
     def pre_save(self, obj):
         if obj.resident_id is None:

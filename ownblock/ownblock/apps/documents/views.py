@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 from django.template import Context, loader
 
 from rest_framework import viewsets, parsers
-from rest_framework.decorators import link
+from rest_framework.decorators import detail_route
 
 from .models import Document
 from .serializers import DocumentSerializer
@@ -16,7 +16,7 @@ class DocumentViewSet(viewsets.ModelViewSet):
     serializer_class = DocumentSerializer
     parser_classes = (parsers.MultiPartParser, )
 
-    @link()
+    @detail_route()
     def download(self, request, pk, *args, **kwargs):
         try:
             obj = self.get_queryset().get(pk=pk)

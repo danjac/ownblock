@@ -114,6 +114,7 @@ class Base(Configuration):
     THIRD_PARTY_APPS = (
         'django_extensions',
         'rest_framework',
+        'sorl.thumbnail',
     )
 
     LOCAL_APPS = (

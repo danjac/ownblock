@@ -35,6 +35,8 @@ class ItemSerializer(serializers.ModelSerializer):
     resident = UserRelatedField(read_only=True)
     place_name = serializers.SerializerMethodField('get_place_name')
     apartment = serializers.SerializerMethodField('get_apartment')
+    photo_url = serializers.SerializerMethodField('get_photo_url')
+    thumbnail_url = serializers.SerializerMethodField('get_thumbnail_url')
     is_editable = serializers.SerializerMethodField('is_obj_editable')
     is_removable = serializers.SerializerMethodField('is_obj_removable')
 
@@ -46,6 +48,9 @@ class ItemSerializer(serializers.ModelSerializer):
                   'resident',
                   'description',
                   'apartment',
+                  'photo',
+                  'photo_url',
+                  'thumbnail_url',
                   'is_editable',
                   'is_removable',
                   'serial_no')
@@ -56,6 +61,12 @@ class ItemSerializer(serializers.ModelSerializer):
     def get_apartment(self, obj):
         return {'id': obj.resident.apartment_id,
                 'number': obj.resident.apartment.number}
+
+    def get_photo_url(self, obj):
+        return obj.get_photo_url()
+
+    def get_thumbnail_url(self, obj):
+        return obj.get_thumbnail_url()
 
     def validate_place(self, attrs, source):
         value = attrs[source]

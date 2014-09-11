@@ -1,5 +1,5 @@
 from rest_framework import viewsets, permissions, status
-from rest_framework.decorators import action
+from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
 from ..accounts.permissions import IsManager
@@ -97,7 +97,7 @@ class ApartmentViewSet(viewsets.ReadOnlyModelViewSet):
 
         return Response(data)
 
-    @action(permission_classes=(IsManager,))
+    @detail_route(methods=('POST',), permission_classes=(IsManager,))
     def add_resident(self, request, pk=None):
         obj = self.get_object()
         serializer = ResidentSerializer(data=request.DATA, apartment=obj)

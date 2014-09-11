@@ -1,17 +1,35 @@
-<form role="form" name="itemForm" action="" novalidate>
-    <div class="form-group">
-        <label for="" class="control-label">Description</label>
-        <input type="" class="form-control" ng-model="item.description" required />
-    </div>
-    <div class="form-group">
-        <label for="" class="control-label">Serial no.</label>
-        <input type="" class="form-control" ng-model="item.serial_no" />
-    </div>
+<form role="form" name="itemForm" novalidate>
     <div class="form-group">
         <label for="" class="control-label">Stored in</label>
         <select id="" ng-model="item.place" ng-options="place.id as place.name for place in places" required>
         </select>
     </div>
-    <button class="btn btn-primary" ng-click="save()" ng-disabled="itemForm.$invalid">Save</button>
-    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+    <div class="form-group">
+        <label for="" class="control-label">Description</label>
+        <input type="text" class="form-control" ng-model="item.description" required />
+    </div>
+    <div class="form-group">
+        <label for="" class="control-label">Serial no.</label>
+        <input type="text" class="form-control" ng-model="item.serial_no" />
+    </div>
+    </div>
+    <div class="form-group">
+        <label for="" class="control-label">Photo</label>
+        <input ng-show="editPhoto" type="file" class="form-control" files-model="item.photo" />
+        <div class="thumbnail" ng-if="showPhoto">
+            <div>
+                <div class="btn-toolbar" role="toolbar">
+                    <button class="btn btn-default" ng-click="toggleEditPhoto()">
+                        <icon name="edit" text="Change this photo" />
+                    </button>
+
+                    <confirm-dialog class="btn btn-danger" header="Delete photo" text="Are you sure you want to delete this photo?" on-confirm="deletePhoto()">
+                        <icon name="trash-o" text="Delete this photo" />
+                        </confirm-dialot>
+                </div>
+                <img class="voffset-2" ng-src="{{item.thumbnail_url}}">
+            </div>
+        </div>
+        <button class="btn btn-primary" ng-click="save()" ng-disabled="itemForm.$invalid">Save</button>
+        <button class="btn btn-default" ng-click="cancel()">Cancel</button>
 </form>

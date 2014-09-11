@@ -131,9 +131,17 @@
                 Document: makeEndpoint('/api/documents/documents/:id'),
                 Contact: makeEndpoint('/api/contacts/contacts/:id'),
                 Vehicle: makeEndpoint('/api/parking/vehicles/:id'),
-                StorageItem: makeEndpoint('/api/storage/items/:id'),
                 Complaint: makeEndpoint('/api/complaints/complaints/:id'),
                 Ticket: makeEndpoint('/api/tickets/tickets/:id'),
+                StorageItem: makeEndpoint('/api/storage/items/:id', {
+                    removePhoto: {
+                        url: '/api/storage/items/:id/remove_photo',
+                        method: 'PATCH'
+                    },
+                    update: {
+                        method: 'PUT'
+                    }
+                }),
                 Apartment: makeEndpoint('/api/buildings/apartments/:id', {
                     addResident: {
                         url: '/api/buildings/apartments/:id/add_resident',

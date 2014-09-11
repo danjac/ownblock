@@ -642,13 +642,32 @@
     ]).controller('storage.EditItemCtrl', ['$scope', '$state', 'api', 'notifier',
         function($scope, $state, api, notifier) {
 
+            $scope.editPhoto = false;
+            $scope.showPhoto = false;
+            $scope.places = [];
+
             api.StorageItem.get({
                 id: $state.params.id
             }, function(response) {
                 $scope.item = response;
+                $scope.showPhoto = $scope.item.photo;
+                $scope.editPhoto = !$scope.showPhoto;
             });
 
-            $scope.places = [];
+
+            $scope.toggleEditPhoto = function() {
+                $scope.editPhoto = !$scope.editPhoto;
+            };
+
+            $scope.deletePhoto = function() {
+                $scope.item.$removePhoto(function() {
+                    $scope.item.photo = null;
+                    $scope.showPhoto = false;
+                    $scope.editPhoto = true;
+                    notifier.success('Your photo has been removed');
+                });
+            };
+
 
             api.Place.query().$promise.then(function(response) {
                 $scope.places = response;
