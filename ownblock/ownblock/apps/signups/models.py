@@ -14,7 +14,6 @@ class Signup(TimeStampedModel):
     name = models.CharField(max_length=60, unique=True)
     contact_name = models.CharField(max_length=80)
     email = models.EmailField()
-    is_nonprofit = models.BooleanField(default=False)
     domain = models.CharField(
         max_length=30,
         unique=True,

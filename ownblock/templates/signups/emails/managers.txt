@@ -1,9 +1,5 @@
 A new customer has signed up:
 
-{% if signup.is_nonprofit %}
-Organization is a nonprofit/charity.
-{% endif %}
-
 Name: {{ signup.name }}
 
 Contact name: {{ signup.contact_name }}
