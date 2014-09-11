@@ -4,9 +4,11 @@
         <h1>Ownblock</h1>
         <p>Keeping neighbors in the loop</p>
         <p>
-            <a href="http://demo.ownblock.com{% url 'app' %}" class="btn btn-primary btn-lg" role="button">Try our demo &raquo;</a>
-            <a href="{% url 'contact' %} " class="btn btn-primary btn-lg" role="button">Contact us &raquo;</a>
-            <a href="{% url 'about' %}" class="btn btn-primary btn-lg" role="button">More info &raquo;</a>
+        <a href="http://demo.ownblock.com{% url 'app' %}" class="btn btn-primary btn-lg" role="button">Try our demo &raquo;</a>
+        <a href="{% url 'about' %}" class="btn btn-primary btn-lg" role="button">More info &raquo;</a>
+        <a href="{% url 'pricing' %}" class="btn btn-primary btn-lg" role="button">Pricing &raquo;</a>
+        <a href="{% url 'signups:signup' %}" class="btn btn-primary btn-lg" role="button">Sign up &raquo;</a>
+        <a href="{% url 'contact' %}" class="btn btn-primary btn-lg" role="button">Contact us &raquo;</a>
         </p>
 
     </div>
@@ -26,11 +28,11 @@
         <div class="col-md-4">
             <h2>Track amenities, parking, storage</h2>
             <p>
-                <ul>
-                    <li>Residents can book facilities such as laundromats or the communal pool.</li>
-                    <li>Keep track of property stored in communal areas such as bicycles and prams.</li>
-                    <li>Register cars and vehicles in the block parking lot.</li>
-                </ul>
+            <ul>
+                <li>Residents can book facilities such as laundromats or the communal pool.</li>
+                <li>Keep track of property stored in communal areas such as bicycles and prams.</li>
+                <li>Register cars and vehicles in the block parking lot.</li>
+            </ul>
             </p>
             <p><a class="btn btn-default" href="{% url 'about' %}#manage" role="button">View details &raquo;</a>
             </p>
