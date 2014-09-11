@@ -238,7 +238,7 @@ class Production(Base):
     EMAIL_SUBJECT_PREFIX = '[%s] ' % Base.SITE_NAME
     # EMAIL_USE_TLS = True
 
-    SERVER_EMAIL = "errors@ownblock.com"
+    SERVER_EMAIL = "admin@ownblock.com"
 
     CACHES = {
         'default': {
