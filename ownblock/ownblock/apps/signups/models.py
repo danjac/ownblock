@@ -1,10 +1,12 @@
+import re
+
 from django.db import models
 from django.core.validators import RegexValidator
 
 
 from model_utils.models import TimeStampedModel
 
-RE_DOMAIN = r'[0-9a-zA-Z]+'
+RE_DOMAIN = re.compile(r'^([\w]+)$')
 
 
 class Signup(TimeStampedModel):
@@ -12,6 +14,7 @@ class Signup(TimeStampedModel):
     name = models.CharField(max_length=60, unique=True)
     contact_name = models.CharField(max_length=80)
     email = models.EmailField()
+    is_nonprofit = models.BooleanField(default=False)
     domain = models.CharField(
         max_length=30,
         unique=True,

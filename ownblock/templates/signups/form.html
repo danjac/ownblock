@@ -4,6 +4,9 @@
     <p class="larger-text">
     Please fill in the form below. When <b>Ownblock</b> officially launches, we'll get in touch with you to find out more about the properties you wish to include in <b>Ownblock</b> so we can get your site set up. Don't worry - we'll help you get started!
     </p>
+    {% if form.errors %}
+    <div class="alert alert-warning">Sorry, your form contains some errors.</div>
+    {% endif %}
     <form role="form" method="POST" action="{{ request.path }}">
         {% csrf_token %}
         <div class="row">
@@ -19,7 +22,6 @@
                 <div class="form-group{% if form.errors.contact_name %} has-error{% endif %}">
                     <label for="" class="control-label">My contact name</label>
                     <input name="contact_name" type="text" class="form-control"  value="{{ form.contact_name.value|default:'' }}" required/>
-                    <span class="help-block">Required</span>
                     {% if not form.errors.contact_name %}<span class="help-block">Required</span>{% endif %}
                     {% for error in form.errors.contact_name %}
                     <span class="help-block">{{ error }}</span>
@@ -52,7 +54,7 @@
             <div class="col-md-6">
                 <div class="form-group{% if form.errors.num_buildings %} has-error{% endif %}">
                     <label for="" class="control-label">Number of apartment blocks</label>
-                    <input name="num_buildings" type="number" class="form-control" placeholder="1" required  value="{{ form.num_buildings.value|default:'' }}" />
+                    <input name="num_buildings" type="number" class="form-control" required  value="{{ form.num_buildings.value|default:'1' }}" />
                     {% if not form.errors.num_buildings %}<span class="help-block">Required</span>{% endif %}
                     {% for error in form.errors.num_buildings %}
                     <span class="help-block">{{ error }}</span>
@@ -60,7 +62,7 @@
                 </div>
                 <div class="form-group{% if form.errors.num_apartments %} has-error{% endif %}">
                     <label for="" class="control-label">Total number of apartments</label>
-                    <input name="num_apartments" type="number" class="form-control" placeholder="20" required  value="{{ form.num_apartments.value|default:'' }}" />
+                    <input name="num_apartments" type="number" class="form-control" required  value="{{ form.num_apartments.value|default:'20' }}" />
                     {% if not form.errors.num_apartments %}<span class="help-block">Required</span>{% endif %}
                     {% for error in form.errors.num_apartments %}
                     <span class="help-block">{{ error }}</span>
@@ -72,6 +74,13 @@
                 </div>
             </div>
         </div>
+        <div class="checkbox">
+            <label>
+                {{ form.is_nonprofit }}
+                My organization is a registered charity/non-profit/residents' association
+            </label>
+        </div>
+
         <div class="form-group">
             <button class="btn btn-primary" type="submit">Continue &raquo;</button>
         </div>

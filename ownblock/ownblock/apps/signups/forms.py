@@ -10,6 +10,7 @@ class SignupForm(forms.ModelForm):
         fields = ('name',
                   'contact_name',
                   'email',
+                  'is_nonprofit',
                   'domain',
                   'phone',
                   'num_buildings',

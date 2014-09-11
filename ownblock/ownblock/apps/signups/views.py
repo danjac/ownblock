@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.core.mail import send_mail, mail_managers
 from django.http import HttpResponseRedirect
 from django.template import Context, loader
-from django.views.generic.detail import DetailView
+from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 
 from .models import Signup
@@ -17,7 +17,7 @@ class CreateSignup(CreateView):
     form_class = SignupForm
 
     def get_success_url(self):
-        return reverse('signups:done', [self.object.pk])
+        return reverse('signups:done')
 
     def send_emails(self):
 
@@ -41,6 +41,6 @@ class CreateSignup(CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class SignupDone(DetailView):
+class SignupDone(TemplateView):
 
     template_name = 'signups/done.html'
