@@ -11,12 +11,15 @@ class TicketSerializer(serializers.ModelSerializer):
 
     reporter_detail = UserSerializer(source='reporter', read_only=True)
     handler_detail = UserSerializer(source='handler', read_only=True)
+    amenity_detail = serializers.RelatedField(source='amenity')
 
     class Meta:
         model = Ticket
         fields = (
             'id',
             'description',
+            'amenity',
+            'amenity_detail',
             'status',
             'created',
             'comment',

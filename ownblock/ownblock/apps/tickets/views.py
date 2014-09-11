@@ -71,6 +71,7 @@ class TicketViewSet(viewsets.ModelViewSet):
             'reporter',
             'apartment',
             'handler',
+            'amenity',
             'reporter__apartment',).filter(
             building=self.request.building
         ).order_by('-created')

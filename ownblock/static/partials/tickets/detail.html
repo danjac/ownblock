@@ -20,6 +20,10 @@
                 <td>Status</td>
                 <td><span class="label" ng-class="{'label-success': ticket.status == 'new', 'label-warning': ticket.status == 'accepted', 'label-danger': ticket.status == 'resolved'}">{{ticket.status}}</td>
             </tr>
+            <tr ng-show="ticket.amenity">
+                <td>Amenity</td>
+                <td><a ui-sref="amenities.detail({id: ticket.amenity})">{{ticket.amenity_detail}}</a></td>
+            </tr>
             <tr>
                 <td>Reported on</td>
                 <td>{{ticket.created|date:"short"}}</td>

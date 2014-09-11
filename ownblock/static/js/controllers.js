@@ -376,6 +376,31 @@
                 });
             };
         }
+    ]).controller('amenities.NewTicketCtrl', ['$scope',
+        '$state', 'api', 'notifier',
+        function($scope, $state, api, notifier) {
+            api.Amenity.get({
+                id: $state.params.id
+            }, function(response) {
+                $scope.amenity = response;
+                $scope.ticket = new api.Ticket({
+                    amenity: $scope.amenity.id
+                });
+            });
+            $scope.save = function() {
+                $scope.ticket.$save(function() {
+                    notifier.success('Thanks for reporting the issue!');
+                    $state.go('amenities.detail', {
+                        id: $state.params.id
+                    });
+                });
+            };
+            $scope.cancel = function() {
+                $state.go('amenities.detail', {
+                    id: $state.params.id
+                });
+            };
+        }
     ]).controller('amenities.DetailCtrl', ['$scope',
         '$state',
         'api',

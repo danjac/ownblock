@@ -10,6 +10,11 @@
         <icon name="edit" />Edit amenity
     </a>
 
+    <a class="btn btn-default" ui-sref="amenities.newTicket({id: amenity.id})">
+        <icon name="wrench" />Report a problem
+    </a>
+
+
     <confirm-dialog has-role="manager" class="btn btn-danger" header="Delete amenity" text="Are you sure you want to remove this amenity?" on-confirm="deleteAmenity()">
         <icon name="trash-o" text="Delete this amenity"></icon>
     </confirm-dialog>
