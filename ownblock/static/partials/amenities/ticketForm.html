@@ -1,0 +1,8 @@
+<form role="form" name="ticketForm" novalidate>
+    <div class="form-group">
+        <label for="" class="label-control">Please give a detailed description of the issue.</label>
+        <textarea id="" ng-model="ticket.description" rows="10" class="form-control" cols="30" required></textarea>
+    </div>
+    <button role="button" class="btn btn-primary" ng-click="save()" ng-disabled="ticketForm.$invalid">Save</button>
+    <button role="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+</form>
