@@ -1,0 +1,10 @@
+Hi, {{ signup.contact_name }}
+
+Thanks for signing up! We'll be in touch when it's time to launch.
+
+With best regards,
+
+The Ownblock Team.
+
+
+

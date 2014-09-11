@@ -1,0 +1,80 @@
+{% extends "base.html" %} {% block content %}
+<div class="container">
+    <h1>Sign up</h1>
+    <p class="larger-text">
+    Please fill in the form below. When <b>Ownblock</b> officially launches, we'll get in touch with you to find out more about the properties you wish to include in <b>Ownblock</b> so we can get your site set up. Don't worry - we'll help you get started!
+    </p>
+    <form role="form" method="POST" action="{{ request.path }}">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group{% if form.errors.name %} has-error{% endif %}">
+                    <label for="" class="control-label">Name of my organization</label>
+                    <input name="name" type="text" class="form-control" value="{{ form.name.value|default:'' }}" required/>
+                    {% if not form.errors.name %}<span class="help-block">Required</span>{% endif %}
+                    {% for error in form.errors.name %}
+                    <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group{% if form.errors.contact_name %} has-error{% endif %}">
+                    <label for="" class="control-label">My contact name</label>
+                    <input name="contact_name" type="text" class="form-control"  value="{{ form.contact_name.value|default:'' }}" required/>
+                    <span class="help-block">Required</span>
+                    {% if not form.errors.contact_name %}<span class="help-block">Required</span>{% endif %}
+                    {% for error in form.errors.contact_name %}
+                    <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group{% if form.errors.email %} has-error{% endif %}">
+                    <label for="" class="control-label">My email address</label>
+                    <input name="email" type="email" class="form-control"  value="{{ form.email.value|default:'' }}" required/>
+                    {% if not form.errors.email %}<span class="help-block">Required</span>{% endif %}
+                    {% for error in form.errors.email %}
+                    <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="" class="control-label">My phone number</label>
+                    <input name="phone" type="text" class="form-control"  value="{{ form.phone.value|default:'' }}" />
+                </div>
+                <div class="form-group{% if form.errors.domain %} has-error{% endif %}">
+                    <label for="" class="control-label">My <b>Ownblock</b> domain</label>
+                    <div class="input-group">
+                        <input name="domain" type="" class="form-control"  value="{{ form.domain.value|default:'' }}" required />
+                        <div class="input-group-addon">.ownblock.com</div>
+                    </div>
+                    {% if not form.errors.domain %}<span class="help-block">Required. Sould only contain <b>letters and numbers</b>.</span>{% endif %}
+                    {% for error in form.errors.domain %}
+                    <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group{% if form.errors.num_buildings %} has-error{% endif %}">
+                    <label for="" class="control-label">Number of apartment blocks</label>
+                    <input name="num_buildings" type="number" class="form-control" placeholder="1" required  value="{{ form.num_buildings.value|default:'' }}" />
+                    {% if not form.errors.num_buildings %}<span class="help-block">Required</span>{% endif %}
+                    {% for error in form.errors.num_buildings %}
+                    <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group{% if form.errors.num_apartments %} has-error{% endif %}">
+                    <label for="" class="control-label">Total number of apartments</label>
+                    <input name="num_apartments" type="number" class="form-control" placeholder="20" required  value="{{ form.num_apartments.value|default:'' }}" />
+                    {% if not form.errors.num_apartments %}<span class="help-block">Required</span>{% endif %}
+                    {% for error in form.errors.num_apartments %}
+                    <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <label for="" class="control-label">Additional information or questions</label>
+                    <textarea id="" name="questions" rows="10" class="form-control" cols="30">{{ form.questions.value|default:'' }}</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit">Continue &raquo;</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

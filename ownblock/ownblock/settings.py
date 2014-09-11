@@ -127,6 +127,7 @@ class Base(Configuration):
         'ownblock.apps.messaging',
         'ownblock.apps.notices',
         'ownblock.apps.parking',
+        'ownblock.apps.signups',
         'ownblock.apps.storage',
         'ownblock.apps.tickets',
     )

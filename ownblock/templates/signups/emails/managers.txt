@@ -1,0 +1,21 @@
+A new customer has signed up:
+
+Name: {{ signup.name }}
+
+Contact name: {{ signup.contact_name }}
+
+Email address: {{ signup.email }}
+
+Domain: {{ signup.domain }}.ownblock.com
+
+{% if signup.phone %}
+Phone: {{ signup.phone }}
+{% endif %}
+
+Number of buildings: {{ signup.num_buildings }}
+
+Number of apartments: {{ signup.num_apartments }}
+
+Additional questions/info:
+
+{{ signup.questions }}

@@ -2,17 +2,21 @@
 <footer class="voffset-3">
     <div class="container">
         <ul class="nav nav-pills">
-            <li><a href="http://www.ownblock.com{% url 'index' %}">Home</a>
+            <li><a href="{% url 'index' %}">Home</a>
             </li>
-            <li><a href="http://www.ownblock.com{% url 'about' %}">About ownblock.com</a>
+            <li><a href="{% url 'about' %}">About ownblock.com</a>
             </li>
             <li><a href="http://demo.ownblock.com{% url 'app' %}">Try the demo</a>
             </li>
-            <li><a href="http://www.ownblock.com{% url 'contact' %}">Contact us</a>
+            <li><a href="{% url 'pricing' %}">Pricing</a>
+            </li>
+            <li><a href="{% url 'signups:signup' %}">Sign up</a>
+            </li>
+            <li><a href="{% url 'contact' %}">Contact us</a>
             </li>
         </ul>
         <p class="pull-right">
-            <small>&copy; Dan Jacob {% now 'Y' %} <a href="https://github.com/danjac"><img src="{% static 'img/GitHub_Logo.png' %}" width=16 height=16></a></small>
+        <small>&copy; Dan Jacob {% now 'Y' %} <a href="https://github.com/danjac"><img src="{% static 'img/GitHub_Logo.png' %}" width=16 height=16></a></small>
         </p>
     </div>
 </footer>

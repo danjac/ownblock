@@ -1,0 +1,68 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="container">
+    <h1>Pricing</h1>
+
+    <p class="larger-text">
+    You pay a once-only set up fee when you get started, followed by a monthly subscription. The setup fee includes the first month.
+    </p>
+
+    <hr>
+
+    <h2>Set up fee</h2>
+    <p class="larger-text">
+    <span class="label label-info">1 EURO</span> per apartment block per month
+    </p>
+
+    <hr>
+
+    <h2>Monthly subscription</h2>
+
+    <h3>Single apartment block</h3>
+    <p class="larger-text"><span class="label label-info">FREE</span>
+    </p>
+
+    <h3>Multiple apartment blocks</h3>
+    <p class="larger-text">
+    <span class="label label-info">1 EURO</span> per apartment block per month
+    </p>
+
+    <hr>
+
+    <h2>Examples</h2>
+    <table class="table table-hover table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Example</th>
+                <th>Total apartments</th>
+                <th>Setup fee (EUR)</th>
+                <th>Cost per month (EUR)*</th>
+            </tr>
+        </thead>
+        <tr>
+            <td>Single apartment block, 20 apartments</td>
+            <td>20</td>
+            <td>20</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>2 apartment blocks, 20 apartments + 30 apartments</td>
+            <td>50</td>
+            <td>50</td>
+            <td>50</td>
+        </tr>
+        <tr>
+            <td>100 apartment blocks, 20 apartments in each</td>
+            <td>200</td>
+            <td>200</td>
+            <td>200</td>
+        </tr>
+    </table>
+    <i>* Not including the first month</i><br>
+    <i>Prices do not include VAT. All prices subject to change.</i>
+    <h2>Sign up today!</h2>
+    <p class="larger-text">
+    Fill in <a href="{% url 'signups:signup' %}">this form</a> and we'll get back in touch with you. Your <b>Ownblock</b> site will be up and running in no time!
+    </p>
+</div>
+{% endblock %}

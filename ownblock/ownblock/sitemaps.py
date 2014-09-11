@@ -8,7 +8,7 @@ class MainSitemap(Sitemap):
     changefreq = 'yearly'
 
     def items(self):
-        return ['index', 'about', 'contact']
+        return ['index', 'about', 'contact', 'pricing']
 
     def location(self, item):
         return reverse(item)

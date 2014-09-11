@@ -21,6 +21,11 @@ urlpatterns = patterns('',
                            template_name='about.html'),
                            name='about'),
 
+                       url(r'^pricing$', TemplateView.as_view(
+                           template_name='pricing.html'),
+                           name='pricing'),
+
+
                        url(r'^contact$',
                            views.ContactView.as_view(), name='contact'),
 
@@ -53,6 +58,8 @@ urlpatterns = patterns('',
                        url(r'^api/parking/', include(
                            'ownblock.apps.parking.urls')),
 
+                       url(r'^signup/', include(
+                           'ownblock.apps.signups.urls', namespace='signups')),
 
                        # Admin site
                        url(r'^backend/', include(admin.site.urls)),
