@@ -347,7 +347,10 @@
             api.Booking.get({
                 id: $state.params.id
             }, function(response) {
+                $scope.now = new Date();
                 $scope.booking = response;
+                //                $scope.booking.reserved_to = new Date($scope.booking.reserved_to);
+                //               $scope.booking.reserved_from = new Date($scope.booking.reserved_from);
             });
             $scope.save = function() {
                 $scope.booking.$update(function() {
@@ -359,6 +362,16 @@
                     $scope.serverErrors = response.data;
                 });
             };
+            $scope.timepickerOptions = {
+                showMeridian: false,
+                disabled: false
+            };
+            $scope.datepickerOptions = {
+                disabled: false,
+                dateFormat: 'dd/mm/yyyy'
+            };
+
+
         }
     ]).controller('amenities.BookingDetailCtrl', ['$scope', '$state', 'api', 'notifier',
         function($scope, $state, api, notifier) {
