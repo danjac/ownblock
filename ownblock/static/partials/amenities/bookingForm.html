@@ -5,7 +5,7 @@
         <div class="col-md-6">
             <div class="form-group" ng-class="{'has-error': serverErrors.reserved_from}">
                 <label for="" class="control-label">From</label>
-                <input type="text" class="form-control" datepicker-popup="dd/MM/yyyy" placeholder="Date (dd/mm/yyyy)" ng-click="isDatepickerFromOpen=true" is-open="isDatepickerFromOpen" ng-model="booking.reserved_from">
+                <input type="date" class="form-control" datepicker-popup="dd/MM/yyyy" placeholder="Date (dd/mm/yyyy)" ng-click="isDatepickerFromOpen=true" is-open="isDatepickerFromOpen" ng-model="booking.reserved_from">
                 <timepicker name="reserved_from" ng-model="booking.reserved_from"></timepicker>
             </div>
             <span class="help-block" ng-repeat="error in serverErrors.reserved_from">{{error}}</span>
@@ -13,7 +13,7 @@
         <div class="col-md-6">
             <div class="form-group" ng-class="{'has-error': serverErrors.reserved_to}">
                 <label for="" class="control-label">To</label>
-                <input type="text" class="form-control" datepicker-popup="dd/MM/yyyy" placeholder="Date (dd/mm/yyyy)" ng-click="isDatepickerToOpen=true" is-open="isDatepickerToOpen" ng-model="booking.reserved_to">
+                <input type="date" class="form-control" datepicker-popup="dd/MM/yyyy" placeholder="Date (dd/mm/yyyy)" ng-click="isDatepickerToOpen=true" is-open="isDatepickerToOpen" ng-model="booking.reserved_to">
                 <timepicker name="reserved_to" ng-model="booking.reserved_to"></timepicker>
                 <span class="help-block" ng-repeat="error in serverErrors.reserved_to">{{error}}</span>
             </div>

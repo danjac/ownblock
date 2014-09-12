@@ -315,9 +315,9 @@
                 reservedTo.setHours(now.getHours() + 2);
 
                 $scope.booking = new api.Booking({
-                    amenity: $scope.amenity.id
-                    //reserved_from: reservedFrom,
-                    //reserved_to: reservedTo
+                    amenity: $scope.amenity.id,
+                    reserved_from: reservedFrom,
+                    reserved_to: reservedTo
                 });
             });
 
