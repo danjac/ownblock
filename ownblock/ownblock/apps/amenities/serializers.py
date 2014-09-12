@@ -77,8 +77,7 @@ class BookingSerializer(serializers.ModelSerializer):
 
 
 class AmenitySerializer(serializers.ModelSerializer):
-    booking_set = BookingSerializer(many=True, read_only=True)
 
     class Meta:
         model = Amenity
-        fields = ('id', 'name', 'is_available', 'booking_set')
+        fields = ('id', 'name', 'is_available', )

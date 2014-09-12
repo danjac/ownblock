@@ -25,9 +25,10 @@ class TicketViewSet(viewsets.ModelViewSet):
         return TicketSerializer
 
     def pre_save(self, obj):
-        obj.reporter = self.request.user
+        if obj.reporter_id is None:
+            obj.reporter = self.request.user
         obj.building = self.request.building
-        if self.request.user.role == 'resident':
+        if self.request.user.role == 'resident' and not obj.amenity_id:
             obj.apartment = self.request.user.apartment
         elif self.request.user.role == 'manager':
             obj.handler = self.request.user

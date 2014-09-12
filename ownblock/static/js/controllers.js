@@ -315,9 +315,9 @@
                 reservedTo.setHours(now.getHours() + 2);
 
                 $scope.booking = new api.Booking({
-                    amenity: $scope.amenity.id,
-                    reserved_from: reservedFrom,
-                    reserved_to: reservedTo
+                    amenity: $scope.amenity.id
+                    //reserved_from: reservedFrom,
+                    //reserved_to: reservedTo
                 });
             });
 
@@ -326,7 +326,8 @@
                 disabled: false
             };
             $scope.datepickerOptions = {
-                disabled: false
+                disabled: false,
+                dateFormat: 'dd/mm/yyyy'
             };
 
             $scope.save = function() {
@@ -406,9 +407,11 @@
         'api',
         'auth',
         'notifier',
-        function($scope, $state, api, auth, notifier) {
+        'paginator',
+        function($scope, $state, api, auth, notifier, paginator) {
             var bookings = [],
                 today = new Date();
+            $scope.paginator = paginator();
             $scope.eventSources = [bookings];
             $scope.deleteAmenity = function() {
                 $scope.amenity.$delete(function() {
@@ -436,12 +439,12 @@
                 $scope.amenity = response;
                 $scope.bookings = [];
 
-                angular.forEach($scope.amenity.booking_set, function(booking, counter) {
+                angular.forEach($scope.amenity.bookings, function(booking, counter) {
                     var reservedFrom = new Date(booking.reserved_from),
                         reservedTo = new Date(booking.reserved_to),
                         title = formatTime(reservedFrom) + " - " + formatTime(reservedTo),
                         isPast = reservedFrom < today,
-                        color = getColor(booking.resident.id, isPast);
+                        color = getColor(booking.resident, isPast);
 
                     bookings.push({
                         start: reservedFrom,
@@ -452,7 +455,10 @@
                         index: counter
                     });
                 });
+
+                $scope.paginator.reload($scope.amenity.tickets);
             });
+
 
             function showBooking(booking) {
                 $state.go('amenities.bookingDetail', {

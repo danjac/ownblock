@@ -24,11 +24,40 @@
 
 <h2>{{amenity.name}}</h2>
 
-<p class="well" has-role="resident">
-    Your reservations are indicated in <span style="background-color:#800; color:#fff">this color</span>. Click on your reservation to change the times or cancel.
-</p>
+<tabset>
+    <tab heading="Reservations">
+        <p class="well voffset-2" has-role="resident">
+            Your reservations are indicated in <span style="background-color:#800; color:#fff">this color</span>. Click on your reservation to change the times or cancel.
+        </p>
 
 
-<div ng-if="amenity.is_available" class="calendar" ui-calendar="uiConfig.calendar" ng-model="eventSources" calendar="calendar"></div>
-<div ng-if="amenity && !amenity.is_available">Sorry, this amenity is currently unavailable.</div>
+        <div ng-if="amenity.is_available" class="calendar voffset-2" ui-calendar="uiConfig.calendar" ng-model="eventSources" calendar="calendar"></div>
+        <p class="well voffset-2" ng-if="amenity && !amenity.is_available">Sorry, this amenity is currently unavailable.</p>
+    </tab>
+    <tab heading="Issues">
+
+        <table class="table table-bordered table-striped table-hover voffset-2" ng-show="!paginator.isEmpty">
+
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Reported on</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="ticket in paginator.currentItems">
+                    <td><a ui-sref="tickets.detail({id: ticket.id})">{{ticket.description|limitTo:30}}</a>
+                    </td>
+                    <td><span class="label" ng-class="{'label-success': ticket.status == 'new', 'label-warning': ticket.status == 'accepted', 'label-danger': ticket.status == 'resolved'}">{{ticket.status}}</td>
+            <td>{{ticket.created|date:"short"}}</td>
+            <td><user-link user="ticket.reporter_detail" /></td>
+        </tr>
+    </tbody>
+
+</table>
+
+<pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>
+    </tab>
+</tabset>
 
