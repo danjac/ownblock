@@ -314,6 +314,8 @@
                 reservedFrom.setHours(now.getHours() + 1);
                 reservedTo.setHours(now.getHours() + 2);
 
+                $scope.now = now;
+
                 $scope.booking = new api.Booking({
                     amenity: $scope.amenity.id,
                     reserved_from: reservedFrom,
