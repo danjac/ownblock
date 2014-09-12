@@ -51,4 +51,6 @@ class DocumentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return super().get_queryset().filter(
             building=self.request.building
+        ).select_related(
+            'author'
         ).order_by('-created')

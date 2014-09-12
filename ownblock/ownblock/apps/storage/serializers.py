@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ..accounts.serializers.related import UserRelatedField
+from ..accounts.serializers import UserSerializer
 
 from .models import Place, Item
 
@@ -32,7 +32,7 @@ class PlaceSerializer(serializers.ModelSerializer):
 
 class ItemSerializer(serializers.ModelSerializer):
 
-    resident = UserRelatedField(read_only=True)
+    resident = UserSerializer(read_only=True)
     place_name = serializers.SerializerMethodField('get_place_name')
     apartment = serializers.SerializerMethodField('get_apartment')
     photo_url = serializers.SerializerMethodField('get_photo_url')

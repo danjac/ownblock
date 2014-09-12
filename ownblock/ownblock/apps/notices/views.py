@@ -51,4 +51,7 @@ class NoticeViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return super().get_queryset().filter(
             building=self.request.building
+        ).select_related(
+            'author',
+            'author__apartment'
         ).order_by('-created')

@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from ...buildings.serializers import (
+from ..buildings.serializers import (
     BuildingSerializer,
     ApartmentRelatedField
 )
 
-from ..models import User
+from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):

@@ -11,16 +11,6 @@ def manage(cmd):
 
 
 @api.task
-def bower_update():
-
-    with api.cd(api.env.directory):
-        api.run("git pull")
-        api.run("gulp")
-        with api.prefix(api.env.activate):
-            manage("collectstatic --noinput")
-
-
-@api.task
 def deploy():
     with api.cd(api.env.directory):
 

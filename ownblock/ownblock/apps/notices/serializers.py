@@ -1,13 +1,13 @@
 from rest_framework import serializers
 
-from ..accounts.serializers.related import UserRelatedField
+from ..accounts.serializers import UserSerializer
 
 from .models import Notice
 
 
 class NoticeSerializer(serializers.ModelSerializer):
 
-    author = UserRelatedField(read_only=True)
+    author = UserSerializer(read_only=True)
 
     is_editable = serializers.SerializerMethodField('is_obj_editable')
     is_removable = serializers.SerializerMethodField('is_obj_removable')
