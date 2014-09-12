@@ -15,7 +15,7 @@
         urls: {
             static: '/static/',
             partials: '/static/partials/',
-            components: '/static/bower_components/'
+            img: '/static/img/'
         }
     }).
     config(['$httpProvider',

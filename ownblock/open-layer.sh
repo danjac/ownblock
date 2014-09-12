@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-cd static/bower_components/openlayers/build
+cd bower_components/openlayers/build
 
 ./build.py
 
@@ -14,4 +14,4 @@ then
     ln -s ../theme .
 fi
 
-cd ../../../..
+cd ../../..

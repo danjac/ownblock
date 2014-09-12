@@ -8,11 +8,8 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon" />
-        <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
-        <!--<link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap-theme.min.css' %}">-->
-        <link rel="stylesheet" href="{% static 'bower_components/fullcalendar/fullcalendar.css' %}">
-        <link rel="stylesheet" href="{% static 'bower_components/bootswatch/flatly/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static 'bower_components/fontawesome/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/vendor.css' %}">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/flatly/bootstrap.min.css">
         <link rel="stylesheet" href="{% static 'css/app.css' %}" />
     </head>
 
@@ -93,30 +90,12 @@
         </div>
         {% endverbatim %}
         <hr>{% include "footer.html" %}
-        <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
-        <script src="{% static 'bower_components/jquery-ui/ui/minified/jquery-ui.min.js' %}"></script>
-        <script src="{% static 'bower_components/openlayers/build/OpenLayers.js' %}"></script>
-        <script src="{% static 'bower_components/moment/min/moment.min.js' %}"></script>
-        <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-        <script src="{% static 'bower_components/angular/angular.min.js' %}"></script>
-        <script src="{% static 'bower_components/angular-cookies/angular-cookies.min.js' %}"></script>
-        <script src="{% static 'bower_components/angular-sanitize/angular-sanitize.min.js' %}"></script>
-        <script src="{% static 'bower_components/angular-messages/angular-messages.min.js' %}"></script>
-        <script src="{% static 'bower_components/angular-resource/angular-resource.min.js' %}"></script>
-        <script src="{% static 'bower_components/angular-ui-router/release/angular-ui-router.min.js' %}"></script>
-        <script src="{% static 'bower_components/angular-bootstrap/ui-bootstrap.min.js' %}"></script>
-        <script src="{% static 'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js' %}"></script>
-        <script src="{% static 'bower_components/angular-ui-calendar/src/calendar.js' %}"></script>
-        <script src="{% static 'bower_components/fullcalendar/fullcalendar.min.js' %}"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/openlayers/2.11/OpenLayers.js"></script>
+        <script src="{% static 'js/vendor.js' %}"></script>
         <script src="{% static 'js/app.js' %}"></script>
         <script src="{% static 'js/controllers.js' %}"></script>
         <script src="{% static 'js/services.js' %}"></script>
         <script src="{% static 'js/directives.js' %}"></script>
-        <!--
-            <script src="{% static 'js/filters.js' %}"></script>
-            -->
-
-
     </body>
 
 </html>

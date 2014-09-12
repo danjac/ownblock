@@ -144,7 +144,7 @@
                 },
                 replace: true,
                 transclude: true,
-                template: '<button><ng-transclude></ng-transclude></button>',
+                template: '<button><div ng-transclude></div></button>',
                 link: function(scope, element, attrs) {
                     element.bind('click', function(event) {
                         event.preventDefault();
@@ -198,7 +198,7 @@
                 },
                 replace: true,
                 transclude: true,
-                template: '<button role="button"><ng-transclude></ng-transclude></button>',
+                template: '<button role="button"><div ng-transclude></div></button>',
                 link: function(scope, element, attrs) {
                     scope.$watch('recipient', function(newVal) {
                         if (newVal && newVal.id === auth.user.id) {
