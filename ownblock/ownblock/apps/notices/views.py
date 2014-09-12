@@ -31,7 +31,7 @@ class NoticeViewSet(viewsets.ModelViewSet):
 
         template = loader.get_template('notices/emails/new_notice.txt')
         messages = []
-        subject = '%s: %s' % (site.name, obj.title)
+        subject = '{}: {}'.format(site.name, obj.title)
 
         for recipient in recipients:
             message = template.render(Context({

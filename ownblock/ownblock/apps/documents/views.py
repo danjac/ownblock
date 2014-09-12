@@ -38,7 +38,7 @@ class DocumentViewSet(viewsets.ModelViewSet):
         site = self.request.site
         template = loader.get_template('documents/email/new_document.txt')
         for resident in self.request.building.get_residents():
-            send_mail('%s: a document has been uploaded' % site.name,
+            send_mail('{0}: a document has been uploaded'.format(site.name),
                       template.render(Context({
                           'resident': resident,
                           'site': site,

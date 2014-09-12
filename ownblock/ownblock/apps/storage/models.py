@@ -1,3 +1,5 @@
+import uuid
+import os
 import mimetypes
 
 from django.conf import settings
@@ -24,7 +26,9 @@ class Place(models.Model):
 
 
 def _upload_image_to(instance, filename):
-    return "storage/%s/%s" % (instance.place_id, filename)
+    _, ext = os.path.splitext(filename)
+    filename = uuid.uuid4().hex + ext
+    return "storage/{}/{}".format(instance.place_id, filename)
 
 
 class Item(models.Model):

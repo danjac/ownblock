@@ -97,7 +97,7 @@ class Base(Configuration):
         'ownblock.apps.buildings.middleware.CurrentSiteMiddleware',
     )
 
-    ROOT_URLCONF = '%s.urls' % SITE_NAME
+    ROOT_URLCONF = SITE_NAME + '.urls'
     APPEND_SLASH = False
 
     DJANGO_APPS = (
@@ -157,7 +157,7 @@ class Base(Configuration):
             },
         }
     }
-    WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
+    WSGI_APPLICATION = SITE_NAME + '.wsgi.application'
 
     AUTH_USER_MODEL = 'accounts.User'
     AUTHENTICATION_BACKENDS = (
@@ -235,7 +235,7 @@ class Production(Base):
     # EMAIL_HOST_PASSWORD = values.Value('EMAIL_HOST_PASSWORD')
     # EMAIL_HOST_USER = values.Value('EMAIL_HOST_USER')
 
-    EMAIL_SUBJECT_PREFIX = '[%s] ' % Base.SITE_NAME
+    EMAIL_SUBJECT_PREFIX = '[{}] '.format(Base.SITE_NAME)
     # EMAIL_USE_TLS = True
 
     SERVER_EMAIL = "admin@ownblock.com"

@@ -10,7 +10,7 @@ from ..buildings.models import Building
 
 
 def _upload_to(instance, filename):
-    return "docs/%s/%s" % (instance.building_id, filename)
+    return "docs/{}/{}".format(instance.building_id, filename)
 
 
 class Document(TimeStampedModel):

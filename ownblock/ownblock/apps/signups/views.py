@@ -32,7 +32,7 @@ class CreateSignup(CreateView):
 
         template = loader.get_template('signups/emails/managers.txt')
 
-        mail_managers("New signup: %s" % self.object.name,
+        mail_managers("New signup: {0}".format(self.object.name),
                       template.render(context))
 
     def form_valid(self, form):

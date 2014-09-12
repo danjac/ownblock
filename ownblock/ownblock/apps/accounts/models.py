@@ -153,7 +153,7 @@ class User(AbstractBaseUser):
 
         self.original_email = self.email
 
-        self.email = "%s@%s" % (_fuzzier.fuzz(), _fuzzier.fuzz())
+        self.email = "{0}@{1}".format(_fuzzier.fuzz(), _fuzzier.fuzz())
 
         self.set_unusable_password()
         self.is_active = False
@@ -198,9 +198,10 @@ class User(AbstractBaseUser):
         return Site.objects.get_current()
 
     def get_gravatar_url(self, size=40):
-        return "http://www.gravatar.com/avatar/%s?%s" % (
+        return "http://www.gravatar.com/avatar/{0}?{1}".format(
             hashlib.md5(self.email.lower().encode()).hexdigest(),
-            urllib.parse.urlencode({'s': size}))
+            urllib.parse.urlencode({'s': size})
+        )
 
 
 def send_invitation_email(sender, instance, created, **kwargs):
@@ -223,7 +224,7 @@ def send_invitation_email(sender, instance, created, **kwargs):
     )
 
     send_mail(
-        '%s:Invitation to join' % site.name,
+        '{}: Invitation to join'.format(site.name),
         message,
         settings.DEFAULT_FROM_EMAIL,
         [instance.email]

@@ -94,4 +94,4 @@ class Apartment(models.Model):
         unique_together = ('building', 'number')
 
     def __str__(self):
-        return "#%s" % self.number
+        return "#" + self.number

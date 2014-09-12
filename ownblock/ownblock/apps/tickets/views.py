@@ -59,8 +59,8 @@ class TicketViewSet(viewsets.ModelViewSet):
             })
 
             message = template.render(ctx)
-            subject = '%s: new issue' if created else '%s: issue updated'
-            subject = subject % obj.building.site.name
+            subject = '{}: new issue' if created else '{}: issue updated'
+            subject = subject.format(obj.building.site.name)
 
             send_mail(subject,
                       message,

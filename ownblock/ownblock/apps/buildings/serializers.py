@@ -12,7 +12,7 @@ class ApartmentRelatedField(serializers.RelatedField):
             'id': value.id,
             'floor': value.floor,
             'number': value.number,
-            'name': "%s / Floor %d" % (value.number, value.floor),
+            'name': "{0} / Floor {1}".format(value.number, value.floor),
         }
 
 
@@ -82,4 +82,4 @@ class ApartmentSerializer(serializers.ModelSerializer):
                   'num_rooms')
 
     def get_name(self, obj):
-        return "%s / Floor %d" % (obj.number, obj.floor)
+        return "{0} / Floor {1}".format(obj.number, obj.floor)

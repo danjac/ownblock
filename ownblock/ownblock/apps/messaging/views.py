@@ -22,7 +22,9 @@ class MessageViewSet(viewsets.ModelViewSet):
         template = loader.get_template("messaging/emails/new_message.txt")
 
         send_mail(
-            '%s: You have received a new message' % self.request.site.name,
+            '{}: You have received a new message'.format(
+                self.request.site.name
+            ),
             template.render(
                 Context(
                     {

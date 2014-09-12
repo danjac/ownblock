@@ -47,13 +47,14 @@ class ContactView(FormView):
     def form_valid(self, form):
 
         message = """
-        Someone has asked a question:
+Someone has asked a question:
 
-        Name: %(name)s
-        Email: %(email)s
-        Question:
-        %(question)s
-        """ % form.cleaned_data
+Name: {name}
+Email: {email}
+Question:
+{question}
+        """.format(**form.cleaned_data)
+
         mail_admins("Contact message", message)
 
         return HttpResponseRedirect(self.request.path + "?sent=1")
