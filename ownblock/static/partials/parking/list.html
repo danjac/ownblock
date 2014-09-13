@@ -9,31 +9,16 @@
 
 <search-form name="searchForm" paginator="paginator" filter="searchTerms" class="voffset-2"></search-form>
 
-<table class="table table-bordered table-striped table-hover voffset-2" ng-show="!paginator.isEmpty">
-    <thead>
-        <tr>
-            <th>Registration</th>
-            <th>Description</th>
-            <th>Reserved space</th>
-            <th>Owner</th>
-            <th>Apartment</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="vehicle in paginator.currentItems ">
-            <td><a ui-sref="parking.detail({id: vehicle.id})">{{vehicle.registration_number}}</a>
-            </td>
-            <td>{{vehicle.description}}
-            </td>
-            <td>{{vehicle.reserved_space || 'No' }}</td>
-            <td>
-                <user-link user="vehicle.resident" />
-            </td>
-            <td><a ui-sref="buildings.apartment({id: vehicle.resident.apartment}) ">{{vehicle.resident.apartment_detail.number}}</a>
-            </td>
-        </tr>
-    </tbody>
+<paginated-table class="voffset-2" paginator="paginator" cols="['Registration', 'Description', 'Reserved space', 'Owner', 'Apartment']">
 
-</table>
-
-<pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>
+    <cell><a ui-sref="parking.detail({id: item.id})">{{item.registration_number}}</a>
+    </cell>
+    <cell>{{item.description}}
+    </cell>
+    <cell>{{item.reserved_space || 'No' }}</cell>
+    <cell>
+        <user-link user="item.resident" />
+    </cell>
+    <cell><a ui-sref="buildings.apartment({id: item.resident.apartment}) ">{{item.resident.apartment_detail.number}}</a>
+    </cell>
+</paginated-table>

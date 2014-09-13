@@ -5,49 +5,28 @@
         <search-form paginator="receivedMessages" filter="searchTerms" is-visible class="voffset-2"></search-form>
 
 
-        <table class="table table-bordered table-striped table-hover voffset-2" ng-show="receivedMessages.currentItems.length">
-            <thead>
-                <tr>
-                    <th>Message</th>
-                    <th>From</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="message in receivedMessages.currentItems">
-                    <td><a ui-sref="messages.detail({id: message.id})">{{message.header}}</a>
-                    </td>
-                    <td>
-                        <user-link user="message.sender" />
-                    </td>
-                    <td>{{message.created|date:"short"}}</td>
-                </tr>
-            </tbody>
-        </table>
-        <pager total-items="receivedMessages.total " ng-model="receivedMessages.page " ng-change="receivedMessages.change() "></pager>
+        <paginated-table paginator="receivedMessages" class="voffset-2" cols="['Message', 'From', 'Date']">
+
+
+            <cell><a ui-sref="messages.detail({id: item.id})">{{item.header}}</a>
+            </cell>
+            <cell>
+                <user-link user="item.sender" />
+            </cell>
+            <cell>{{item.created|date:"short"}}</cell>
+        </paginated-table>
     </tab>
     <tab heading="Outbox ">
         <search-form paginator="sentMessages" filter="searchTerms" is-visible class="voffset-2"></search-form>
 
-        <table class="table table-bordered table-striped table-hover voffset-2" ng-show="sentMessages.currentItems.length">
-            <thead>
-                <tr>
-                    <th>Message</th>
-                    <th>To</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="message in sentMessages.currentItems">
-                    <td><a ui-sref="messages.detail({id: message.id}) ">{{message.header}}</a>
-                    </td>
-                    <td>
-                        <user-link user="message.recipient_detail " />
-                    </td>
-                    <td>{{message.created|date:"short"}}</td>
-                </tr>
-            </tbody>
-        </table>
-        <pager total-items="sentMessages.total " ng-model="sentMessages.page " ng-change="sentMessages.change() "></pager>
+        <paginated-table paginator="sentMessages" class="voffset-2" cols="['Message', 'To', 'Date']">
+
+            <cell><a ui-sref="messages.detail({id: item.id}) ">{{item.header}}</a>
+            </cell>
+            <cell>
+                <user-link user="item.recipient_detail " />
+            </cell>
+            <cell>{{item.created|date:"short"}}</cell>
+        </paginated-table>
     </tab>
 </tabset>

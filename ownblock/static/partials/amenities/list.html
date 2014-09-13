@@ -1,6 +1,6 @@
 <div class="btn-toolbar" role="toolbar">
-    <a class="btn btn-primary" ui-sref="amenities.newAmenity" has-role="manager">
-        <icon name="plus" />Add new amenity</a>
+    <a class="btn btn-primary" ui-sref="amenities.newitem" has-role="manager">
+        <icon name="plus" />Add new item</a>
     <button class="btn btn-default" ng-click="searchForm.toggle()">
         <icon name="search" text="Search" />
     </button>
@@ -9,31 +9,17 @@
 
 <search-form name="searchForm" paginator="paginator" filter="name" class="voffset-2"></search-form>
 
+<paginated-table class="voffset-2" paginator="paginator" cols="cols">
 
-<table class="table table-striped table-bordered table-hover voffset-2" ng-show="!paginator.isEmpty">
-    <thead>
-        <tr>
-            <th>Amenity</th>
-            <th>Status</th>
-            <th has-role="resident"></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="amenity in paginator.currentItems">
-            <td><a ui-sref="amenities.detail({id: amenity.id})">{{amenity.name}}</a>
-            </td>
-            <td>
-                <span class="label label-success" ng-show="amenity.is_available">Available</span>
-                <span class="label label-danger" ng-show="!amenity.is_available">Not Available</span>
-            </td>
-            <td has-role="resident">
-                <a class="btn btn-primary" ng-show="amenity.is_available" ui-sref="amenities.newBooking({id: amenity.id})">
-                    <icon name="calendar" text="Reserve" />
-                </a>
-            </td>
-        </tr>
-    </tbody>
-
-</table>
-
-<pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>
+    <cell><a ui-sref="amenities.detail({id: item.id})">{{item.name}}</a>
+    </cell>
+    <cell>
+        <span class="label label-success" ng-show="item.is_available">Available</span>
+        <span class="label label-danger" ng-show="!item.is_available">Not Available</span>
+    </cell>
+    <cell has-role="resident">
+        <a class="btn btn-primary" ng-show="item.is_available" ui-sref="amenities.newBooking({id: item.id})">
+            <icon name="calendar" text="Reserve" />
+        </a>
+    </cell>
+</paginated-table>

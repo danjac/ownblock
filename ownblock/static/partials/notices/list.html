@@ -10,13 +10,15 @@
 
 <search-form name="searchForm" paginator="paginator" filter="searchTerms" class="voffset-2"></search-form>
 
-<paged-data class="voffset-2" paginator="paginator" cols="['Notice', 'Date', 'Author']">
-    <td><a ui-sref="notices.detail({id: item.id})">{{item.title}}</a>
-    </td>
-    <td>{{item.created|date}}
-    </td>
-    <td>
+<paginated-table class="voffset-2" paginator="paginator" cols="['Notice', 'Date', 'Author']">
+
+    <cell><a ui-sref="notices.detail({id: item.id})">{{item.title}}</a>
+    </cell>
+    <cell>{{item.created|date}}
+    </cell>
+    <cell>
         <user-link user="item.author" />
-    </td>
-</paged-data>
+    </cell>
+
+</paginated-table>
 

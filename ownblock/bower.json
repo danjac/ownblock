@@ -17,7 +17,8 @@
     "angular-bootstrap": "~0.11.0",
     "angular-mocks": "~1.2.23",
     "angular-scenario": "~1.2.23",
-    "fontawesome": "~4.2.0"
+    "fontawesome": "~4.2.0",
+    "ng-grid": "~2.0.13"
   },
   "resolutions": {
     "angular": "1.3",

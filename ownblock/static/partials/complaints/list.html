@@ -8,25 +8,13 @@
 </div>
 
 <search-form name="searchForm" paginator="paginator" filter="complaint" class="voffset-2"></search-form>
-<table class="table table-bordered table-striped table-hover voffset-2" ng-show="!paginator.isEmpty">
-    <thead>
-        <tr>
-            <th>Complaint</th>
-            <th>Reported on</th>
-            <th has-role="manager">Reported by</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="complaint in paginator.currentItems">
-            <td><a ui-sref="complaints.detail({id: complaint.id})">{{complaint.complaint|limitTo:30}}</a>
-            </td>
-            <td>{{complaint.created|date:"short"}}</td>
-            <td has-role="manager">
-                <user-link user="complaint.resident_detail" />
-            </td>
-        </tr>
-    </tbody>
+<paginated-table class="voffset-2" cols="cols" paginator="paginator">
 
-</table>
+    <cell><a ui-sref="complaints.detail({id: item.id})">{{item.complaint|limitTo:30}}</a>
+    </cell>
+    <cell>{{item.created|date:"short"}}</cell>
+    <cell has-role="manager">
+        <user-link user="item.resident_detail" />
+    </cell>
 
-<pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>
+</paginated-table>

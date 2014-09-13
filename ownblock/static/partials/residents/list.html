@@ -9,28 +9,16 @@
 <search-form name="searchForm" paginator="paginator" filter="full_name" class="voffset-2"></search-form>
 
 
-<table class="table table-striped table-hover table-bordered voffset-2" ng-show="!paginator.isEmpty">
-    <thead>
-        <tr>
-            <th>Resident</th>
-            <th>Apartment</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="resident in paginator.currentItems">
-            <td>
-                <user-link user="resident" />
-            </td>
-            <td><a ui-sref="buildings.apartment({id: resident.apartment})">{{resident.apartment_detail.number}} / Floor {{ resident.apartment_detail.floor}}</a>
-            </td>
-            <td>
-                <send-message recipient="resident" class="btn btn-primary">
-                    <icon name="send" text="Send message" />
-                </send-message>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<paginated-table cols="['Resident', 'Apartment', '']" class="voffset" paginator="paginator">
 
-<pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>
+    <cell>
+        <user-link user="item" />
+    </cell>
+    <cell><a ui-sref="buildings.apartment({id: item.apartment})">{{item.apartment_detail.number}} / Floor {{ item.apartment_detail.floor}}</a>
+    </cell>
+    <cell>
+        <send-message recipient="item" class="btn btn-primary">
+            <icon name="send" text="Send message" />
+        </send-message>
+    </cell>
+</paginated-table>

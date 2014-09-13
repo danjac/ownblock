@@ -258,9 +258,13 @@
                 });
             };
         }
-    ]).controller('amenities.ListCtrl', ['$scope', 'api', 'notifier', 'paginator',
-        function($scope, api, notifier, paginator) {
+    ]).controller('amenities.ListCtrl', ['$scope', 'api', 'notifier', 'paginator', 'auth',
+        function($scope, api, notifier, paginator, auth) {
             $scope.paginator = paginator();
+            $scope.cols = ['Amenity', 'Status'];
+            if (auth.hasRole('resident')) {
+                $scope.cols.push('');
+            }
             api.Amenity.query().$promise.then(function(response) {
                 $scope.paginator.reload(response);
             });
@@ -510,8 +514,8 @@
                 $state.go('notices.list');
             };
         }
-    ]).controller('notices.ListCtrl', ['$scope', 'api', 'paginator',
-        function($scope, api, paginator) {
+    ]).controller('notices.ListCtrl', ['$scope', 'api', 'paginator', 'urls',
+        function($scope, api, paginator, urls) {
             $scope.paginator = paginator();
             api.Notice.query().$promise.then(function(response) {
                 angular.forEach(response, function(item) {
@@ -668,6 +672,8 @@
 
             $scope.item = new api.StorageItem();
             $scope.places = [];
+            $scope.editPhoto = true;
+            $scope.showPhoto = false;
 
             api.Place.query().$promise.then(function(response) {
                 $scope.places = response;
@@ -950,8 +956,15 @@
                 });
             };
         }
-    ]).controller('complaints.ListCtrl', ['$scope', 'api', 'paginator',
-        function($scope, api, paginator) {
+    ]).controller('complaints.ListCtrl', ['$scope', 'api', 'paginator', 'auth',
+        function($scope, api, paginator, auth) {
+            $scope.cols = [
+                'Complaint',
+                'Date reported'
+            ];
+            if (auth.hasRole('manager')) {
+                $scope.cols.push('Reported by');
+            }
             $scope.paginator = paginator();
             api.Complaint.query().$promise.then(function(response) {
                 $scope.paginator.reload(response);

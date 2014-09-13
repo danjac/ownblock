@@ -9,25 +9,13 @@
 
 <search-form name="searchForm" paginator="paginator" filter="title" class="voffset-2"></search-form>
 
-<table class="table table-bordered table-striped table-hover voffset-2" ng-show="!paginator.isEmpty">
-    <thead>
-        <th>Title</th>
-        <th>Uploaded on</th>
-        <th></th>
-    </thead>
-    <tbody>
-        <tr ng-repeat="document in paginator.currentItems">
-            <td><a ui-sref="documents.detail({id: document.id})">{{document.title}}</a>
-            </td>
-            <td>{{document.created|date:"fullDate"}}</td>
-            <td>
-                <a class="btn btn-primary" ng-href="{{document.download_url}}">
-                    <icon name="download" text="Download" />
-                </a>
-            </td>
-        </tr>
-    </tbody>
-
-</table>
-
-<pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>
+<paginated-table class="voffset-2" paginator="paginator" cols="['Title', 'Uploaded on', '']">
+    <cell><a ui-sref="documents.detail({id: item.id})">{{item.title}}</a>
+    </cell>
+    <cell>{{item.created|date:"fullDate"}}</cell>
+    <cell>
+        <a class="btn btn-primary" ng-href="{{item.download_url}}">
+            <icon name="download" text="Download" />
+        </a>
+    </cell>
+</paginated-table>

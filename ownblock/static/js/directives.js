@@ -25,7 +25,7 @@
             };
         }
     ]).
-    directive('pagedData', function($compile, urls) {
+    directive('paginatedTable', function($compile, urls) {
         return {
             restrict: 'E',
             scope: {
@@ -41,12 +41,12 @@
         return {
             restrict: 'A',
             link: function(scope, element, attrs, ctrl, transclude) {
-                var newScope = scope.$new();
-                transclude(newScope, function(clone) {
+                transclude(scope, function(clone) {
                     angular.forEach(clone, function(item) {
                         // workaround for jlite weirdness
-                        var newElement = angular.element('<table><tr><td></td></tr></table>').find('td');
-                        if (item.nodeName !== '#text') {
+                        //http://stackoverflow.com/questions/18238413/how-to-create-a-tr-td-html-element-with-angular
+                        if (item.nodeName === 'CELL') {
+                            var newElement = angular.element('<table><tr><td></td></tr></table>').find('td');
                             newElement.append(item);
                             element.append(newElement);
                         }

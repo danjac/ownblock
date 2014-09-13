@@ -12,26 +12,13 @@
 
         <search-form name="searchForm" paginator="paginator" filter="name" class="voffset-2"></search-form>
 
-        <table class="table table-bordered table-striped table-hover voffset-2" ng-show="!paginator.isEmpty">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="contact in paginator.currentItems">
-                    <td><a ui-sref="contacts.detail({id: contact.id})">{{contact.name}}</a>
-                    </td>
-                    <td>{{contact.phone}}</td>
-                    <td><a href="mailto:{{contact.email}}">{{contact.email}}</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>
+        <paginated-table paginator="paginator" class="voffset-2" cols="['Name', 'Phone', 'Email']">
+            <cell><a ui-sref="contacts.detail({id: item.id})">{{item.name}}</a>
+            </cell>
+            <cell>{{item.phone}}</cell>
+            <cell><a href="mailto:{{item.email}}">{{item.email}}</a>
+            </cell>
+        </paginated-table>
     </tab>
     <tab heading="Building management">
         <p class="well voffset-2" has-role="manager">

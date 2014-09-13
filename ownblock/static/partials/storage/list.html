@@ -11,31 +11,17 @@
 
         <search-form name="searchForm" paginator="paginator" filter="description" class="voffset-2"></search-form>
 
-        <table class="table table-bordered table-striped table-hover voffset-2" ng-show="!paginator.isEmpty">
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Place</th>
-                    <th>Owner</th>
-                    <th>Apartment</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="item in paginator.currentItems">
-                    <td><a ui-sref="storage.itemDetail({id: item.id})">{{item.description}}</a>
-                    </td>
-                    <td><a ui-sref="storage.placeDetail({id: item.place})">{{item.place_name}}</a>
-                    </td>
-                    <td>
-                        <user-link user="item.resident" />
-                    </td>
-                    <td><a ui-sref="buildings.apartment({id: item.apartment.id})">{{item.apartment.number}}</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>
+        <paginated-table class="voffset-2" paginator="paginator" cols="['Item', 'Place', 'Owner', 'Apartment']">
+            <cell><a ui-sref="storage.itemDetail({id: item.id})">{{item.description}}</a>
+            </cell>
+            <cell><a ui-sref="storage.placeDetail({id: item.place})">{{item.place_name}}</a>
+            </cell>
+            <cell>
+                <user-link user="item.resident" />
+            </cell>
+            <cell><a ui-sref="buildings.apartment({id: item.apartment.id})">{{item.apartment.number}}</a>
+            </cell>
+        </paginated-table>
     </tab>
     <tab heading="Storage areas">
         <div class="btn-toolbar voffset-2" role="toolbar">
