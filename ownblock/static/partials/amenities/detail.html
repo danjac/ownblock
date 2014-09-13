@@ -36,28 +36,14 @@
     </tab>
     <tab heading="Issues">
 
-        <table class="table table-bordered table-striped table-hover voffset-2" ng-show="!paginator.isEmpty">
+        <paginated-table class="voffset-2" paginator="paginator" cols="['Description', 'Status', 'Reported on']">
+            <cell><a ui-sref="tickets.detail({id: item.id})">{{item.description|limitTo:30}}</a>
+            </cell>
+            <cell><span class="label" ng-class="{'label-success': item.status == 'new', 'label-warning': item.status == 'accepted', 'label-danger': item.status == 'resolved'}">{{item.status}}</cell>
+            <cell>{{item.created|date:"short"}}</cell>
+            <cell><user-link user="item.reporter_detail" /></cell>
 
-            <thead>
-                <tr>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Reported on</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="ticket in paginator.currentItems">
-                    <td><a ui-sref="tickets.detail({id: ticket.id})">{{ticket.description|limitTo:30}}</a>
-                    </td>
-                    <td><span class="label" ng-class="{'label-success': ticket.status == 'new', 'label-warning': ticket.status == 'accepted', 'label-danger': ticket.status == 'resolved'}">{{ticket.status}}</td>
-            <td>{{ticket.created|date:"short"}}</td>
-            <td><user-link user="ticket.reporter_detail" /></td>
-        </tr>
-    </tbody>
-
-</table>
-
-<pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>
+    </paginated-table>
     </tab>
 </tabset>
 
