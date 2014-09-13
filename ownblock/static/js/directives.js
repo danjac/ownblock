@@ -25,6 +25,36 @@
             };
         }
     ]).
+    directive('pagedData', function($compile, urls) {
+        return {
+            restrict: 'E',
+            scope: {
+                paginator: '=',
+                cols: '='
+            },
+            transclude: true,
+            replace: true,
+            templateUrl: urls.partials + 'dataTable.html'
+        };
+    }).
+    directive('rowDef', function() {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs, ctrl, transclude) {
+                var newScope = scope.$new();
+                transclude(newScope, function(clone) {
+                    angular.forEach(clone, function(item) {
+                        // workaround for jlite weirdness
+                        var newElement = angular.element('<table><tr><td></td></tr></table>').find('td');
+                        if (item.nodeName !== '#text') {
+                            newElement.append(item);
+                            element.append(newElement);
+                        }
+                    });
+                });
+            }
+        };
+    }).
     directive('searchForm', function(urls) {
         var SearchForm = function() {
             this.visible = false;

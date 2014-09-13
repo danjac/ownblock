@@ -10,22 +10,13 @@
 
 <search-form name="searchForm" paginator="paginator" filter="searchTerms" class="voffset-2"></search-form>
 
-<table class="table table-bordered table-striped table-hover voffset-2" ng-show="!paginator.isEmpty">
-    <thead>
-        <th>Notice</th>
-        <th>Date</th>
-        <th>Author</th>
-    </thead>
-    <tbody>
-        <tr ng-repeat="notice in paginator.currentItems">
-            <td><a ui-sref="notices.detail({id: notice.id})">{{notice.title}}</a>
-            </td>
-            <td>{{notice.created|date}}</td>
-            <td>
-                <user-link user="notice.author" />
-            </td>
-        </tr>
-    </tbody>
-</table>
+<paged-data class="voffset-2" paginator="paginator" cols="['Notice', 'Date', 'Author']">
+    <td><a ui-sref="notices.detail({id: item.id})">{{item.title}}</a>
+    </td>
+    <td>{{item.created|date}}
+    </td>
+    <td>
+        <user-link user="item.author" />
+    </td>
+</paged-data>
 
-<pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>

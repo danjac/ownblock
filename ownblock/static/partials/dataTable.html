@@ -1,0 +1,15 @@
+<div>
+    <table class="table table-bordered table-striped table-hover" ng-show="!paginator.isEmpty">
+        <thead>
+            <th ng-repeat="col in cols">
+                {{col}}
+            </th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in paginator.currentItems" row-def>
+            </tr>
+        </tbody>
+    </table>
+    <pager total-items="paginator.total" ng-model="paginator.page" ng-change="paginator.change()"></pager>
+
+</div>
