@@ -13,7 +13,7 @@
         <input type="" class="form-control" ng-model="vehicle.reserved_place" />
     </div>
 
-    <button class="btn btn-primary" ng-disabled="vehicleForm.$invalid" ng-click="save()">Save</button>
+    <button class="btn btn-primary" ng-disabled="vehicleForm.$invalid || !vehicleForm.$dirty" ng-click="save()">Save</button>
     <button class="btn btn-default" ng-click="cancel()">Cancel</button>
 
 </form>

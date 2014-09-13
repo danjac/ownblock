@@ -8,6 +8,6 @@
         <input type="text" class="form-control" ng-model="place.location" />
     </div>
 
-    <button type="submit" class="btn btn-primary" ng-disabled="placeForm.$invalid " ng-click="save()">Save</button>
+    <button type="submit" class="btn btn-primary" ng-disabled="placeForm.$invalid || !placeForm.$dirty" ng-click="save()">Save</button>
     <button class="btn btn-default" ng-click="cancel()">Cancel</button>
 </form>

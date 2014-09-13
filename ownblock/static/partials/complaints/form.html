@@ -7,6 +7,6 @@
         <label for="" class="control-label">Please select which apartment the complaint concerns (if any)</label>
         <select ng-model="complaint.apartment" class="form-control" ng-options="apartment.id as apartment.name for apartment in apartments"></select>
     </div>
-    <button role="button" class="btn btn-primary" ng-click="save()" ng-disabled="form.$invalid">Save</button>
+    <button role="button" class="btn btn-primary" ng-click="save()" ng-disabled="form.$invalid || !form.$dirty">Save</button>
     <button role="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
 </form>

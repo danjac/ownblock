@@ -7,6 +7,6 @@
         <label class="control-label">Is this amenity currently available?</label>
         <input class="checkbox" type="checkbox" ng-model="amenity.is_available" />
     </div>
-    <button type="submit " class="btn btn-primary" ng-disabled="amenityForm.$invalid" ng-click="save()">Save</button>
+    <button type="submit " class="btn btn-primary" ng-disabled="amenityForm.$invalid || !amenityForm.$dirty" ng-click="save()">Save</button>
     <button class="btn btn-default" ng-click="cancel()">Cancel</button>
 </form>
