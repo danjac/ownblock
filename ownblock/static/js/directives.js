@@ -25,7 +25,7 @@
             };
         }
     ]).
-    directive('paginatedTable', function($compile, urls) {
+    directive('paginatedTable', function(urls) {
         return {
             restrict: 'E',
             scope: {
