@@ -6,8 +6,14 @@ from os import path
 class Base(Configuration):
 
     DJANGO_ROOT = path.dirname(path.abspath(__file__))
+
     SITE_ROOT = path.dirname(DJANGO_ROOT)
     SITE_NAME = path.basename(DJANGO_ROOT)
+
+    SITE_URLS = {
+        'main': 'http://www.ownblock.com',
+        'demo': 'http://demo.ownblock.com',
+    }
 
     DEBUG = False
     TEMPLATE_DEBUG = DEBUG
@@ -75,6 +81,7 @@ class Base(Configuration):
         'django.core.context_processors.tz',
         'django.contrib.messages.context_processors.messages',
         'django.core.context_processors.request',
+        'ownblock.context_processors.sites',
     )
 
     TEMPLATE_LOADERS = (
@@ -178,6 +185,11 @@ class Base(Configuration):
 
 
 class Local(Base):
+    SITE_URLS = {
+        'main': 'http://www.ownblock.com',
+        'demo': 'http://demo.ownblock.com',
+    }
+
     DEBUG = TEMPLATE_DEBUG = True
 
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -188,8 +200,12 @@ class Local(Base):
         }
     }
 
-    # Django Toolbar setup
+    SITE_URLS = {
+        'main': '',
+        'demo': '',
+    }
 
+    # Django Toolbar setup
     INSTALLED_APPS = Base.INSTALLED_APPS + (
         'debug_toolbar',
     )

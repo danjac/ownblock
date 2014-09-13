@@ -2,17 +2,17 @@
 <footer class="voffset-3">
     <div class="container">
         <ul class="nav nav-pills">
-            <li><a href="{% url 'index' %}">Home</a>
+            <li><a href="{{ sites.main }}{% url 'index' %}">Home</a>
             </li>
-            <li><a href="{% url 'about' %}">About ownblock.com</a>
+            <li><a href="{{ sites.main }}{% url 'about' %}">About ownblock.com</a>
             </li>
-            <li><a href="http://demo.ownblock.com{% url 'app' %}">Try the demo</a>
+            <li><a href="{{ sites.demo }}{% url 'app' %}">Try the demo</a>
             </li>
-            <li><a href="{% url 'pricing' %}">Pricing</a>
+            <li><a href="{{ sites.main }}{% url 'pricing' %}">Pricing</a>
             </li>
-            <li><a href="{% url 'signups:signup' %}">Sign up</a>
+            <li><a href="{{ sites.main }}{% url 'signups:signup' %}">Sign up</a>
             </li>
-            <li><a href="{% url 'contact' %}">Contact us</a>
+            <li><a href="{{ sites.main }}{% url 'contact' %}">Contact us</a>
             </li>
         </ul>
         <p class="pull-right">
