@@ -160,3 +160,9 @@ a, a:hover {
 .alert, .alert a {
     color: #fff;
 }
+
+
+
+.form-control {
+    height: auto;
+}
