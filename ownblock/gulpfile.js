@@ -3,6 +3,8 @@ var gulp = require('gulp'),
     gulpFilter = require('gulp-filter'),
     shell = require('gulp-shell'),
     runSeq = require('run-sequence'),
+    minifyCss = require('gulp-minify-css'),
+    uglify = require('gulp-uglify'),
     concat = require('gulp-concat');
 
 
@@ -32,15 +34,16 @@ gulp.task('pkg', function() {
         }))
         .pipe(jsFilter)
         .pipe(concat('vendor.js'))
+        .pipe(uglify())
         .pipe(gulp.dest(dest.js))
         .pipe(jsFilter.restore())
         .pipe(cssFilter)
         .pipe(concat('vendor.css'))
+        .pipe(minifyCss())
         .pipe(gulp.dest(dest.css))
         .pipe(cssFilter.restore())
         .pipe(fontFilter)
-        .pipe(gulp.dest(dest.fonts))
-        .pipe(gulp.dest(staticDir));
+        .pipe(gulp.dest(dest.fonts));
 });
 
 
