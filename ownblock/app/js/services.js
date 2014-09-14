@@ -1,6 +1,8 @@
 (function() {
     'use strict';
-    angular.module('ownblock.services', []).
+    angular.module('ownblock.services', [
+        'ngResource'
+    ]).
     service('auth', [
 
         function() {

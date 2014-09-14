@@ -1,12 +1,18 @@
 var gulp = require('gulp'),
     bowerFiles = require('main-bower-files'),
     gulpFilter = require('gulp-filter'),
+    debug = require('gulp-debug'),
     shell = require('gulp-shell'),
     runSeq = require('run-sequence'),
     minifyCss = require('gulp-minify-css'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat');
 
+// Handle the error
+function errorHandler(error) {
+    console.log(error.toString());
+    this.emit('end');
+}
 
 var staticDir = 'static';
 
@@ -16,16 +22,17 @@ var dest = {
     fonts: staticDir + '/fonts'
 };
 
+var jsFilter = gulpFilter('*.js');
+var cssFilter = gulpFilter('*.css');
+var fontFilter = gulpFilter(['*.eot', '*.woff', '*.svg', '*.ttf']);
+
+
 gulp.task('install', shell.task([
     'bower cache clean',
     'bower install'
 ]));
 
 gulp.task('pkg', function() {
-
-    var jsFilter = gulpFilter('*.js');
-    var cssFilter = gulpFilter('*.css');
-    var fontFilter = gulpFilter(['*.eot', '*.woff', '*.svg', '*.ttf']);
 
     return gulp.src(bowerFiles({
             debugging: true,
@@ -46,7 +53,28 @@ gulp.task('pkg', function() {
         .pipe(gulp.dest(dest.fonts));
 });
 
-
-gulp.task('default', function(callback) {
-    runSeq('install', 'pkg', callback);
+gulp.task('app-js', function() {
+    return gulp.src('./app/js/*.js')
+        //.pipe(jsFilter)
+        .pipe(concat('app.js'))
+        .pipe(uglify({
+            mangle: false
+        }))
+        .pipe(gulp.dest(dest.js));
+    //.pipe(jsFilter.restore());
 });
+
+gulp.task('app-css', function() {
+    return gulp.src('./app/css/*.css')
+        //.pipe(cssFilter)
+        .pipe(concat('app.css'))
+        .pipe(minifyCss())
+        .pipe(gulp.dest(dest.css));
+    //.pipe(cssFilter.restore());
+});
+
+gulp.task('default', function() {
+    gulp.start('install', 'pkg');
+    gulp.watch('app/**', {}, ['app-js', 'app-css']);
+});
+//

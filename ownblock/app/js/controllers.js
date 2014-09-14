@@ -1,6 +1,12 @@
 (function() {
     'use strict';
-    angular.module('ownblock.controllers', []).
+    angular.module('ownblock.controllers', [
+        'ui.router',
+        'ui.calendar',
+        'ui.bootstrap',
+        'ownblock',
+        'ownblock.services'
+    ]).
     controller('AppCtrl', [
         '$scope',
         '$location',
@@ -10,7 +16,6 @@
         'notifier',
         'urls',
         function($scope, $location, $state, $timeout, auth, notifier, urls) {
-
             $scope.auth = auth;
             $scope.notifier = notifier;
 

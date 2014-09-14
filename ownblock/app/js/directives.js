@@ -1,6 +1,11 @@
 (function() {
     'use strict';
-    angular.module('ownblock.directives', []).
+    angular.module('ownblock.directives', [
+        'ui.router',
+        'ui.bootstrap',
+        'ownblock',
+        'ownblock.services'
+    ]).
     directive('icon', function() {
         return {
             restrict: 'E',
