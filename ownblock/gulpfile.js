@@ -55,25 +55,26 @@ gulp.task('pkg', function() {
 
 gulp.task('app-js', function() {
     return gulp.src('./app/js/*.js')
-        .pipe(jsFilter)
+        //.pipe(jsFilter)
         .pipe(concat('app.js'))
-        //.pipe(uglify())
-        .pipe(gulp.dest(dest.js))
-        .pipe(jsFilter.restore());
+        .pipe(uglify({
+            mangle: false
+        }))
+        .pipe(gulp.dest(dest.js));
+    //.pipe(jsFilter.restore());
 });
 
 gulp.task('app-css', function() {
-    return gulp.src('./app/css/**')
-        .pipe(cssFilter)
+    return gulp.src('./app/css/*.css')
+        //.pipe(cssFilter)
         .pipe(concat('app.css'))
         .pipe(minifyCss())
-        .pipe(gulp.dest(dest.css))
-        .pipe(cssFilter.restore());
+        .pipe(gulp.dest(dest.css));
+    //.pipe(cssFilter.restore());
 });
 
 gulp.task('default', function() {
-    gulp.start('install', 'pkg', 'app-js', 'app-css');
+    gulp.start('install', 'pkg');
+    gulp.watch('app/**', {}, ['app-js', 'app-css']);
 });
 //
-
-//gulp.watch('app/**', {}, ['app']);

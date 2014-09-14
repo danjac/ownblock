@@ -456,18 +456,19 @@
             $urlRouterProvider.otherwise('/building');
 
         }
-    ]).run(function($rootScope, $state, auth) {
+    ]).run(['$rootScope', '$state', 'auth',
+        function($rootScope, $state, auth) {
 
-        // fetch the current user from the session. If the user is not logged in,
-        // redirect to the external login page; otherwise sync user details with the 
-        // application.
-        $rootScope.$on('$stateChangeStart', function(event, toState) {
-            if (!auth.authorize(toState)) {
-                event.preventDefault();
-                $state.transitionTo('accessdenied');
-            }
+            // fetch the current user from the session. If the user is not logged in,
+            // redirect to the external login page; otherwise sync user details with the 
+            // application.
+            $rootScope.$on('$stateChangeStart', function(event, toState) {
+                if (!auth.authorize(toState)) {
+                    event.preventDefault();
+                    $state.transitionTo('accessdenied');
+                }
 
-        });
-
-    });
+            });
+        }
+    ]);
 }());
