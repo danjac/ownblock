@@ -25,18 +25,20 @@
             };
         }
     ]).
-    directive('paginatedTable', function(urls) {
-        return {
-            restrict: 'E',
-            scope: {
-                paginator: '=',
-                cols: '='
-            },
-            transclude: true,
-            replace: true,
-            templateUrl: urls.partials + 'dataTable.html'
-        };
-    }).
+    directive('paginatedTable', ['urls',
+        function(urls) {
+            return {
+                restrict: 'E',
+                scope: {
+                    paginator: '=',
+                    cols: '='
+                },
+                transclude: true,
+                replace: true,
+                templateUrl: urls.partials + 'dataTable.html'
+            };
+        }
+    ]).
     directive('rowDef', function() {
         return {
             restrict: 'A',
@@ -54,53 +56,55 @@
             }
         };
     }).
-    directive('searchForm', function(urls) {
-        var SearchForm = function() {
-            this.visible = false;
-            this.filter = {
-                value: ''
-            };
-        };
-        SearchForm.prototype.toggle = function() {
-            this.visible = !this.visible;
-            if (!this.visible) {
-                this.filter.value = '';
-            }
-        };
-        return {
-            restrict: 'E',
-            scope: {
-                paginator: '=',
-                ifEmpty: '@'
-            },
-            replace: true,
-            templateUrl: urls.partials + 'searchForm.html',
-            compile: function() {
-                return {
-                    pre: function(scope, element, attrs) {
-                        attrs.ifEmpty = attrs.ifEmpty || 'Sorry, no results found for your search';
-                    },
-                    post: function(scope, element, attrs) {
-                        var form = new SearchForm();
-                        if (angular.isDefined(attrs.isVisible)) {
-                            form.visible = true;
-                        }
-                        if (attrs.name) {
-                            scope.$parent[attrs.name] = scope[attrs.name] = form;
-                        }
-                        scope.$watch(attrs.name + '.filter.value', function(newValue) {
-                            var filterObj = {};
-                            filterObj[attrs.filter] = newValue;
-                            if (scope.paginator) {
-                                scope.paginator.filter(filterObj);
-                            }
-                        });
-
-                    }
+    directive('searchForm', ['urls',
+        function(urls) {
+            var SearchForm = function() {
+                this.visible = false;
+                this.filter = {
+                    value: ''
                 };
-            }
-        };
-    }).
+            };
+            SearchForm.prototype.toggle = function() {
+                this.visible = !this.visible;
+                if (!this.visible) {
+                    this.filter.value = '';
+                }
+            };
+            return {
+                restrict: 'E',
+                scope: {
+                    paginator: '=',
+                    ifEmpty: '@'
+                },
+                replace: true,
+                templateUrl: urls.partials + 'searchForm.html',
+                compile: function() {
+                    return {
+                        pre: function(scope, element, attrs) {
+                            attrs.ifEmpty = attrs.ifEmpty || 'Sorry, no results found for your search';
+                        },
+                        post: function(scope, element, attrs) {
+                            var form = new SearchForm();
+                            if (angular.isDefined(attrs.isVisible)) {
+                                form.visible = true;
+                            }
+                            if (attrs.name) {
+                                scope.$parent[attrs.name] = scope[attrs.name] = form;
+                            }
+                            scope.$watch(attrs.name + '.filter.value', function(newValue) {
+                                var filterObj = {};
+                                filterObj[attrs.filter] = newValue;
+                                if (scope.paginator) {
+                                    scope.paginator.filter(filterObj);
+                                }
+                            });
+
+                        }
+                    };
+                }
+            };
+        }
+    ]).
     directive('userLink', function() {
         return {
             restrict: 'E',
