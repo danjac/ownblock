@@ -1,0 +1,168 @@
+/* app css stylesheet */
+
+body { padding-top: 70px; }
+
+.menu {
+    list-style: none;
+    border-bottom: 0.1em solid black;
+    margin-bottom: 2em;
+    padding: 0 0 0.5em;
+}
+ class="btn btn-primary"
+.menu:before {
+  content: "[";
+}
+
+.menu:after {
+    content: "]";
+}
+
+.menu > li {
+    display: inline;
+}
+
+.menu > li:before {
+    content: "|";
+    padding-right: 0.3em;
+}
+
+.menu > li:nth-child(1):before {
+    content: "";
+    padding: 0;
+}
+
+.caption {
+    position:absolute;
+    width:90%;
+    top:0;
+    background-color:rgba(255, 255, 255, 0.5);
+}
+.caption h3 {
+    color: #555;
+}
+
+.spinner {
+    background: url('../img/ajax-loader.gif') no-repeat center center;
+    padding: 30px;
+    text-align:center;
+    vertical-align: middle;
+}
+
+.slide {
+    //position: absolute;
+    //left: 0;
+    //top: 0;
+    //width: 85%;
+    //height: 100%;
+}
+.slide.ng-enter,
+.slide.ng-leave {
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
+}
+.slide.ng-enter {
+    left: 100%;
+}
+.slide.ng-enter-active {
+    left: 0;
+}
+.slide.ng-leave {
+    left: 0;
+}
+.slide.ng-leave-active {
+    left: -100%;
+}
+.navbar-form  {
+    padding-top: 6px;
+}
+
+.tag-control-box {
+    padding-bottom: 10px;
+}
+
+// fix for firefox file inputs
+input.form-control[type="file"] {
+    height: auto;
+}
+
+.alert {
+    color: #333;
+}
+
+.voffset  { margin-top: 2px; }
+.voffset-1 { margin-top: 5px; }
+.voffset-2 { margin-top: 10px; }
+.voffset-3 { margin-top: 15px; }
+.voffset-4 { margin-top: 30px; }
+.voffset-5 { margin-top: 40px; }
+.voffset-6 { margin-top: 60px; }
+.voffset-7 { margin-top: 80px; }
+.voffset-8 { margin-top: 100px; }
+.voffset-9 { margin-top: 150px; }
+
+.pager .disabled {
+    display:none;
+}
+
+.larger-text {
+    font-size: large;
+}
+
+body.front-page {
+    height: 100%;
+    background: url('../img/background.jpg') no-repeat center center;
+    background-size: cover;
+}
+.front-page .jumbotron, .front-page .container {
+    zoom: 1;
+	filter: alpha(opacity=50);
+	opacity: 0.9;
+}
+.front-page .container {
+    background-color: #eee;
+}
+
+
+
+div.olMap
+{
+  cursor: default;
+  height: 500px;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+  z-index: 0;
+}
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
+
+.btn {
+    padding: 8px 12px;
+}
+
+a, a:hover {
+    color: #0C71D4;
+}
+
+.navbar-inverse {
+    border-color:#2C3E50;
+    background-color:#2C3E50;
+}
+
+.navbar-inverse a:hover, .navbar-inverse a:focus {
+    color: #aaa !important;
+}
+
+.alert, .alert a {
+    color: #fff;
+}
+
+
+
+.form-control {
+    height: auto;
+}
