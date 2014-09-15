@@ -20,6 +20,10 @@
         <td>{{vehicle.registration_number}}</td>
     </tr>
     <tr>
+        <td>Reserved space</td>
+        <td>{{vehicle.reserved_space || 'No'|}}</td>
+    </tr>
+    <tr>
         <td>Owner</td>
         <td>
             <user-link user="vehicle.resident" />
