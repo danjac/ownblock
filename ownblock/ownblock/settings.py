@@ -81,7 +81,7 @@ class Base(Configuration):
         'django.core.context_processors.tz',
         'django.contrib.messages.context_processors.messages',
         'django.core.context_processors.request',
-        'ownblock.apps.buildings.context_processors.sites',
+        'ownblock.apps.site.context_processors.sites',
     )
 
     TEMPLATE_LOADERS = (
@@ -135,6 +135,7 @@ class Base(Configuration):
         'ownblock.apps.notices',
         'ownblock.apps.parking',
         'ownblock.apps.signups',
+        'ownblock.apps.site',
         'ownblock.apps.storage',
         'ownblock.apps.tickets',
     )

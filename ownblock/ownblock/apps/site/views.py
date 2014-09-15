@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 
-from .apps.accounts.serializers import AuthUserSerializer
+from ..accounts.serializers import AuthUserSerializer
 
 
 class AppView(TemplateView):

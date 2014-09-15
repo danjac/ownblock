@@ -1,39 +1,15 @@
 
 from django.conf import settings
 from django.conf.urls import patterns, include, url
-from django.views.generic import TemplateView
 from django.contrib import admin
-from django.contrib.auth.decorators import login_required
-from django.contrib.sitemaps.views import sitemap
 
-from . import views, sitemaps
 
 admin.autodiscover()
 
 
 urlpatterns = patterns('',
                        # Front page
-                       url(r'^$', TemplateView.as_view(
-                           template_name='index.html'),
-                           name='index'),
-
-                       url(r'^about$', TemplateView.as_view(
-                           template_name='about.html'),
-                           name='about'),
-
-                       url(r'^pricing$', TemplateView.as_view(
-                           template_name='pricing.html'),
-                           name='pricing'),
-
-
-                       url(r'^contact$',
-                           views.ContactView.as_view(), name='contact'),
-
-                       # Application container
-                       url(r'^app$', login_required(
-                           views.AppView.as_view()),
-                           name='app'),
-
+                       url(r'', include('ownblock.apps.site.urls')),
                        # REST API
                        url(r'^api/users/', include(
                            'ownblock.apps.accounts.urls')),
@@ -64,12 +40,7 @@ urlpatterns = patterns('',
                        # Admin site
                        url(r'^backend/', include(admin.site.urls)),
 
-                       # Sitemaps
-                       url(r'^sitemap\.xml$', sitemap,
-                           {'sitemaps': sitemaps.sitemaps},
-                           name='django.contrib.sitemaps.views.sitemap')
                        )
-
 # Authentication
 urlpatterns += patterns(
     'django.contrib.auth.views',
