@@ -81,7 +81,7 @@ class Base(Configuration):
         'django.core.context_processors.tz',
         'django.contrib.messages.context_processors.messages',
         'django.core.context_processors.request',
-        'ownblock.context_processors.sites',
+        'ownblock.apps.buildings.context_processors.sites',
     )
 
     TEMPLATE_LOADERS = (

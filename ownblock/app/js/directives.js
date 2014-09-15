@@ -52,6 +52,7 @@
                 transclude(scope, function(clone) {
                     angular.forEach(clone, function(item) {
                         if (item.nodeName === 'CELL') {
+                            // hack around this bug: https://github.com/angular/angular.js/issues/1459
                             var newElement = angular.element('<table><tr><td></td></tr></table>').find('td');
                             newElement.append(item);
                             element.append(newElement);
