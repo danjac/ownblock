@@ -69,11 +69,11 @@
                 </li>
 
                 <li ng-repeat="doc in obj.documents">
-                    <a ui-sref="residents.detail({id: doc.author})">{{ doc.author.first_name}}</a> uploaded a document: <a ui-sref="documents.detail({id: doc.id})">{{doc.title}}</a>.
+                    <a ui-sref="residents.detail({id: doc.author.id})">{{ doc.author.first_name}}</a> uploaded a document: <a ui-sref="documents.detail({id: doc.id})">{{doc.title}}</a>.
                 </li>
 
                 <li ng-repeat="msg in obj.messages">
-                    <a ui-sref="residents.detail({id: msg.sender})">{{ msg.sender.first_name}}</a> sent you a message: <a ui-sref="messages.detail({id: msg.id})">{{msg.header}}</a>.
+                    <a ui-sref="residents.detail({id: msg.sender.id})">{{ msg.sender.first_name}}</a> sent you a message: <a ui-sref="messages.detail({id: msg.id})">{{msg.header}}</a>.
                 </li>
 
 
