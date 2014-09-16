@@ -87,9 +87,11 @@
         'urls',
         function($scope, $state, $window, $modal, api, auth, urls) {
 
-            var apartmentId = null;
+            var apartmentId = null,
+                showApartment = false;
             if ($state.params.id) {
                 apartmentId = parseInt($state.params.id, 10);
+                showApartment = true;
             } else if (auth.user.apartment) {
                 apartmentId = auth.user.apartment;
             }
@@ -145,12 +147,66 @@
                 }
             };
 
-            if ($scope.apartmentSelector.id) {
-                $scope.tabs.apartments.active = true;
-            } else if (auth.user.apartment) {
-                $scope.apartmentSelector.id = auth.user.apartment.id;
+            if (auth.hasRole('resident')) {
+                $scope.tabs.building.active = false;
+
+                $scope.tabs.timeline = {
+                    active: true
+                };
+
+                var objects = {};
+                $scope.timeline = [];
+
+                api.Timeline.get(function(response) {
+
+                    var getDateObj = function(timestamp) {
+
+                        timestamp = new Date(timestamp);
+
+                        var date = new Date(
+                                timestamp.getFullYear(),
+                                timestamp.getMonth(),
+                                timestamp.getDate()),
+                            obj = objects[date];
+
+                        if (!angular.isDefined(obj)) {
+                            obj = {
+                                date: date,
+                                notices: [],
+                                messages: [],
+                                documents: []
+                            };
+                            objects[date] = obj;
+                        }
+
+                        return obj;
+                    };
+
+                    angular.forEach(response.notices, function(notice) {
+                        var dt = getDateObj(notice.created);
+                        dt.notices.push(notice);
+                    });
+
+                    angular.forEach(response.messages, function(msg) {
+                        var dt = getDateObj(msg.created);
+                        dt.messages.push(msg);
+                    });
+
+                    angular.forEach(response.documents, function(doc) {
+                        var dt = getDateObj(doc.created);
+                        dt.documents.push(doc);
+                    });
+
+                    angular.forEach(objects, function(obj) {
+                        $scope.timeline.push(obj);
+                    });
+
+                });
             }
 
+            if (showApartment) {
+                $scope.tabs.apartments.active = true;
+            }
             api.Apartment.query().$promise.then(function(response) {
                 $scope.apartments = response;
             });

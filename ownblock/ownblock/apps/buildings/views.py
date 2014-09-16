@@ -1,11 +1,19 @@
 from rest_framework import viewsets, permissions, status
+from rest_framework.views import APIView
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
-from ..accounts.permissions import IsManager
+from ..accounts.permissions import IsManager, IsResident
+
+from ..notices.serializers import NoticeSerializer
+from ..messaging.serializers import MessageSerializer
+from ..documents.serializers import DocumentSerializer
+from ..contacts.serializers import ContactSerializer
+
 from ..storage.models import Item
 from ..parking.models import Vehicle
 from ..tickets.models import Ticket
+
 
 from .models import Apartment, Building
 
@@ -14,6 +22,51 @@ from .serializers import (
     BuildingSerializer,
     ResidentSerializer,
 )
+
+
+class TimelineView(APIView):
+
+    """
+    Returns list of recent notices, messages, docs, and contacts.
+    """
+
+    permission_classes = (IsResident, )
+
+    def get(self, request, *args, **kwargs):
+
+        data = {}
+
+        context = {'request': request}
+
+        notices = request.building.notice_set.select_related(
+            'author',
+            'author__apartment',
+        ).order_by('-id')[:6]
+
+        data['notices'] = [NoticeSerializer(notice, context=context).data
+                           for notice in notices]
+
+        messages = request.user.received_messages.select_related(
+            'sender',
+            'sender__apartment',
+            'recipient',
+            'recipient__apartment',
+        ).order_by('-id')[: 6]
+
+        data['messages'] = [MessageSerializer(msg, context=context).data
+                            for msg in messages]
+
+        docs = request.building.document_set.select_related(
+            'author',
+            'author__apartment',
+        ).filter(
+            author__isnull=False
+        ).order_by('-id')[: 6]
+
+        data['documents'] = [DocumentSerializer(doc, context=context).data
+                             for doc in docs]
+
+        return Response(data)
 
 
 class BuildingViewSet(viewsets.ReadOnlyModelViewSet):

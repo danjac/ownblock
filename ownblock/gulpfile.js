@@ -55,22 +55,18 @@ gulp.task('pkg', function() {
 
 gulp.task('app-js', function() {
     return gulp.src('./app/js/*.js')
-        //.pipe(jsFilter)
         .pipe(concat('app.js'))
         .pipe(uglify({
             mangle: false
         }))
         .pipe(gulp.dest(dest.js));
-    //.pipe(jsFilter.restore());
 });
 
 gulp.task('app-css', function() {
     return gulp.src('./app/css/*.css')
-        //.pipe(cssFilter)
         .pipe(concat('app.css'))
         .pipe(minifyCss())
         .pipe(gulp.dest(dest.css));
-    //.pipe(cssFilter.restore());
 });
 
 gulp.task('default', function() {

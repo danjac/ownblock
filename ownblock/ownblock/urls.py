@@ -8,8 +8,9 @@ admin.autodiscover()
 
 
 urlpatterns = patterns('',
-                       # Front page
+
                        url(r'', include('ownblock.apps.site.urls')),
+
                        # REST API
                        url(r'^api/users/', include(
                            'ownblock.apps.accounts.urls')),

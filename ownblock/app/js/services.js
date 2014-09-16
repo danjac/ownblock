@@ -151,6 +151,7 @@
                     }
                 }),
                 Building: makeEndpoint('/api/buildings/buildings/:id'),
+                Timeline: $resource('/api/buildings/timeline'),
                 Auth: $resource('/api/users/auth/', {}, {
                     update: {
                         method: 'PUT'
