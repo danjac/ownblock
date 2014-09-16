@@ -58,7 +58,7 @@
             </div>
         </div>
     </tab>
-    <tab heading="Timeline" has-role="resident" active="tabs.timeline.active">
+    <tab heading="Recent events" has-role="resident" active="tabs.timeline.active">
 
         <div ng-repeat="obj in timeline|orderBy:'date':true">
             <h3>{{obj.date|date:"longDate"}}</h3>
