@@ -65,15 +65,15 @@
             <ul class="list-unstyled voffset-2">
 
                 <li ng-repeat="notice in obj.notices">
-                    <a ui-sref="residents.detail({id: notice.author.id})">{{ notice.author.first_name}}</a> posted something to the notice board: <a ui-sref="notices.detail({id: notice.id})">{{notice.title}}</a>.
+                    <user-link user="notice.author"></user-link>&nbsp;posted something to the notice board: <a ui-sref="notices.detail({id: notice.id})">{{notice.title}}</a>.
                 </li>
 
                 <li ng-repeat="doc in obj.documents">
-                    <a ui-sref="residents.detail({id: doc.author.id})">{{ doc.author.first_name}}</a> uploaded a document: <a ui-sref="documents.detail({id: doc.id})">{{doc.title}}</a>.
+                    <user-link user="doc.author"></user-link>&nbsp;uploaded a document: <a ui-sref="documents.detail({id: doc.id})">{{doc.title}}</a>.
                 </li>
 
                 <li ng-repeat="msg in obj.messages">
-                    <a ui-sref="residents.detail({id: msg.sender.id})">{{ msg.sender.first_name}}</a> sent you a message: <a ui-sref="messages.detail({id: msg.id})">{{msg.header}}</a>.
+                    <user-link user="msg.sender"></user-link>&nbsp;sent you a message: <a ui-sref="messages.detail({id: msg.id})">{{msg.header}}</a>.
                 </li>
 
 
