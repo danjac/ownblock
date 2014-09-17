@@ -60,24 +60,28 @@
     </tab>
     <tab heading="Recent events" has-role="resident" active="tabs.timeline.active">
 
-        <div ng-repeat="obj in timeline|orderBy:'date':true">
-            <h3>{{obj.date|date:"longDate"}}</h3>
-            <ul class="list-unstyled voffset-2">
+        <div class="panel panel-default" ng-repeat="obj in timeline|orderBy:'date':true">
+            <div class="panel-heading">
+                <h3>{{obj.date|date:"longDate"}}</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="list-unstyled voffset-2">
 
-                <li ng-repeat="notice in obj.notices">
-                    <user-link user="notice.author"></user-link>&nbsp;posted something to the notice board: <a ui-sref="notices.detail({id: notice.id})">{{notice.title}}</a>.
-                </li>
+                    <li ng-repeat="notice in obj.notices">
+                        <user-link user="notice.author"></user-link>&nbsp;posted something to the notice board: <a ui-sref="notices.detail({id: notice.id})">{{notice.title}}</a>.
+                    </li>
 
-                <li ng-repeat="doc in obj.documents">
-                    <user-link user="doc.author"></user-link>&nbsp;uploaded a document: <a ui-sref="documents.detail({id: doc.id})">{{doc.title}}</a>.
-                </li>
+                    <li ng-repeat="doc in obj.documents">
+                        <user-link user="doc.author"></user-link>&nbsp;uploaded a document: <a ui-sref="documents.detail({id: doc.id})">{{doc.title}}</a>.
+                    </li>
 
-                <li ng-repeat="msg in obj.messages">
-                    <user-link user="msg.sender"></user-link>&nbsp;sent you a message: <a ui-sref="messages.detail({id: msg.id})">{{msg.header}}</a>.
-                </li>
+                    <li ng-repeat="msg in obj.messages">
+                        <user-link user="msg.sender"></user-link>&nbsp;sent you a message: <a ui-sref="messages.detail({id: msg.id})">{{msg.header}}</a>.
+                    </li>
 
 
-            </ul>
+                </ul>
+            </div>
         </div>
 
     </tab>
