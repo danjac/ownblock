@@ -60,12 +60,12 @@
     </tab>
     <tab heading="Recent events" has-role="resident" active="tabs.timeline.active">
 
-        <div class="panel panel-default" ng-repeat="obj in timeline|orderBy:'date':true">
+        <div class="panel panel-default voffset-2" ng-repeat="obj in timeline|orderBy:'date':true">
             <div class="panel-heading">
                 <h3>{{obj.date|date:"longDate"}}</h3>
             </div>
             <div class="panel-body">
-                <ul class="list-unstyled voffset-2">
+                <ul class="list-unstyled">
 
                     <li ng-repeat="notice in obj.notices">
                         <user-link user="notice.author"></user-link>&nbsp;posted something to the notice board: <a ui-sref="notices.detail({id: notice.id})">{{notice.title}}</a>.
