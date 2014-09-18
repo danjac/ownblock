@@ -166,3 +166,8 @@ a, a:hover {
 .form-control {
     height: auto;
 }
+
+
+.message-unread {
+    font-weight:bold;
+}

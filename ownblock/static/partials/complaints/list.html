@@ -10,7 +10,7 @@
 <search-form name="searchForm" paginator="paginator" filter="complaint" class="voffset-2"></search-form>
 <paginated-table class="voffset-2" cols="cols" paginator="paginator">
 
-    <cell><a ui-sref="complaints.detail({id: item.id})">{{item.complaint|limitTo:60}}</a>
+    <cell><a ui-sref="complaints.detail({id: item.id})">{{item.complaint|limitTo:60}}...</a>
     </cell>
     <cell>{{item.created|date:"short"}}</cell>
     <cell has-role="manager">

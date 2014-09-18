@@ -38,6 +38,14 @@ class MessageViewSet(viewsets.ModelViewSet):
     def pre_save(self, obj):
         obj.sender = self.request.user
 
+    def retrieve(self, request, *args, **kwargs):
+        response = super().retrieve(request, *args, **kwargs)
+        if (self.object.recipient_id == request.user.id and
+                not self.object.is_read):
+            self.object.is_read = True
+            self.object.save()
+        return response
+
     def get_queryset(self):
         return super().get_queryset().filter(
             Q(recipient=self.request.user) |
