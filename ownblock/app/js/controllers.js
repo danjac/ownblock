@@ -41,6 +41,60 @@
 
 
         }
+    ]).controller('HomeCtrl', ['$scope', 'api',
+        function($scope, api) {
+
+            var objects = {};
+            $scope.timeline = [];
+
+            api.Timeline.get(function(response) {
+
+                var getDateObj = function(timestamp) {
+
+                    timestamp = new Date(timestamp);
+
+                    var date = new Date(
+                            timestamp.getFullYear(),
+                            timestamp.getMonth(),
+                            timestamp.getDate()),
+                        obj = objects[date];
+
+                    if (!angular.isDefined(obj)) {
+                        obj = {
+                            date: date,
+                            notices: [],
+                            messages: [],
+                            documents: []
+                        };
+                        objects[date] = obj;
+                    }
+
+                    return obj;
+                };
+
+                angular.forEach(response.notices, function(notice) {
+                    var dt = getDateObj(notice.created);
+                    dt.notices.push(notice);
+                });
+
+                angular.forEach(response.messages, function(msg) {
+                    var dt = getDateObj(msg.created);
+                    dt.messages.push(msg);
+                });
+
+                angular.forEach(response.documents, function(doc) {
+                    var dt = getDateObj(doc.created);
+                    dt.documents.push(doc);
+                });
+
+                angular.forEach(objects, function(obj) {
+                    $scope.timeline.push(obj);
+                });
+
+            });
+
+
+        }
     ]).controller('buildings.ListCtrl', ['$scope', '$state', 'api', 'auth',
         function($scope, $state, api, auth) {
             $scope.cities = [];
@@ -146,63 +200,6 @@
                     active: false
                 }
             };
-
-            if (auth.hasRole('resident')) {
-                $scope.tabs.building.active = false;
-
-                $scope.tabs.timeline = {
-                    active: true
-                };
-
-                var objects = {};
-                $scope.timeline = [];
-
-                api.Timeline.get(function(response) {
-
-                    var getDateObj = function(timestamp) {
-
-                        timestamp = new Date(timestamp);
-
-                        var date = new Date(
-                                timestamp.getFullYear(),
-                                timestamp.getMonth(),
-                                timestamp.getDate()),
-                            obj = objects[date];
-
-                        if (!angular.isDefined(obj)) {
-                            obj = {
-                                date: date,
-                                notices: [],
-                                messages: [],
-                                documents: []
-                            };
-                            objects[date] = obj;
-                        }
-
-                        return obj;
-                    };
-
-                    angular.forEach(response.notices, function(notice) {
-                        var dt = getDateObj(notice.created);
-                        dt.notices.push(notice);
-                    });
-
-                    angular.forEach(response.messages, function(msg) {
-                        var dt = getDateObj(msg.created);
-                        dt.messages.push(msg);
-                    });
-
-                    angular.forEach(response.documents, function(doc) {
-                        var dt = getDateObj(doc.created);
-                        dt.documents.push(doc);
-                    });
-
-                    angular.forEach(objects, function(obj) {
-                        $scope.timeline.push(obj);
-                    });
-
-                });
-            }
 
             if (showApartment) {
                 $scope.tabs.apartments.active = true;

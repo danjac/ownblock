@@ -29,8 +29,7 @@
 
             };
         }
-    ]).
-    directive('paginatedTable', ['urls',
+    ]).directive('paginatedTable', ['urls',
         function(urls) {
             return {
                 restrict: 'E',
@@ -43,26 +42,24 @@
                 templateUrl: urls.partials + 'dataTable.html'
             };
         }
-    ]).
-    directive('rowDef', function() {
+    ]).directive('rowDef', function() {
         return {
             restrict: 'A',
             link: function(scope, element, attrs, ctrl, transclude) {
-
                 transclude(scope, function(clone) {
                     angular.forEach(clone, function(item) {
                         if (item.nodeName === 'CELL') {
                             // hack around this bug: https://github.com/angular/angular.js/issues/1459
                             var newElement = angular.element('<table><tr><td></td></tr></table>').find('td');
                             newElement.append(item);
+                            newElement.attrs = item.attrs;
                             element.append(newElement);
                         }
                     });
                 });
             }
         };
-    }).
-    directive('searchForm', ['urls',
+    }).directive('searchForm', ['urls',
         function(urls) {
             var SearchForm = function() {
                 this.visible = false;
@@ -110,8 +107,7 @@
                 }
             };
         }
-    ]).
-    directive('userLink', function() {
+    ]).directive('userLink', function() {
         return {
             restrict: 'E',
             scope: {
@@ -120,8 +116,7 @@
             replace: true,
             template: '<span><span ng-if="!user.is_active">{{user.full_name}} <span class="label label-warning">Removed</span></span><img ng-src="{{user.gravatar}}" ng-if="user.gravatar"> <a ng-if="user.is_active" ui-sref="residents.detail({id: user.id})">{{user.full_name}}</a></span>'
         };
-    }).
-    directive('filesModel', function() {
+    }).directive('filesModel', function() {
         /* https://github.com/angular/angular.js/issues/1375#issuecomment-21933012 */
         return {
             controller: function($parse, $element, $attrs, $scope, $window) {
@@ -144,8 +139,7 @@
                 });
             }
         };
-    }).
-    directive('confirmDialog', ['$modal', 'urls',
+    }).directive('confirmDialog', ['$modal', 'urls',
         function($modal, urls) {
             var modalInstanceCtrl = function($scope, $modalInstance, header, text) {
                     $scope.header = header;

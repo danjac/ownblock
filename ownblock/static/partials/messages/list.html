@@ -6,9 +6,7 @@
 
 
         <paginated-table paginator="receivedMessages" class="voffset-2" cols="['Message', 'From', 'Date']">
-
-
-            <cell><a ng-class="{'message-unread': !item.is_read}" ui-sref="messages.detail({id: item.id})">{{item.header}}</a>
+            <cell ng-class="{'message-unread': !item.is_read}"><a ui-sref="messages.detail({id: item.id})">{{item.header}}</a>
             </cell>
             <cell>
                 <user-link user="item.sender" />

@@ -58,38 +58,6 @@
             </div>
         </div>
     </tab>
-    <tab heading="Recent events" has-role="resident" active="tabs.timeline.active">
-
-        <div class="panel panel-default voffset-2" ng-repeat="obj in timeline|orderBy:'date':true">
-            <div class="panel-heading">
-                <h4>{{obj.date|date:"longDate"}}</h4>
-            </div>
-            <div class="panel-body">
-                <table class="table table-hover table-striped">
-
-                    <tr ng-repeat="notice in obj.notices">
-                        <td>
-                            <user-link user="notice.author"></user-link>&nbsp;posted something to the notice board: <a ui-sref="notices.detail({id: notice.id})">{{notice.title}}</a>.
-                        </td>
-                    </tr>
-
-                    <tr ng-repeat="doc in obj.documents">
-                        <td>
-                            <user-link user="doc.author"></user-link>&nbsp;uploaded a document: <a ui-sref="documents.detail({id: doc.id})">{{doc.title}}</a>.
-                        </td>
-                    </tr>
-
-                    <tr ng-repeat="msg in obj.messages">
-                        <td>
-                            <user-link user="msg.sender"></user-link>&nbsp;sent you a message: <a ui-sref="messages.detail({id: msg.id})">{{msg.header}}</a>.
-                        </td>
-                    </tr>
-
-                </table>
-            </div>
-        </div>
-
-    </tab>
     <tab heading="Apartments" active="tabs.apartments.active">
 
         <form class="voffset-2">

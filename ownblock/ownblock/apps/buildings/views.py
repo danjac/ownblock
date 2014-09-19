@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 
-from ..accounts.permissions import IsManager, IsResident
+from ..accounts.permissions import IsManager
 
 from ..notices.serializers import NoticeSerializer
 from ..messaging.serializers import MessageSerializer
@@ -30,7 +30,7 @@ class TimelineView(APIView):
     Returns list of recent notices, messages, docs, and contacts.
     """
 
-    permission_classes = (IsResident, )
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
 

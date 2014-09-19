@@ -451,9 +451,14 @@
                 url: '/building',
                 templateUrl: urls.partials + 'buildings/detail.html',
                 controller: 'buildings.DetailCtrl'
+            }).
+            state('home', {
+                url: '/',
+                templateUrl: urls.partials + 'home.html',
+                parent: 'site',
+                controller: 'HomeCtrl'
             });
-
-            $urlRouterProvider.otherwise('/building');
+            $urlRouterProvider.otherwise('/');
 
         }
     ]).run(['$rootScope', '$state', 'auth',
