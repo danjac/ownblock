@@ -50,4 +50,7 @@ class MessageViewSet(viewsets.ModelViewSet):
         return super().get_queryset().filter(
             Q(recipient=self.request.user) |
             Q(sender=self.request.user)
-        ).select_related('sender', 'recipient').order_by('-created')
+        ).select_related('sender', 'recipient').order_by(
+            'is_read',
+            '-created'
+        )
