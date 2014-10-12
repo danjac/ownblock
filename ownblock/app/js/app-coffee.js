@@ -1,4 +1,4 @@
-angular.module("ownblock", ["ngResource", "ngSanitize", "ngCookies", "ui.router", "ui.calendar", "ui.bootstrap", "ownblock.services", "ownblock.directives", "ownblock.controllers", "ownblock.controllers.home", "ownblock.controllers.buildings", "ownblock.controllers.residents", "ownblock.controllers.amenities", "ownblock.controllers.notices", "ownblock.controllers.messages", "ownblock.controllers.storage"]).constant({
+angular.module("ownblock", ["ngResource", "ngSanitize", "ngCookies", "ui.router", "ui.calendar", "ui.bootstrap", "ownblock.services", "ownblock.directives", "ownblock.controllers.app", "ownblock.controllers.account", "ownblock.controllers.amenities", "ownblock.controllers.buildings", "ownblock.controllers.complaints", "ownblock.controllers.contacts", "ownblock.controllers.documents", "ownblock.controllers.home", "ownblock.controllers.residents", "ownblock.controllers.messages", "ownblock.controllers.notices", "ownblock.controllers.parking", "ownblock.controllers.storage", "ownblock.controllers.tickets"]).constant({
   urls: {
     "static": "/static/",
     partials: "/static/partials/",
@@ -368,460 +368,6 @@ angular.module("ownblock", ["ngResource", "ngSanitize", "ngCookies", "ui.router"
         return $state.transitionTo("accessdenied");
       }
     });
-  }
-]);
-
-angular.module("ownblock.controllers", ["ui.router", "ui.calendar", "ui.bootstrap", "ownblock", "ownblock.services"]).controller("AppCtrl", [
-  "$scope", "$location", "$state", "$timeout", "auth", "notifier", "urls", function($scope, $location, $state, $timeout, auth, notifier, urls) {
-    $scope.auth = auth;
-    $scope.notifier = notifier;
-    $scope.includes = function(name) {
-      return $state.includes(name);
-    };
-    $scope.init = function(user) {
-      if (!user) {
-        $location.path("/account/login/");
-      }
-      return auth.sync(user);
-    };
-    $scope.$on("Notifier.new", function(event, notification) {
-      return $timeout((function() {
-        return notifier.remove(notification);
-      }), 3000);
-    });
-    return $scope.menuTpl = urls.partials + "menu.html";
-  }
-]).controller("storage.ListCtrl", [
-  "$scope", "api", "paginator", function($scope, api, paginator) {
-    $scope.paginator = paginator();
-    api.StorageItem.query().$promise.then(function(response) {
-      return $scope.paginator.reload(response);
-    });
-    return api.Place.query().$promise.then(function(response) {
-      return $scope.places = response;
-    });
-  }
-]).controller("storage.NewPlaceCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    $scope.place = new api.Place();
-    return $scope.save = function() {
-      return $scope.place.$save(function() {
-        notifier.success("The storage area has been added");
-        return $state.go("storage.list");
-      });
-    };
-  }
-]).controller("storage.NewItemCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    $scope.item = new api.StorageItem();
-    $scope.places = [];
-    $scope.editPhoto = true;
-    $scope.showPhoto = false;
-    api.Place.query().$promise.then(function(response) {
-      return $scope.places = response;
-    });
-    $scope.save = function() {
-      return $scope.item.$save(function() {
-        notifier.success("Your item has been added");
-        return $state.go("storage.list");
-      });
-    };
-    return $scope.cancel = function() {
-      $state.go("storage.list");
-    };
-  }
-]).controller("storage.EditItemCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    $scope.editPhoto = false;
-    $scope.showPhoto = false;
-    $scope.places = [];
-    api.StorageItem.get({
-      id: $state.params.id
-    }, function(response) {
-      $scope.item = response;
-      $scope.showPhoto = $scope.item.photo;
-      return $scope.editPhoto = !$scope.showPhoto;
-    });
-    $scope.toggleEditPhoto = function() {
-      return $scope.editPhoto = !$scope.editPhoto;
-    };
-    $scope.deletePhoto = function() {
-      return $scope.item.$removePhoto(function() {
-        $scope.item.photo = null;
-        $scope.showPhoto = false;
-        $scope.editPhoto = true;
-        return notifier.success("Your photo has been removed");
-      });
-    };
-    api.Place.query().$promise.then(function(response) {
-      return $scope.places = response;
-    });
-    $scope.save = function() {
-      return $scope.item.$update(function() {
-        notifier.success("Your item has been updated");
-        return $state.go("storage.itemDetail", {
-          id: $scope.item.id
-        });
-      });
-    };
-    return $scope.cancel = function() {
-      return $state.go("storage.itemDetail", {
-        id: $scope.item.id
-      });
-    };
-  }
-]).controller("storage.ItemDetailCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    api.StorageItem.get({
-      id: $state.params.id
-    }, function(response) {
-      return $scope.item = response;
-    });
-    return $scope.deleteItem = function() {
-      return $scope.item.$delete(function() {
-        notifier.success("Your item has been removed");
-        return $state.go("storage.list");
-      });
-    };
-  }
-]).controller("storage.PlaceDetailCtrl", [
-  "$scope", "$state", "api", "paginator", "notifier", function($scope, $state, api, paginator, notifier) {
-    $scope.paginator = paginator();
-    api.Place.get({
-      id: $state.params.id
-    }, function(response) {
-      $scope.place = response;
-      return $scope.paginator.reload($scope.place.items);
-    });
-    return $scope.deletePlace = function() {
-      return $scope.place.$delete(function() {
-        notifier.success("Storage area has been removed");
-        return $state.go("storage.list");
-      });
-    };
-  }
-]).controller("storage.EditPlaceCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    api.Place.get({
-      id: $state.params.id
-    }, function(response) {
-      return $scope.place = response;
-    });
-    $scope.save = function() {
-      return $scope.place.$update(function() {
-        notifier.success("The storage area has been updated");
-        return $state.go("storage.placeDetail", {
-          id: $scope.place.id
-        });
-      });
-    };
-    return $scope.cancel = function() {
-      return $state.go("storage.placeDetail", {
-        id: $scope.place.id
-      });
-    };
-  }
-]).controller("contacts.ListCtrl", [
-  "$scope", "api", "paginator", function($scope, api, paginator) {
-    $scope.paginator = paginator();
-    api.Contact.query().$promise.then(function(response) {
-      return $scope.paginator.reload(response);
-    });
-    return api.Resident.query({
-      managers: true
-    }).$promise.then(function(response) {
-      return $scope.managers = response;
-    });
-  }
-]).controller("contacts.DetailCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    api.Contact.get({
-      id: $state.params.id
-    }, function(response) {
-      return $scope.contact = response;
-    });
-    return $scope.deleteContact = function() {
-      return $scope.contact.$delete(function() {
-        notifier.success("The contact has been deleted");
-        return $state.go("contacts.list");
-      });
-    };
-  }
-]).controller("contacts.NewCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    $scope.contact = new api.Contact();
-    $scope.save = function() {
-      return $scope.contact.$save(function() {
-        notifier.success("Your contact has been saved");
-        return $state.go("contacts.list");
-      });
-    };
-    return $scope.cancel = function() {
-      $state.go("contacts.list");
-    };
-  }
-]).controller("contacts.EditCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    api.Contact.get({
-      id: $state.params.id
-    }, function(response) {
-      return $scope.contact = response;
-    });
-    $scope.save = function() {
-      return $scope.contact.$update(function() {
-        notifier.success("Your contact has been saved");
-        return $state.go("contacts.detail", {
-          id: $scope.contact.id
-        });
-      });
-    };
-    return $scope.cancel = function() {
-      return $state.go("contacts.detail", {
-        id: $scope.contact.id
-      });
-    };
-  }
-]).controller("documents.ListCtrl", [
-  "$scope", "api", "paginator", function($scope, api, paginator) {
-    $scope.paginator = paginator();
-    return api.Document.query().$promise.then(function(response) {
-      return $scope.paginator.reload(response);
-    });
-  }
-]).controller("documents.DetailCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    api.Document.get({
-      id: $state.params.id
-    }, function(response) {
-      return $scope.document = response;
-    });
-    return $scope.deleteDocument = function() {
-      return $scope.document.$delete(function() {
-        notifier.success("Your document has been removed");
-        return $state.go("documents.list");
-      });
-    };
-  }
-]).controller("documents.UploadCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    $scope.document = new api.Document();
-    $scope.save = function() {
-      return $scope.document.$save(function() {
-        notifier.success("Your document has been uploaded");
-        return $state.go("documents.list");
-      });
-    };
-    return $scope.cancel = function() {
-      return $state.go("documents.list");
-    };
-  }
-]).controller("parking.ListCtrl", [
-  "$scope", "api", "paginator", function($scope, api, paginator) {
-    $scope.paginator = paginator();
-    return api.Vehicle.query().$promise.then(function(response) {
-      angular.forEach(response, function(item) {
-        return item.searchTerms = item.description + " " + item.registration_number + item.resident.full_name;
-      });
-      return $scope.paginator.reload(response);
-    });
-  }
-]).controller("parking.NewCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    $scope.vehicle = new api.Vehicle();
-    $scope.save = function() {
-      return $scope.vehicle.$save(function() {
-        notifier.success("Your vehicle has been added");
-        return $state.go("parking.list");
-      });
-    };
-    return $scope.cancel = function() {
-      return $state.go("parking.list");
-    };
-  }
-]).controller("parking.EditCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    api.Vehicle.get({
-      id: $state.params.id
-    }, function(response) {
-      return $scope.vehicle = response;
-    });
-    $scope.deleteVehicle = function() {
-      return $scope.vehicle.$remove(function() {
-        notifier.success("Your vehicle has been removed");
-        return $state.go("parking.list");
-      });
-    };
-    $scope.save = function() {
-      return $scope.vehicle.$update(function() {
-        notifier.success("Your vehicle has been updated");
-        return $state.go("parking.detail", {
-          id: $scope.vehicle.id
-        });
-      });
-    };
-    return $scope.cancel = function() {
-      return $state.go("parking.detail", {
-        id: $scope.vehicle.id
-      });
-    };
-  }
-]).controller("parking.DetailCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    api.Vehicle.get({
-      id: $state.params.id
-    }, function(response) {
-      return $scope.vehicle = response;
-    });
-    return $scope.deleteVehicle = function() {
-      return $scope.vehicle.$delete(function() {
-        notifier.success("Your vehicle has been removed");
-        return $state.go("parking.list");
-      });
-    };
-  }
-]).controller("complaints.ListCtrl", [
-  "$scope", "api", "paginator", "auth", function($scope, api, paginator, auth) {
-    $scope.cols = ["Complaint", "Date reported"];
-    if (auth.hasRole("manager")) {
-      $scope.cols.push("Reported by");
-    }
-    $scope.paginator = paginator();
-    return api.Complaint.query().$promise.then(function(response) {
-      return $scope.paginator.reload(response);
-    });
-  }
-]).controller("complaints.DetailCtrl", [
-  "$scope", "$state", "api", function($scope, $state, api) {
-    return api.Complaint.get({
-      id: $state.params.id
-    }, function(response) {
-      return $scope.complaint = response;
-    });
-  }
-]).controller("complaints.NewCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    $scope.complaint = new api.Complaint();
-    api.Apartment.query().$promise.then(function(response) {
-      return $scope.apartments = response;
-    });
-    $scope.save = function() {
-      return $scope.complaint.$save(function() {
-        notifier.success("Your complaint has been sent");
-        return $state.go("complaints.list");
-      });
-    };
-    return $scope.cancel = function() {
-      return $state.go("complaints.list");
-    };
-  }
-]).controller("tickets.ListCtrl", [
-  "$scope", "api", "paginator", function($scope, api, paginator) {
-    $scope.paginator = paginator();
-    return api.Ticket.query().$promise.then(function(response) {
-      return $scope.paginator.reload(response);
-    });
-  }
-]).controller("tickets.NewCtrl", [
-  "$scope", "$state", "auth", "api", "notifier", function($scope, $state, auth, api, notifier) {
-    $scope.ticket = new api.Ticket();
-    if (auth.hasRole("manager")) {
-      api.Apartment.query().$promise.then(function(response) {
-        return $scope.apartments = response;
-      });
-    }
-    $scope.save = function() {
-      return $scope.ticket.$save(function() {
-        notifier.success("Your issue has been saved");
-        return $state.go("tickets.list");
-      });
-    };
-    return $scope.cancel = function() {
-      return $state.go("tickets.list");
-    };
-  }
-]).controller("tickets.EditCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    $scope.statusOptions = ["new", "accepted", "resolved"];
-    api.Ticket.get({
-      id: $state.params.id
-    }, function(response) {
-      return $scope.ticket = response;
-    });
-    api.Apartment.query().$promise.then(function(response) {
-      return $scope.apartments = response;
-    });
-    return $scope.save = function() {
-      $scope.ticket.$update(function() {
-        notifier.success("Your issue has been saved");
-        return $state.go("tickets.detail", {
-          id: $scope.ticket.id
-        });
-      });
-      return $scope.cancel = function() {
-        return $state.go("tickets.detail", {
-          id: $scope.ticket.id
-        });
-      };
-    };
-  }
-]).controller("tickets.DetailCtrl", [
-  "$scope", "$state", "api", function($scope, $state, api) {
-    return api.Ticket.get({
-      id: $state.params.id
-    }, function(response) {
-      return $scope.ticket = response;
-    });
-  }
-]).controller("account.EditCtrl", [
-  "$scope", "$state", "auth", "api", "notifier", function($scope, $state, auth, api, notifier) {
-    $scope.save = function() {
-      return api.Auth.update(auth.user, (function(response) {
-        auth.update(response);
-        notifier.success("Your account has been updated");
-        return $state.go("residents.detail", {
-          id: auth.user.id
-        });
-      }), function(response) {
-        return $scope.serverErrors = response.data;
-      });
-    };
-    return $scope.cancel = function() {
-      return $state.go("residents.detail", {
-        id: auth.user.id
-      });
-    };
-  }
-]).controller("account.ChangePasswordCtrl", [
-  "$scope", "$state", "api", "auth", "notifier", function($scope, $state, api, auth, notifier) {
-    var checkMatchingPassword;
-    checkMatchingPassword = function() {
-      if (($scope.user.password && $scope.user.password2) && $scope.user.password !== $scope.user.password2) {
-        return $scope.passwordMismatch = true;
-      } else {
-        return $scope.passwordMismatch = false;
-      }
-    };
-    $scope.user = {};
-    $scope.passwordMismatch = false;
-    $scope.$watch("user.password", function() {
-      return checkMatchingPassword();
-    });
-    $scope.$watch("user.password2", function() {
-      return checkMatchingPassword();
-    });
-    $scope.save = function() {
-      return api.Auth.changePassword($scope.user, function() {
-        notifier.success("Your password has been updated");
-        return $state.go("residents.detail", {
-          id: auth.user.id
-        });
-      });
-    };
-    return $scope.cancel = function() {
-      return $state.go("residents.detail", {
-        id: auth.user.id
-      });
-    };
   }
 ]);
 
@@ -1222,6 +768,59 @@ angular.module("ownblock.services", ["ngResource"]).service("auth", [
   }
 ]);
 
+angular.module("ownblock.controllers.account", ["ownblock", "ownblock.services"]).controller("account.EditCtrl", [
+  "$scope", "$state", "auth", "api", "notifier", function($scope, $state, auth, api, notifier) {
+    $scope.save = function() {
+      return api.Auth.update(auth.user, (function(response) {
+        auth.update(response);
+        notifier.success("Your account has been updated");
+        return $state.go("residents.detail", {
+          id: auth.user.id
+        });
+      }), function(response) {
+        return $scope.serverErrors = response.data;
+      });
+    };
+    return $scope.cancel = function() {
+      return $state.go("residents.detail", {
+        id: auth.user.id
+      });
+    };
+  }
+]).controller("account.ChangePasswordCtrl", [
+  "$scope", "$state", "api", "auth", "notifier", function($scope, $state, api, auth, notifier) {
+    var checkMatchingPassword;
+    checkMatchingPassword = function() {
+      if (($scope.user.password && $scope.user.password2) && $scope.user.password !== $scope.user.password2) {
+        return $scope.passwordMismatch = true;
+      } else {
+        return $scope.passwordMismatch = false;
+      }
+    };
+    $scope.user = {};
+    $scope.passwordMismatch = false;
+    $scope.$watch("user.password", function() {
+      return checkMatchingPassword();
+    });
+    $scope.$watch("user.password2", function() {
+      return checkMatchingPassword();
+    });
+    $scope.save = function() {
+      return api.Auth.changePassword($scope.user, function() {
+        notifier.success("Your password has been updated");
+        return $state.go("residents.detail", {
+          id: auth.user.id
+        });
+      });
+    };
+    return $scope.cancel = function() {
+      return $state.go("residents.detail", {
+        id: auth.user.id
+      });
+    };
+  }
+]);
+
 angular.module("ownblock.controllers.amenities", ["ui.calendar", "ownblock", "ownblock.services"]).controller("amenities.ListCtrl", [
   "$scope", "api", "notifier", "paginator", "auth", function($scope, api, notifier, paginator, auth) {
     $scope.paginator = paginator();
@@ -1447,6 +1046,28 @@ angular.module("ownblock.controllers.amenities", ["ui.calendar", "ownblock", "ow
   }
 ]);
 
+angular.module("ownblock.controllers.app", ["ownblock", "ownblock.services"]).controller("AppCtrl", [
+  "$scope", "$location", "$state", "$timeout", "auth", "notifier", "urls", function($scope, $location, $state, $timeout, auth, notifier, urls) {
+    $scope.auth = auth;
+    $scope.notifier = notifier;
+    $scope.includes = function(name) {
+      return $state.includes(name);
+    };
+    $scope.init = function(user) {
+      if (!user) {
+        $location.path("/account/login/");
+      }
+      return auth.sync(user);
+    };
+    $scope.$on("Notifier.new", function(event, notification) {
+      return $timeout((function() {
+        return notifier.remove(notification);
+      }), 3000);
+    });
+    return $scope.menuTpl = urls.partials + "menu.html";
+  }
+]);
+
 angular.module("ownblock.controllers.buildings", ["ui.router", "ui.calendar", "ui.bootstrap", "ownblock", "ownblock.services"]).controller("buildings.ListCtrl", [
   "$scope", "$state", "api", "auth", function($scope, $state, api, auth) {
     var getCity;
@@ -1576,6 +1197,141 @@ angular.module("ownblock.controllers.buildings", ["ui.router", "ui.calendar", "u
           return $scope.currentApartment.users.push(response);
         });
       });
+    };
+  }
+]);
+
+angular.module("ownblock.controllers.complaints", ["ownblock", "ownblock.services"]).controller("complaints.ListCtrl", [
+  "$scope", "api", "paginator", "auth", function($scope, api, paginator, auth) {
+    $scope.cols = ["Complaint", "Date reported"];
+    if (auth.hasRole("manager")) {
+      $scope.cols.push("Reported by");
+    }
+    $scope.paginator = paginator();
+    return api.Complaint.query().$promise.then(function(response) {
+      return $scope.paginator.reload(response);
+    });
+  }
+]).controller("complaints.DetailCtrl", [
+  "$scope", "$state", "api", function($scope, $state, api) {
+    return api.Complaint.get({
+      id: $state.params.id
+    }, function(response) {
+      return $scope.complaint = response;
+    });
+  }
+]).controller("complaints.NewCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    $scope.complaint = new api.Complaint();
+    api.Apartment.query().$promise.then(function(response) {
+      return $scope.apartments = response;
+    });
+    $scope.save = function() {
+      return $scope.complaint.$save(function() {
+        notifier.success("Your complaint has been sent");
+        return $state.go("complaints.list");
+      });
+    };
+    return $scope.cancel = function() {
+      return $state.go("complaints.list");
+    };
+  }
+]);
+
+angular.module("ownblock.controllers.contacts", ["ownblock", "ownblock.services"]).controller("contacts.ListCtrl", [
+  "$scope", "api", "paginator", function($scope, api, paginator) {
+    $scope.paginator = paginator();
+    api.Contact.query().$promise.then(function(response) {
+      return $scope.paginator.reload(response);
+    });
+    return api.Resident.query({
+      managers: true
+    }).$promise.then(function(response) {
+      return $scope.managers = response;
+    });
+  }
+]).controller("contacts.DetailCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    api.Contact.get({
+      id: $state.params.id
+    }, function(response) {
+      return $scope.contact = response;
+    });
+    return $scope.deleteContact = function() {
+      return $scope.contact.$delete(function() {
+        notifier.success("The contact has been deleted");
+        return $state.go("contacts.list");
+      });
+    };
+  }
+]).controller("contacts.NewCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    $scope.contact = new api.Contact();
+    $scope.save = function() {
+      return $scope.contact.$save(function() {
+        notifier.success("Your contact has been saved");
+        return $state.go("contacts.list");
+      });
+    };
+    return $scope.cancel = function() {
+      $state.go("contacts.list");
+    };
+  }
+]).controller("contacts.EditCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    api.Contact.get({
+      id: $state.params.id
+    }, function(response) {
+      return $scope.contact = response;
+    });
+    $scope.save = function() {
+      return $scope.contact.$update(function() {
+        notifier.success("Your contact has been saved");
+        return $state.go("contacts.detail", {
+          id: $scope.contact.id
+        });
+      });
+    };
+    return $scope.cancel = function() {
+      return $state.go("contacts.detail", {
+        id: $scope.contact.id
+      });
+    };
+  }
+]);
+
+angular.module("ownblock.controllers.documents", ["ui.router", "ui.calendar", "ui.bootstrap", "ownblock", "ownblock.services"]).controller("documents.ListCtrl", [
+  "$scope", "api", "paginator", function($scope, api, paginator) {
+    $scope.paginator = paginator();
+    return api.Document.query().$promise.then(function(response) {
+      return $scope.paginator.reload(response);
+    });
+  }
+]).controller("documents.DetailCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    api.Document.get({
+      id: $state.params.id
+    }, function(response) {
+      return $scope.document = response;
+    });
+    return $scope.deleteDocument = function() {
+      return $scope.document.$delete(function() {
+        notifier.success("Your document has been removed");
+        return $state.go("documents.list");
+      });
+    };
+  }
+]).controller("documents.UploadCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    $scope.document = new api.Document();
+    $scope.save = function() {
+      return $scope.document.$save(function() {
+        notifier.success("Your document has been uploaded");
+        return $state.go("documents.list");
+      });
+    };
+    return $scope.cancel = function() {
+      return $state.go("documents.list");
     };
   }
 ]);
@@ -1752,6 +1508,72 @@ angular.module("ownblock.controllers.notices", ["ownblock", "ownblock.services"]
     return $scope.cancel = function() {
       return $state.go("notices.detail", {
         id: $scope.notice.id
+      });
+    };
+  }
+]);
+
+angular.module("ownblock.controllers.parking", ["ownblock", "ownblock.services"]).controller("parking.ListCtrl", [
+  "$scope", "api", "paginator", function($scope, api, paginator) {
+    $scope.paginator = paginator();
+    return api.Vehicle.query().$promise.then(function(response) {
+      angular.forEach(response, function(item) {
+        return item.searchTerms = item.description + " " + item.registration_number + item.resident.full_name;
+      });
+      return $scope.paginator.reload(response);
+    });
+  }
+]).controller("parking.NewCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    $scope.vehicle = new api.Vehicle();
+    $scope.save = function() {
+      return $scope.vehicle.$save(function() {
+        notifier.success("Your vehicle has been added");
+        return $state.go("parking.list");
+      });
+    };
+    return $scope.cancel = function() {
+      return $state.go("parking.list");
+    };
+  }
+]).controller("parking.EditCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    api.Vehicle.get({
+      id: $state.params.id
+    }, function(response) {
+      return $scope.vehicle = response;
+    });
+    $scope.deleteVehicle = function() {
+      return $scope.vehicle.$remove(function() {
+        notifier.success("Your vehicle has been removed");
+        return $state.go("parking.list");
+      });
+    };
+    $scope.save = function() {
+      return $scope.vehicle.$update(function() {
+        notifier.success("Your vehicle has been updated");
+        return $state.go("parking.detail", {
+          id: $scope.vehicle.id
+        });
+      });
+    };
+    return $scope.cancel = function() {
+      return $state.go("parking.detail", {
+        id: $scope.vehicle.id
+      });
+    };
+  }
+]).controller("parking.DetailCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    api.Vehicle.get({
+      id: $state.params.id
+    }, function(response) {
+      return $scope.vehicle = response;
+    });
+    return $scope.deleteVehicle = function() {
+      return $scope.vehicle.$delete(function() {
+        notifier.success("Your vehicle has been removed");
+        return $state.go("parking.list");
       });
     };
   }
@@ -1956,5 +1778,65 @@ angular.module("ownblock.controllers.storage", ["ownblock", "ownblock.services"]
         id: $scope.place.id
       });
     };
+  }
+]);
+
+angular.module("ownblock.controllers.tickets", ["ownblock", "ownblock.services"]).controller("tickets.ListCtrl", [
+  "$scope", "api", "paginator", function($scope, api, paginator) {
+    $scope.paginator = paginator();
+    return api.Ticket.query().$promise.then(function(response) {
+      return $scope.paginator.reload(response);
+    });
+  }
+]).controller("tickets.NewCtrl", [
+  "$scope", "$state", "auth", "api", "notifier", function($scope, $state, auth, api, notifier) {
+    $scope.ticket = new api.Ticket();
+    if (auth.hasRole("manager")) {
+      api.Apartment.query().$promise.then(function(response) {
+        return $scope.apartments = response;
+      });
+    }
+    $scope.save = function() {
+      return $scope.ticket.$save(function() {
+        notifier.success("Your issue has been saved");
+        return $state.go("tickets.list");
+      });
+    };
+    return $scope.cancel = function() {
+      return $state.go("tickets.list");
+    };
+  }
+]).controller("tickets.EditCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    $scope.statusOptions = ["new", "accepted", "resolved"];
+    api.Ticket.get({
+      id: $state.params.id
+    }, function(response) {
+      return $scope.ticket = response;
+    });
+    api.Apartment.query().$promise.then(function(response) {
+      return $scope.apartments = response;
+    });
+    return $scope.save = function() {
+      $scope.ticket.$update(function() {
+        notifier.success("Your issue has been saved");
+        return $state.go("tickets.detail", {
+          id: $scope.ticket.id
+        });
+      });
+      return $scope.cancel = function() {
+        return $state.go("tickets.detail", {
+          id: $scope.ticket.id
+        });
+      };
+    };
+  }
+]).controller("tickets.DetailCtrl", [
+  "$scope", "$state", "api", function($scope, $state, api) {
+    return api.Ticket.get({
+      id: $state.params.id
+    }, function(response) {
+      return $scope.ticket = response;
+    });
   }
 ]);
