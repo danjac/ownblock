@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
     bowerFiles = require('main-bower-files'),
     gulpFilter = require('gulp-filter'),
+    plumber = require('gulp-plumber'),
     debug = require('gulp-debug'),
     coffee = require('gulp-coffee'),
     shell = require('gulp-shell'),
@@ -57,7 +58,8 @@ gulp.task('pkg', function() {
 });
 
 gulp.task('app-coffee', function() {
-    return gulp.src('./app/coffee/*.coffee')
+    return gulp.src('./app/coffee/**/*.coffee')
+        .pipe(plumber())
         .pipe(coffee({
             bare: true
         }))
@@ -67,6 +69,7 @@ gulp.task('app-coffee', function() {
 
 gulp.task('app-js', function() {
     return gulp.src('./app/js/*.js')
+        .pipe(plumber())
         .pipe(concat('app.js'))
         .pipe(uglify({
             mangle: false
@@ -76,6 +79,7 @@ gulp.task('app-js', function() {
 
 gulp.task('app-css', function() {
     return gulp.src('./app/css/*.css')
+        .pipe(plumber())
         .pipe(concat('app.css'))
         .pipe(minifyCss())
         .pipe(gulp.dest(dest.css));

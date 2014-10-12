@@ -5,9 +5,11 @@ angular.module("ownblock", [
   "ui.router"
   "ui.calendar"
   "ui.bootstrap"
-  "ownblock.controllers"
   "ownblock.services"
   "ownblock.directives"
+  "ownblock.controllers"
+  "ownblock.controllers.home"
+  "ownblock.controllers.buildings"
 ]).constant(urls:
   static: "/static/"
   partials: "/static/partials/"
@@ -351,7 +353,7 @@ angular.module("ownblock", [
   "$state"
   "auth"
   ($rootScope, $state, auth) ->
-    
+
     # fetch the current user from the session. If the user is not logged in,
     # redirect to the external login page; otherwise sync user details with the 
     # application.

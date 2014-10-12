@@ -1,4 +1,4 @@
-angular.module("ownblock", ["ngResource", "ngSanitize", "ngCookies", "ui.router", "ui.calendar", "ui.bootstrap", "ownblock.controllers", "ownblock.services", "ownblock.directives"]).constant({
+angular.module("ownblock", ["ngResource", "ngSanitize", "ngCookies", "ui.router", "ui.calendar", "ui.bootstrap", "ownblock.services", "ownblock.directives", "ownblock.controllers", "ownblock.controllers.home", "ownblock.controllers.buildings"]).constant({
   urls: {
     "static": "/static/",
     partials: "/static/partials/",
@@ -390,49 +390,6 @@ angular.module("ownblock.controllers", ["ui.router", "ui.calendar", "ui.bootstra
       }), 3000);
     });
     return $scope.menuTpl = urls.partials + "menu.html";
-  }
-]).controller("HomeCtrl", [
-  "$scope", "api", function($scope, api) {
-    var objects;
-    objects = {};
-    $scope.timeline = [];
-    return api.Timeline.get(function(response) {
-      var getDateObj;
-      getDateObj = function(timestamp) {
-        var date, obj;
-        timestamp = new Date(timestamp);
-        date = new Date(timestamp.getFullYear(), timestamp.getMonth(), timestamp.getDate());
-        obj = objects[date];
-        if (!angular.isDefined(obj)) {
-          obj = {
-            date: date,
-            notices: [],
-            messages: [],
-            documents: []
-          };
-          objects[date] = obj;
-        }
-        return obj;
-      };
-      angular.forEach(response.notices, function(notice) {
-        var dt;
-        dt = getDateObj(notice.created);
-        dt.notices.push(notice);
-      });
-      angular.forEach(response.messages, function(msg) {
-        var dt;
-        dt = getDateObj(msg.created);
-        return dt.messages.push(msg);
-      });
-      angular.forEach(response.documents, function(doc) {
-        var dt;
-        dt = getDateObj(doc.created);
-        return dt.documents.push(doc);
-      });
-      return angular.forEach(objects, function(obj) {
-        return $scope.timeline.push(obj);
-      });
-    });
   }
 ]).controller("buildings.ListCtrl", [
   "$scope", "$state", "api", "auth", function($scope, $state, api, auth) {
@@ -1806,5 +1763,183 @@ angular.module("ownblock.services", ["ngResource"]).service("auth", [
         }
       })
     };
+  }
+]);
+
+angular.module("ownblock.controllers.buildings", ["ui.router", "ui.calendar", "ui.bootstrap", "ownblock", "ownblock.services"]).controller("buildings.ListCtrl", [
+  "$scope", "$state", "api", "auth", function($scope, $state, api, auth) {
+    var getCity;
+    getCity = function(city) {
+      var rv;
+      rv = null;
+      angular.forEach($scope.cities, function(value) {
+        if (value.name === city) {
+          return rv = value;
+        }
+      });
+      if (rv === null) {
+        rv = {
+          name: city,
+          buildings: []
+        };
+        $scope.cities.push(rv);
+      }
+      return rv;
+    };
+    $scope.cities = [];
+    api.Building.query().$promise.then(function(response) {
+      return angular.forEach(response, function(building) {
+        var city;
+        city = getCity(building.city);
+        return city.buildings.push(building);
+      });
+    });
+    return $scope.selectBuilding = function(building) {
+      return api.Building.get({
+        id: building.id
+      }, function(response) {
+        auth.user.building = response;
+        return $state.go("buildings.detail");
+      });
+    };
+  }
+]).controller("buildings.DetailCtrl", [
+  "$scope", "$state", "$window", "$modal", "api", "auth", "urls", function($scope, $state, $window, $modal, api, auth, urls) {
+    var apartmentId, mapCreated, showApartment;
+    apartmentId = null;
+    showApartment = false;
+    if ($state.params.id) {
+      apartmentId = parseInt($state.params.id, 10);
+      showApartment = true;
+    } else {
+      if (auth.user.apartment) {
+        apartmentId = auth.user.apartment;
+      }
+    }
+    $scope.apartmentSelector = {
+      id: apartmentId
+    };
+    $scope.building = $scope.auth.user.building;
+    mapCreated = false;
+    $scope.generateMap = function() {
+      var OL, fromProjection, icon, layer, map, markers, offset, point, size, toProjection;
+      if (mapCreated) {
+        return;
+      }
+      OL = $window.OpenLayers;
+      map = new OL.Map("map", {
+        controls: [new OL.Control.Navigation(), new OL.Control.PanZoomBar(), new OL.Control.ScaleLine(), new OL.Control.MousePosition(), new OL.Control.Permalink(), new OL.Control.Attribution()],
+        maxExtent: new OL.Bounds(-180, -90, 180, 90),
+        displayProjection: new OL.Projection("EPSG:4326"),
+        maxResolution: "auto"
+      });
+      fromProjection = new OL.Projection("EPSG:4326");
+      toProjection = new OL.Projection("EPSG:900913");
+      layer = new OL.Layer.OSM();
+      point = new OL.LonLat($scope.building.longitude, $scope.building.latitude).transform(fromProjection, toProjection);
+      markers = new OL.Layer.Markers("Markers");
+      size = new OL.Size(21, 25);
+      offset = new OL.Pixel(-(size.w / 2), -size.h);
+      icon = new OL.Icon(urls.img + "marker.png", size, offset);
+      map.addLayer(layer);
+      map.addLayer(markers);
+      map.setCenter(point, 16);
+      markers.addMarker(new OL.Marker(point, icon));
+      return mapCreated = true;
+    };
+    $scope.apartments = [];
+    $scope.tabs = {
+      building: {
+        active: true
+      },
+      apartments: {
+        active: false
+      }
+    };
+    if (showApartment) {
+      $scope.tabs.apartments.active = true;
+    }
+    api.Apartment.query().$promise.then(function(response) {
+      return $scope.apartments = response;
+    });
+    $scope.selectApartment = function() {
+      if (!$scope.apartmentSelector.id) {
+        $scope.currentApartment = null;
+      }
+      return api.Apartment.get({
+        id: $scope.apartmentSelector.id
+      }, function(response) {
+        return $scope.currentApartment = response;
+      });
+    };
+    $scope.selectApartment();
+    return $scope.addResident = function(apartment) {
+      var modalInstance, modalInstanceCtrl;
+      modalInstanceCtrl = function($scope, $modalInstance) {
+        $scope.resident = {};
+        $scope.cancel = function() {
+          return $modalInstance.dismiss("cancel");
+        };
+        return $scope.save = function() {
+          return $modalInstance.close($scope.resident);
+        };
+      };
+      modalInstance = $modal.open({
+        templateUrl: urls.partials + "buildings/modalResidentForm.html",
+        controller: modalInstanceCtrl
+      });
+      return modalInstance.result.then(function(resident) {
+        return api.Apartment.addResident({
+          id: apartment.id
+        }, resident).$promise.then(function(response) {
+          return $scope.currentApartment.users.push(response);
+        });
+      });
+    };
+  }
+]);
+
+angular.module("ownblock.controllers.home", ["ownblock", "ownblock.services"]).controller("HomeCtrl", [
+  "$scope", "api", function($scope, api) {
+    var objects;
+    objects = {};
+    $scope.timeline = [];
+    return api.Timeline.get(function(response) {
+      var getDateObj;
+      getDateObj = function(timestamp) {
+        var date, obj;
+        timestamp = new Date(timestamp);
+        date = new Date(timestamp.getFullYear(), timestamp.getMonth(), timestamp.getDate());
+        obj = objects[date];
+        if (!angular.isDefined(obj)) {
+          obj = {
+            date: date,
+            notices: [],
+            messages: [],
+            documents: []
+          };
+          objects[date] = obj;
+        }
+        return obj;
+      };
+      angular.forEach(response.notices, function(notice) {
+        var dt;
+        dt = getDateObj(notice.created);
+        dt.notices.push(notice);
+      });
+      angular.forEach(response.messages, function(msg) {
+        var dt;
+        dt = getDateObj(msg.created);
+        return dt.messages.push(msg);
+      });
+      angular.forEach(response.documents, function(doc) {
+        var dt;
+        dt = getDateObj(doc.created);
+        return dt.documents.push(doc);
+      });
+      return angular.forEach(objects, function(obj) {
+        return $scope.timeline.push(obj);
+      });
+    });
   }
 ]);
