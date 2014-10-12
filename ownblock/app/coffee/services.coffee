@@ -22,6 +22,7 @@ angular.module("ownblock.services", ["ngResource"]).service("auth", [->
   ($rootScope) ->
     Notifier = ->
       @notifications = []
+      return
 
     Notifier::notify = (type, msg) ->
       notification =
@@ -53,8 +54,8 @@ angular.module("ownblock.services", ["ngResource"]).service("auth", [->
 
     return new Notifier()
 
-]).factory("paginator", [
-  "$filter"
+  ]).factory("paginator", [
+    "$filter"
   ($filter) ->
     Paginator = (items, maxSize) ->
       @maxSize = maxSize or 10

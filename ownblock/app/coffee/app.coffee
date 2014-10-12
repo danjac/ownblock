@@ -10,6 +10,10 @@ angular.module("ownblock", [
   "ownblock.controllers"
   "ownblock.controllers.home"
   "ownblock.controllers.buildings"
+  "ownblock.controllers.residents"
+  "ownblock.controllers.amenities"
+  "ownblock.controllers.notices"
+  "ownblock.controllers.messages"
 ]).constant(urls:
   static: "/static/"
   partials: "/static/partials/"

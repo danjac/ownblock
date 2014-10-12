@@ -1,4 +1,4 @@
-angular.module("ownblock", ["ngResource", "ngSanitize", "ngCookies", "ui.router", "ui.calendar", "ui.bootstrap", "ownblock.services", "ownblock.directives", "ownblock.controllers", "ownblock.controllers.home", "ownblock.controllers.buildings"]).constant({
+angular.module("ownblock", ["ngResource", "ngSanitize", "ngCookies", "ui.router", "ui.calendar", "ui.bootstrap", "ownblock.services", "ownblock.directives", "ownblock.controllers", "ownblock.controllers.home", "ownblock.controllers.buildings", "ownblock.controllers.residents", "ownblock.controllers.amenities", "ownblock.controllers.notices", "ownblock.controllers.messages"]).constant({
   urls: {
     "static": "/static/",
     partials: "/static/partials/",
@@ -391,551 +391,6 @@ angular.module("ownblock.controllers", ["ui.router", "ui.calendar", "ui.bootstra
     });
     return $scope.menuTpl = urls.partials + "menu.html";
   }
-]).controller("buildings.ListCtrl", [
-  "$scope", "$state", "api", "auth", function($scope, $state, api, auth) {
-    var getCity;
-    getCity = function(city) {
-      var rv;
-      rv = null;
-      angular.forEach($scope.cities, function(value) {
-        if (value.name === city) {
-          return rv = value;
-        }
-      });
-      if (rv === null) {
-        rv = {
-          name: city,
-          buildings: []
-        };
-        $scope.cities.push(rv);
-      }
-      return rv;
-    };
-    $scope.cities = [];
-    api.Building.query().$promise.then(function(response) {
-      return angular.forEach(response, function(building) {
-        var city;
-        city = getCity(building.city);
-        return city.buildings.push(building);
-      });
-    });
-    return $scope.selectBuilding = function(building) {
-      return api.Building.get({
-        id: building.id
-      }, function(response) {
-        auth.user.building = response;
-        return $state.go("buildings.detail");
-      });
-    };
-  }
-]).controller("buildings.DetailCtrl", [
-  "$scope", "$state", "$window", "$modal", "api", "auth", "urls", function($scope, $state, $window, $modal, api, auth, urls) {
-    var apartmentId, mapCreated, showApartment;
-    apartmentId = null;
-    showApartment = false;
-    if ($state.params.id) {
-      apartmentId = parseInt($state.params.id, 10);
-      showApartment = true;
-    } else {
-      if (auth.user.apartment) {
-        apartmentId = auth.user.apartment;
-      }
-    }
-    $scope.apartmentSelector = {
-      id: apartmentId
-    };
-    $scope.building = $scope.auth.user.building;
-    mapCreated = false;
-    $scope.generateMap = function() {
-      var OL, fromProjection, icon, layer, map, markers, offset, point, size, toProjection;
-      if (mapCreated) {
-        return;
-      }
-      OL = $window.OpenLayers;
-      map = new OL.Map("map", {
-        controls: [new OL.Control.Navigation(), new OL.Control.PanZoomBar(), new OL.Control.ScaleLine(), new OL.Control.MousePosition(), new OL.Control.Permalink(), new OL.Control.Attribution()],
-        maxExtent: new OL.Bounds(-180, -90, 180, 90),
-        displayProjection: new OL.Projection("EPSG:4326"),
-        maxResolution: "auto"
-      });
-      fromProjection = new OL.Projection("EPSG:4326");
-      toProjection = new OL.Projection("EPSG:900913");
-      layer = new OL.Layer.OSM();
-      point = new OL.LonLat($scope.building.longitude, $scope.building.latitude).transform(fromProjection, toProjection);
-      markers = new OL.Layer.Markers("Markers");
-      size = new OL.Size(21, 25);
-      offset = new OL.Pixel(-(size.w / 2), -size.h);
-      icon = new OL.Icon(urls.img + "marker.png", size, offset);
-      map.addLayer(layer);
-      map.addLayer(markers);
-      map.setCenter(point, 16);
-      markers.addMarker(new OL.Marker(point, icon));
-      return mapCreated = true;
-    };
-    $scope.apartments = [];
-    $scope.tabs = {
-      building: {
-        active: true
-      },
-      apartments: {
-        active: false
-      }
-    };
-    if (showApartment) {
-      $scope.tabs.apartments.active = true;
-    }
-    api.Apartment.query().$promise.then(function(response) {
-      return $scope.apartments = response;
-    });
-    $scope.selectApartment = function() {
-      if (!$scope.apartmentSelector.id) {
-        $scope.currentApartment = null;
-      }
-      return api.Apartment.get({
-        id: $scope.apartmentSelector.id
-      }, function(response) {
-        return $scope.currentApartment = response;
-      });
-    };
-    $scope.selectApartment();
-    return $scope.addResident = function(apartment) {
-      var modalInstance, modalInstanceCtrl;
-      modalInstanceCtrl = function($scope, $modalInstance) {
-        $scope.resident = {};
-        $scope.cancel = function() {
-          return $modalInstance.dismiss("cancel");
-        };
-        return $scope.save = function() {
-          return $modalInstance.close($scope.resident);
-        };
-      };
-      modalInstance = $modal.open({
-        templateUrl: urls.partials + "buildings/modalResidentForm.html",
-        controller: modalInstanceCtrl
-      });
-      return modalInstance.result.then(function(resident) {
-        return api.Apartment.addResident({
-          id: apartment.id
-        }, resident).$promise.then(function(response) {
-          return $scope.currentApartment.users.push(response);
-        });
-      });
-    };
-  }
-]).controller("residents.ListCtrl", [
-  "$scope", "api", "auth", "paginator", function($scope, api, auth, paginator) {
-    $scope.user = auth.user;
-    $scope.paginator = paginator();
-    return api.Resident.query({
-      residents: true
-    }).$promise.then(function(response) {
-      return $scope.paginator.reload(response);
-    });
-  }
-]).controller("residents.NewCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    $scope.resident = new api.Resident();
-    api.Apartment.query().$promise.then(function(response) {
-      return $scope.apartments = response;
-    });
-    return $scope.save = function() {
-      $scope.resident.$save((function() {
-        notifier.success("The resident has been added");
-        return $state.go("residents.list");
-      }), function(response) {
-        return $scope.serverErrors = response.data;
-      });
-      $scope.cancel = function() {};
-      return $state.go("residents.list");
-    };
-  }
-]).controller("residents.EditCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    api.Resident.get({
-      id: $state.params.id
-    }, function(response) {
-      return $scope.resident = response;
-    });
-    api.Apartment.query().$promise.then(function(response) {
-      return $scope.apartments = response;
-    });
-    $scope.save = function() {
-      return $scope.resident.$update((function() {
-        notifier.success("The resident has been updated");
-        return $state.go("residents.detail", {
-          id: $scope.resident.id
-        });
-      }), function(response) {
-        return $scope.serverErrors = response.data;
-      });
-    };
-    return $scope.cancel = function() {
-      return $state.go("residents.detail", {
-        id: $scope.resident.id
-      });
-    };
-  }
-]).controller("residents.DetailCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    api.Resident.get({
-      id: $state.params.id
-    }, function(response) {
-      return $scope.resident = response;
-    });
-    return $scope.deleteUser = function() {
-      return $scope.resident.$delete(function() {
-        notifier.success($scope.resident.full_name + " has been removed.");
-        return $state.go("residents.list");
-      });
-    };
-  }
-]).controller("amenities.ListCtrl", [
-  "$scope", "api", "notifier", "paginator", "auth", function($scope, api, notifier, paginator, auth) {
-    $scope.paginator = paginator();
-    $scope.cols = ["Amenity", "Status"];
-    if (auth.hasRole("resident")) {
-      $scope.cols.push("");
-    }
-    return api.Amenity.query().$promise.then(function(response) {
-      return $scope.paginator.reload(response);
-    });
-  }
-]).controller("amenities.NewAmenityCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    $scope.amenity = new api.Amenity({
-      is_available: true
-    });
-    return $scope.save = function() {
-      $scope.amenity.$save(function() {
-        notifier.success("Amenity has been added");
-        return $state.go("amenities.list");
-      });
-      $scope.cancel = function() {};
-      return $state.go("amenities.list");
-    };
-  }
-]).controller("amenities.EditAmenityCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    api.Amenity.get({
-      id: $state.params.id
-    }, function(response) {
-      return $scope.amenity = response;
-    });
-    return $scope.save = function() {
-      $scope.amenity.$update(function() {
-        notifier.success("Amenity has been updated");
-        return $state.go("amenities.detail", {
-          id: $scope.amenity.id
-        });
-      });
-      $scope.cancel = function() {};
-      return $state.go("amenities.detail", {
-        id: $scope.amenity.id
-      });
-    };
-  }
-]).controller("amenities.NewBookingCtrl", [
-  "$scope", "$state", "$stateParams", "api", function($scope, $state, $stateParams, api) {
-    api.Amenity.get({
-      id: $stateParams.id
-    }).$promise.then(function(response) {
-      var now, reservedFrom, reservedTo;
-      $scope.amenity = response;
-      now = new Date();
-      reservedFrom = new Date();
-      reservedTo = new Date();
-      reservedFrom.setHours(now.getHours() + 1);
-      reservedTo.setHours(now.getHours() + 2);
-      $scope.now = now;
-      return $scope.booking = new api.Booking({
-        amenity: $scope.amenity.id,
-        reserved_from: reservedFrom,
-        reserved_to: reservedTo
-      });
-    });
-    $scope.timepickerOptions = {
-      showMeridian: false,
-      disabled: false
-    };
-    $scope.datepickerOptions = {
-      disabled: false,
-      dateFormat: "dd/mm/yyyy"
-    };
-    return $scope.save = function() {
-      return $scope.booking.$save((function() {
-        return $state.go("amenities.detail", {
-          id: $stateParams.id
-        });
-      }), function(response) {
-        return $scope.serverErrors = response.data;
-      });
-    };
-  }
-]).controller("amenities.EditBookingCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    api.Booking.get({
-      id: $state.params.id
-    }, function(response) {
-      $scope.now = new Date();
-      return $scope.booking = response;
-    });
-    $scope.save = function() {
-      return $scope.booking.$update((function() {
-        $state.go("amenities.detail", {
-          id: $scope.booking.amenity
-        });
-        return notifier.success("Your booking has been updated");
-      }), function(response) {
-        return $scope.serverErrors = response.data;
-      });
-    };
-    $scope.timepickerOptions = {
-      showMeridian: false,
-      disabled: false
-    };
-    return $scope.datepickerOptions = {
-      disabled: false,
-      dateFormat: "dd/mm/yyyy"
-    };
-  }
-]).controller("amenities.BookingDetailCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    api.Booking.get({
-      id: $state.params.id
-    }, function(response) {
-      return $scope.booking = response;
-    });
-    return $scope.cancelBooking = function() {
-      return $scope.booking.$delete(function() {
-        notifier.success("The booking has been canceled");
-        return $state.go("amenities.detail", {
-          id: $scope.booking.amenity
-        });
-      });
-    };
-  }
-]).controller("amenities.NewTicketCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    api.Amenity.get({
-      id: $state.params.id
-    }, function(response) {
-      $scope.amenity = response;
-      $scope.ticket = new api.Ticket({
-        amenity: $scope.amenity.id
-      });
-    });
-    $scope.save = function() {
-      return $scope.ticket.$save(function() {
-        notifier.success("Thanks for reporting the issue!");
-        return $state.go("amenities.detail", {
-          id: $state.params.id
-        });
-      });
-    };
-    return $scope.cancel = function() {
-      return $state.go("amenities.detail", {
-        id: $state.params.id
-      });
-    };
-  }
-]).controller("amenities.DetailCtrl", [
-  "$scope", "$state", "api", "auth", "notifier", "paginator", function($scope, $state, api, auth, notifier, paginator) {
-    var bookings, formatTime, getColor, showBooking, today;
-    getColor = function(residentId, isPast) {
-      if (isPast) {
-        return "#555";
-      }
-      if (auth.user.id === residentId) {
-        return "#800";
-      } else {
-        return "#008";
-      }
-    };
-    formatTime = function(dt) {
-      var hours, mins;
-      hours = dt.getHours();
-      mins = dt.getMinutes();
-      return (hours < 10 ? "0" + hours : hours) + ":" + (mins < 10 ? "0" + mins : mins);
-    };
-    showBooking = function(booking) {
-      return $state.go("amenities.bookingDetail", {
-        id: booking.id
-      });
-    };
-    bookings = [];
-    today = new Date();
-    $scope.paginator = paginator();
-    $scope.eventSources = [bookings];
-    $scope.deleteAmenity = function() {
-      return $scope.amenity.$delete(function() {
-        notifier.success("The amenity has been removed");
-        return $state.go("amenities.list");
-      });
-    };
-    api.Amenity.get({
-      id: $state.params.id
-    }).$promise.then(function(response) {
-      $scope.amenity = response;
-      $scope.bookings = [];
-      angular.forEach($scope.amenity.bookings, function(booking, counter) {
-        var color, isPast, reservedFrom, reservedTo, title;
-        reservedFrom = new Date(booking.reserved_from);
-        reservedTo = new Date(booking.reserved_to);
-        title = formatTime(reservedFrom) + " - " + formatTime(reservedTo);
-        isPast = reservedFrom < today;
-        color = getColor(booking.resident, isPast);
-        return bookings.push({
-          start: reservedFrom,
-          end: reservedTo,
-          color: color,
-          title: title,
-          data: booking,
-          index: counter
-        });
-      });
-      return $scope.paginator.reload($scope.amenity.tickets);
-    });
-    return $scope.uiConfig = {
-      calendar: {
-        height: 450,
-        editable: false,
-        header: {
-          left: "basicDay basicWeek month",
-          center: "title",
-          right: "today prev,next"
-        },
-        eventClick: function(calEvent) {
-          return showBooking(calEvent.data);
-        }
-      }
-    };
-  }
-]).controller("notices.NewCtrl", [
-  "$scope", "$state", "notifier", "api", function($scope, $state, notifier, api) {
-    $scope.notice = new api.Notice();
-    return $scope.save = function() {
-      $scope.notice.$save(function() {
-        notifier.success("Your notice has been published");
-        return $state.go("notices.list");
-      });
-      $scope.cancel = function() {};
-      return $state.go("notices.list");
-    };
-  }
-]).controller("notices.ListCtrl", [
-  "$scope", "api", "paginator", "urls", function($scope, api, paginator, urls) {
-    $scope.paginator = paginator();
-    return api.Notice.query().$promise.then(function(response) {
-      angular.forEach(response, function(item) {
-        return item.searchTerms = item.title + " " + item.details + item.author.full_name;
-      });
-      return $scope.paginator.reload(response);
-    });
-  }
-]).controller("notices.DetailCtrl", [
-  "$scope", "$state", "notifier", "api", function($scope, $state, notifier, api) {
-    api.Notice.get({
-      id: $state.params.id
-    }, function(response) {
-      return $scope.notice = response;
-    });
-    return $scope.deleteNotice = function() {
-      return $scope.notice.$delete(function() {
-        notifier.success("Your notice has been removed");
-        return $state.go("notices.list");
-      });
-    };
-  }
-]).controller("notices.EditCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    api.Notice.get({
-      id: $state.params.id
-    }, function(response) {
-      return $scope.notice = response;
-    });
-    $scope.save = function() {
-      return $scope.notice.$update(function() {
-        notifier.success("Your notice has been updated");
-        return $state.go("notices.detail", {
-          id: $scope.notice.id
-        });
-      });
-    };
-    return $scope.cancel = function() {
-      return $state.go("notices.detail", {
-        id: $scope.notice.id
-      });
-    };
-  }
-]).controller("messages.ListCtrl", [
-  "$scope", "api", "auth", "paginator", function($scope, api, auth, paginator) {
-    return api.Message.query().$promise.then(function(response) {
-      var received, sent;
-      received = [];
-      sent = [];
-      angular.forEach(response, function(message) {
-        message.searchTerms = message.header + " " + message.received;
-        if (message.recipient === auth.user.id) {
-          message.searchTerms += " " + message.sender.full_name;
-          return received.push(message);
-        } else {
-          message.searchTerms += " " + message.recipient_detail.full_name;
-          return sent.push(message);
-        }
-      });
-      $scope.receivedMessages = paginator(received);
-      return $scope.sentMessages = paginator(sent);
-    });
-  }
-]).controller("messages.DetailCtrl", [
-  "$scope", "$state", "api", function($scope, $state, api) {
-    return api.Message.get({
-      id: $state.params.id
-    }, function(response) {
-      return $scope.message = response;
-    });
-  }
-]).controller("messages.SendCtrl", [
-  "$scope", "$state", "$stateParams", "api", "notifier", function($scope, $state, $stateParams, api, notifier) {
-    $scope.message = new api.Message({
-      recipient: $stateParams.recipient
-    });
-    $scope.send = function() {
-      return $scope.message.$save((function() {
-        notifier.success("Your message has been sent");
-        return $state.go("messages.list");
-      }), function(response) {});
-    };
-    return $scope.cancel = function() {
-      return $state.go("messages.list");
-    };
-  }
-]).controller("messages.ReplyCtrl", [
-  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
-    $scope.message = new api.Message({
-      parent: $state.params.parent
-    });
-    api.Message.get({
-      id: $state.params.parent
-    }).$promise.then(function(response) {
-      $scope.message.header = "Re: " + response.header;
-      if (response.details) {
-        $scope.message.details = "> " + response.details;
-      }
-      return $scope.message.recipient = response.sender.id;
-    });
-    $scope.send = function() {
-      return $scope.message.$save(function() {
-        notifier.success("Your message has been sent");
-        return $state.go("messages.list");
-      });
-    };
-    return $scope.cancel = function() {
-      return $state.go("messages.detail", {
-        id: $state.params.parent
-      });
-    };
-  }
 ]).controller("storage.ListCtrl", [
   "$scope", "api", "paginator", function($scope, api, paginator) {
     $scope.paginator = paginator();
@@ -1302,10 +757,11 @@ angular.module("ownblock.controllers", ["ui.router", "ui.calendar", "ui.bootstra
           id: $scope.ticket.id
         });
       });
-      $scope.cancel = function() {};
-      return $state.go("tickets.detail", {
-        id: $scope.ticket.id
-      });
+      return $scope.cancel = function() {
+        return $state.go("tickets.detail", {
+          id: $scope.ticket.id
+        });
+      };
     };
   }
 ]).controller("tickets.DetailCtrl", [
@@ -1640,7 +1096,7 @@ angular.module("ownblock.services", ["ngResource"]).service("auth", [
   "$rootScope", function($rootScope) {
     var Notifier;
     Notifier = function() {
-      return this.notifications = [];
+      this.notifications = [];
     };
     Notifier.prototype.notify = function(type, msg) {
       var notification;
@@ -1762,6 +1218,231 @@ angular.module("ownblock.services", ["ngResource"]).service("auth", [
           method: "PATCH"
         }
       })
+    };
+  }
+]);
+
+angular.module("ownblock.controllers.amenities", ["ui.calendar", "ownblock", "ownblock.services"]).controller("amenities.ListCtrl", [
+  "$scope", "api", "notifier", "paginator", "auth", function($scope, api, notifier, paginator, auth) {
+    $scope.paginator = paginator();
+    $scope.cols = ["Amenity", "Status"];
+    if (auth.hasRole("resident")) {
+      $scope.cols.push("");
+    }
+    return api.Amenity.query().$promise.then(function(response) {
+      return $scope.paginator.reload(response);
+    });
+  }
+]).controller("amenities.NewAmenityCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    $scope.amenity = new api.Amenity({
+      is_available: true
+    });
+    return $scope.save = function() {
+      $scope.amenity.$save(function() {
+        notifier.success("Amenity has been added");
+        return $state.go("amenities.list");
+      });
+      return $scope.cancel = function() {
+        return $state.go("amenities.list");
+      };
+    };
+  }
+]).controller("amenities.EditAmenityCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    api.Amenity.get({
+      id: $state.params.id
+    }, function(response) {
+      return $scope.amenity = response;
+    });
+    return $scope.save = function() {
+      $scope.amenity.$update(function() {
+        notifier.success("Amenity has been updated");
+        return $state.go("amenities.detail", {
+          id: $scope.amenity.id
+        });
+      });
+      return $scope.cancel = function() {
+        return $state.go("amenities.detail", {
+          id: $scope.amenity.id
+        });
+      };
+    };
+  }
+]).controller("amenities.NewBookingCtrl", [
+  "$scope", "$state", "$stateParams", "api", function($scope, $state, $stateParams, api) {
+    api.Amenity.get({
+      id: $stateParams.id
+    }).$promise.then(function(response) {
+      var now, reservedFrom, reservedTo;
+      $scope.amenity = response;
+      now = new Date();
+      reservedFrom = new Date();
+      reservedTo = new Date();
+      reservedFrom.setHours(now.getHours() + 1);
+      reservedTo.setHours(now.getHours() + 2);
+      $scope.now = now;
+      return $scope.booking = new api.Booking({
+        amenity: $scope.amenity.id,
+        reserved_from: reservedFrom,
+        reserved_to: reservedTo
+      });
+    });
+    $scope.timepickerOptions = {
+      showMeridian: false,
+      disabled: false
+    };
+    $scope.datepickerOptions = {
+      disabled: false,
+      dateFormat: "dd/mm/yyyy"
+    };
+    return $scope.save = function() {
+      return $scope.booking.$save((function() {
+        return $state.go("amenities.detail", {
+          id: $stateParams.id
+        });
+      }), function(response) {
+        return $scope.serverErrors = response.data;
+      });
+    };
+  }
+]).controller("amenities.EditBookingCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    api.Booking.get({
+      id: $state.params.id
+    }, function(response) {
+      $scope.now = new Date();
+      return $scope.booking = response;
+    });
+    $scope.save = function() {
+      return $scope.booking.$update((function() {
+        $state.go("amenities.detail", {
+          id: $scope.booking.amenity
+        });
+        return notifier.success("Your booking has been updated");
+      }), function(response) {
+        return $scope.serverErrors = response.data;
+      });
+    };
+    $scope.timepickerOptions = {
+      showMeridian: false,
+      disabled: false
+    };
+    return $scope.datepickerOptions = {
+      disabled: false,
+      dateFormat: "dd/mm/yyyy"
+    };
+  }
+]).controller("amenities.BookingDetailCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    api.Booking.get({
+      id: $state.params.id
+    }, function(response) {
+      return $scope.booking = response;
+    });
+    return $scope.cancelBooking = function() {
+      return $scope.booking.$delete(function() {
+        notifier.success("The booking has been canceled");
+        return $state.go("amenities.detail", {
+          id: $scope.booking.amenity
+        });
+      });
+    };
+  }
+]).controller("amenities.NewTicketCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    api.Amenity.get({
+      id: $state.params.id
+    }, function(response) {
+      $scope.amenity = response;
+      $scope.ticket = new api.Ticket({
+        amenity: $scope.amenity.id
+      });
+    });
+    $scope.save = function() {
+      return $scope.ticket.$save(function() {
+        notifier.success("Thanks for reporting the issue!");
+        return $state.go("amenities.detail", {
+          id: $state.params.id
+        });
+      });
+    };
+    return $scope.cancel = function() {
+      return $state.go("amenities.detail", {
+        id: $state.params.id
+      });
+    };
+  }
+]).controller("amenities.DetailCtrl", [
+  "$scope", "$state", "api", "auth", "notifier", "paginator", function($scope, $state, api, auth, notifier, paginator) {
+    var bookings, formatTime, getColor, showBooking, today;
+    getColor = function(residentId, isPast) {
+      if (isPast) {
+        return "#555";
+      }
+      if (auth.user.id === residentId) {
+        return "#800";
+      } else {
+        return "#008";
+      }
+    };
+    formatTime = function(dt) {
+      var hours, mins;
+      hours = dt.getHours();
+      mins = dt.getMinutes();
+      return (hours < 10 ? "0" + hours : hours) + ":" + (mins < 10 ? "0" + mins : mins);
+    };
+    showBooking = function(booking) {
+      return $state.go("amenities.bookingDetail", {
+        id: booking.id
+      });
+    };
+    bookings = [];
+    today = new Date();
+    $scope.paginator = paginator();
+    $scope.eventSources = [bookings];
+    $scope.deleteAmenity = function() {
+      return $scope.amenity.$delete(function() {
+        notifier.success("The amenity has been removed");
+        return $state.go("amenities.list");
+      });
+    };
+    api.Amenity.get({
+      id: $state.params.id
+    }).$promise.then(function(response) {
+      $scope.amenity = response;
+      $scope.bookings = [];
+      angular.forEach($scope.amenity.bookings, function(booking, counter) {
+        var color, isPast, reservedFrom, reservedTo, title;
+        reservedFrom = new Date(booking.reserved_from);
+        reservedTo = new Date(booking.reserved_to);
+        title = formatTime(reservedFrom) + " - " + formatTime(reservedTo);
+        isPast = reservedFrom < today;
+        color = getColor(booking.resident, isPast);
+        return bookings.push({
+          start: reservedFrom,
+          end: reservedTo,
+          color: color,
+          title: title,
+          data: booking,
+          index: counter
+        });
+      });
+      return $scope.paginator.reload($scope.amenity.tickets);
+    });
+    return $scope.uiConfig = {
+      calendar: {
+        height: 450,
+        editable: false,
+        header: {
+          left: "basicDay basicWeek month",
+          center: "title",
+          right: "today prev,next"
+        },
+        eventClick: function(calEvent) {
+          return showBooking(calEvent.data);
+        }
+      }
     };
   }
 ]);
@@ -1941,5 +1622,207 @@ angular.module("ownblock.controllers.home", ["ownblock", "ownblock.services"]).c
         return $scope.timeline.push(obj);
       });
     });
+  }
+]);
+
+angular.module("ownblock.controllers.messages", ["ownblock", "ownblock.services"]).controller("messages.ListCtrl", [
+  "$scope", "api", "auth", "paginator", function($scope, api, auth, paginator) {
+    return api.Message.query().$promise.then(function(response) {
+      var received, sent;
+      received = [];
+      sent = [];
+      angular.forEach(response, function(message) {
+        message.searchTerms = message.header + " " + message.received;
+        if (message.recipient === auth.user.id) {
+          message.searchTerms += " " + message.sender.full_name;
+          return received.push(message);
+        } else {
+          message.searchTerms += " " + message.recipient_detail.full_name;
+          return sent.push(message);
+        }
+      });
+      $scope.receivedMessages = paginator(received);
+      return $scope.sentMessages = paginator(sent);
+    });
+  }
+]).controller("messages.DetailCtrl", [
+  "$scope", "$state", "api", function($scope, $state, api) {
+    return api.Message.get({
+      id: $state.params.id
+    }, function(response) {
+      return $scope.message = response;
+    });
+  }
+]).controller("messages.SendCtrl", [
+  "$scope", "$state", "$stateParams", "api", "notifier", function($scope, $state, $stateParams, api, notifier) {
+    $scope.message = new api.Message({
+      recipient: $stateParams.recipient
+    });
+    return $scope.send = function() {
+      return $scope.message.$save((function() {
+        notifier.success("Your message has been sent");
+        return $state.go("messages.list");
+      }), function(response) {
+        return $scope.cancel = function() {
+          return $state.go("messages.list");
+        };
+      });
+    };
+  }
+]).controller("messages.ReplyCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    $scope.message = new api.Message({
+      parent: $state.params.parent
+    });
+    api.Message.get({
+      id: $state.params.parent
+    }).$promise.then(function(response) {
+      $scope.message.header = "Re: " + response.header;
+      if (response.details) {
+        $scope.message.details = "> " + response.details;
+      }
+      return $scope.message.recipient = response.sender.id;
+    });
+    $scope.send = function() {
+      return $scope.message.$save(function() {
+        notifier.success("Your message has been sent");
+        return $state.go("messages.list");
+      });
+    };
+    return $scope.cancel = function() {
+      return $state.go("messages.detail", {
+        id: $state.params.parent
+      });
+    };
+  }
+]);
+
+angular.module("ownblock.controllers.notices", ["ownblock", "ownblock.services"]).controller("notices.NewCtrl", [
+  "$scope", "$state", "notifier", "api", function($scope, $state, notifier, api) {
+    $scope.notice = new api.Notice();
+    return $scope.save = function() {
+      $scope.notice.$save(function() {
+        notifier.success("Your notice has been published");
+        return $state.go("notices.list");
+      });
+      return $scope.cancel = function() {
+        return $state.go("notices.list");
+      };
+    };
+  }
+]).controller("notices.ListCtrl", [
+  "$scope", "api", "paginator", "urls", function($scope, api, paginator, urls) {
+    $scope.paginator = paginator();
+    return api.Notice.query().$promise.then(function(response) {
+      angular.forEach(response, function(item) {
+        return item.searchTerms = item.title + " " + item.details + item.author.full_name;
+      });
+      return $scope.paginator.reload(response);
+    });
+  }
+]).controller("notices.DetailCtrl", [
+  "$scope", "$state", "notifier", "api", function($scope, $state, notifier, api) {
+    api.Notice.get({
+      id: $state.params.id
+    }, function(response) {
+      return $scope.notice = response;
+    });
+    return $scope.deleteNotice = function() {
+      return $scope.notice.$delete(function() {
+        notifier.success("Your notice has been removed");
+        return $state.go("notices.list");
+      });
+    };
+  }
+]).controller("notices.EditCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    api.Notice.get({
+      id: $state.params.id
+    }, function(response) {
+      return $scope.notice = response;
+    });
+    $scope.save = function() {
+      return $scope.notice.$update(function() {
+        notifier.success("Your notice has been updated");
+        return $state.go("notices.detail", {
+          id: $scope.notice.id
+        });
+      });
+    };
+    return $scope.cancel = function() {
+      return $state.go("notices.detail", {
+        id: $scope.notice.id
+      });
+    };
+  }
+]);
+
+angular.module("ownblock.controllers.residents", ["ownblock", "ownblock.services"]).controller("residents.ListCtrl", [
+  "$scope", "api", "auth", "paginator", function($scope, api, auth, paginator) {
+    $scope.user = auth.user;
+    $scope.paginator = paginator();
+    return api.Resident.query({
+      residents: true
+    }).$promise.then(function(response) {
+      return $scope.paginator.reload(response);
+    });
+  }
+]).controller("residents.NewCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    $scope.resident = new api.Resident();
+    api.Apartment.query().$promise.then(function(response) {
+      return $scope.apartments = response;
+    });
+    return $scope.save = function() {
+      $scope.resident.$save((function() {
+        notifier.success("The resident has been added");
+        return $state.go("residents.list");
+      }), function(response) {
+        return $scope.serverErrors = response.data;
+      });
+      return $scope.cancel = function() {
+        return $state.go("residents.list");
+      };
+    };
+  }
+]).controller("residents.EditCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    api.Resident.get({
+      id: $state.params.id
+    }, function(response) {
+      return $scope.resident = response;
+    });
+    api.Apartment.query().$promise.then(function(response) {
+      return $scope.apartments = response;
+    });
+    $scope.save = function() {
+      return $scope.resident.$update((function() {
+        notifier.success("The resident has been updated");
+        return $state.go("residents.detail", {
+          id: $scope.resident.id
+        });
+      }), function(response) {
+        return $scope.serverErrors = response.data;
+      });
+    };
+    return $scope.cancel = function() {
+      return $state.go("residents.detail", {
+        id: $scope.resident.id
+      });
+    };
+  }
+]).controller("residents.DetailCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    api.Resident.get({
+      id: $state.params.id
+    }, function(response) {
+      return $scope.resident = response;
+    });
+    return $scope.deleteUser = function() {
+      return $scope.resident.$delete(function() {
+        notifier.success($scope.resident.full_name + " has been removed.");
+        return $state.go("residents.list");
+      });
+    };
   }
 ]);
