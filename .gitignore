@@ -9,6 +9,7 @@ node_modules
 *.swo
 *.db
 ownblock/.env
+ownblock/app/js/app-coffee.js
 logs
 *.sublime-project
 *.sublime-workspace

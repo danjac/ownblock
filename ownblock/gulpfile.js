@@ -2,6 +2,7 @@ var gulp = require('gulp'),
     bowerFiles = require('main-bower-files'),
     gulpFilter = require('gulp-filter'),
     debug = require('gulp-debug'),
+    coffee = require('gulp-coffee'),
     shell = require('gulp-shell'),
     runSeq = require('run-sequence'),
     minifyCss = require('gulp-minify-css'),
@@ -15,8 +16,10 @@ function errorHandler(error) {
 }
 
 var staticDir = 'static';
+var appDir = 'app';
 
 var dest = {
+    coffee: appDir + '/js',
     js: staticDir + '/js',
     css: staticDir + '/css',
     fonts: staticDir + '/fonts'
@@ -53,6 +56,15 @@ gulp.task('pkg', function() {
         .pipe(gulp.dest(dest.fonts));
 });
 
+gulp.task('app-coffee', function() {
+    return gulp.src('./app/coffee/*.coffee')
+        .pipe(coffee({
+            bare: true
+        }))
+        .pipe(concat('app-coffee.js'))
+        .pipe(gulp.dest(dest.coffee));
+});
+
 gulp.task('app-js', function() {
     return gulp.src('./app/js/*.js')
         .pipe(concat('app.js'))
@@ -71,6 +83,6 @@ gulp.task('app-css', function() {
 
 gulp.task('default', function() {
     gulp.start('install', 'pkg');
-    gulp.watch('app/**', {}, ['app-js', 'app-css']);
+    gulp.watch('app/**', {}, ['app-coffee', 'app-js', 'app-css']);
 });
 //

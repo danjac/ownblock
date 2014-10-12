@@ -231,5 +231,7 @@ def send_invitation_email(sender, instance, created, **kwargs):
     )
 
 
+"""
 signals.post_save.connect(send_invitation_email, sender=User,
                           dispatch_uid='accounts.send_invitation_email')
+"""
