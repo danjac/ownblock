@@ -73,9 +73,6 @@ def update_latlong(sender, instance, **kwargs):
             except GeopyError:
                 pass
 
-signals.pre_save.connect(update_latlong, sender=Building,
-                         dispatch_uid="buildings.update_latlong")
-
 
 class Apartment(models.Model):
 
@@ -95,3 +92,10 @@ class Apartment(models.Model):
 
     def __str__(self):
         return "#" + self.number
+
+
+def connect_signals():
+    """Called in app config"""
+    signals.pre_save.connect(update_latlong,
+                             sender=Building,
+                             dispatch_uid="buildings.update_latlong")

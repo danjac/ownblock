@@ -1,4 +1,7 @@
 
+default_app_config = "ownblock.apps.buildings.apps.BuildingsAppConfig"
+
+
 def get_building(request):
     """Get building in request : for residents will depend on their
     apartment, for managers depends on the session"""
