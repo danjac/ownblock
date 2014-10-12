@@ -1,4 +1,4 @@
-angular.module("ownblock", ["ngResource", "ngSanitize", "ngCookies", "ui.router", "ui.calendar", "ui.bootstrap", "ownblock.services", "ownblock.directives", "ownblock.controllers", "ownblock.controllers.home", "ownblock.controllers.buildings", "ownblock.controllers.residents", "ownblock.controllers.amenities", "ownblock.controllers.notices", "ownblock.controllers.messages"]).constant({
+angular.module("ownblock", ["ngResource", "ngSanitize", "ngCookies", "ui.router", "ui.calendar", "ui.bootstrap", "ownblock.services", "ownblock.directives", "ownblock.controllers", "ownblock.controllers.home", "ownblock.controllers.buildings", "ownblock.controllers.residents", "ownblock.controllers.amenities", "ownblock.controllers.notices", "ownblock.controllers.messages", "ownblock.controllers.storage"]).constant({
   urls: {
     "static": "/static/",
     partials: "/static/partials/",
@@ -1822,6 +1822,138 @@ angular.module("ownblock.controllers.residents", ["ownblock", "ownblock.services
       return $scope.resident.$delete(function() {
         notifier.success($scope.resident.full_name + " has been removed.");
         return $state.go("residents.list");
+      });
+    };
+  }
+]);
+
+angular.module("ownblock.controllers.storage", ["ownblock", "ownblock.services"]).controller("storage.ListCtrl", [
+  "$scope", "api", "paginator", function($scope, api, paginator) {
+    $scope.paginator = paginator();
+    api.StorageItem.query().$promise.then(function(response) {
+      return $scope.paginator.reload(response);
+    });
+    return api.Place.query().$promise.then(function(response) {
+      return $scope.places = response;
+    });
+  }
+]).controller("storage.NewPlaceCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    $scope.place = new api.Place();
+    return $scope.save = function() {
+      return $scope.place.$save(function() {
+        notifier.success("The storage area has been added");
+        return $state.go("storage.list");
+      });
+    };
+  }
+]).controller("storage.NewItemCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    $scope.item = new api.StorageItem();
+    $scope.places = [];
+    $scope.editPhoto = true;
+    $scope.showPhoto = false;
+    api.Place.query().$promise.then(function(response) {
+      return $scope.places = response;
+    });
+    $scope.save = function() {
+      return $scope.item.$save(function() {
+        notifier.success("Your item has been added");
+        return $state.go("storage.list");
+      });
+    };
+    return $scope.cancel = function() {
+      $state.go("storage.list");
+    };
+  }
+]).controller("storage.EditItemCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    $scope.editPhoto = false;
+    $scope.showPhoto = false;
+    $scope.places = [];
+    api.StorageItem.get({
+      id: $state.params.id
+    }, function(response) {
+      $scope.item = response;
+      $scope.showPhoto = $scope.item.photo;
+      return $scope.editPhoto = !$scope.showPhoto;
+    });
+    $scope.toggleEditPhoto = function() {
+      return $scope.editPhoto = !$scope.editPhoto;
+    };
+    $scope.deletePhoto = function() {
+      return $scope.item.$removePhoto(function() {
+        $scope.item.photo = null;
+        $scope.showPhoto = false;
+        $scope.editPhoto = true;
+        return notifier.success("Your photo has been removed");
+      });
+    };
+    api.Place.query().$promise.then(function(response) {
+      return $scope.places = response;
+    });
+    $scope.save = function() {
+      return $scope.item.$update(function() {
+        notifier.success("Your item has been updated");
+        return $state.go("storage.itemDetail", {
+          id: $scope.item.id
+        });
+      });
+    };
+    return $scope.cancel = function() {
+      return $state.go("storage.itemDetail", {
+        id: $scope.item.id
+      });
+    };
+  }
+]).controller("storage.ItemDetailCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    api.StorageItem.get({
+      id: $state.params.id
+    }, function(response) {
+      return $scope.item = response;
+    });
+    return $scope.deleteItem = function() {
+      return $scope.item.$delete(function() {
+        notifier.success("Your item has been removed");
+        return $state.go("storage.list");
+      });
+    };
+  }
+]).controller("storage.PlaceDetailCtrl", [
+  "$scope", "$state", "api", "paginator", "notifier", function($scope, $state, api, paginator, notifier) {
+    $scope.paginator = paginator();
+    api.Place.get({
+      id: $state.params.id
+    }, function(response) {
+      $scope.place = response;
+      return $scope.paginator.reload($scope.place.items);
+    });
+    return $scope.deletePlace = function() {
+      return $scope.place.$delete(function() {
+        notifier.success("Storage area has been removed");
+        return $state.go("storage.list");
+      });
+    };
+  }
+]).controller("storage.EditPlaceCtrl", [
+  "$scope", "$state", "api", "notifier", function($scope, $state, api, notifier) {
+    api.Place.get({
+      id: $state.params.id
+    }, function(response) {
+      return $scope.place = response;
+    });
+    $scope.save = function() {
+      return $scope.place.$update(function() {
+        notifier.success("The storage area has been updated");
+        return $state.go("storage.placeDetail", {
+          id: $scope.place.id
+        });
+      });
+    };
+    return $scope.cancel = function() {
+      return $state.go("storage.placeDetail", {
+        id: $scope.place.id
       });
     };
   }

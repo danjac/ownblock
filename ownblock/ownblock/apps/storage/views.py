@@ -44,7 +44,8 @@ class ItemViewSet(viewsets.ModelViewSet):
 
     model = Item
     serializer_class = ItemSerializer
-    parser_classes = (parsers.MultiPartParser, )
+    parser_classes = (parsers.MultiPartParser,
+                      parsers.JSONParser,)
 
     @detail_route(methods=('PATCH',))
     def remove_photo(self, request, pk, *args, **kwargs):

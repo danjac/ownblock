@@ -14,6 +14,7 @@ angular.module("ownblock", [
   "ownblock.controllers.amenities"
   "ownblock.controllers.notices"
   "ownblock.controllers.messages"
+  "ownblock.controllers.storage"
 ]).constant(urls:
   static: "/static/"
   partials: "/static/partials/"
