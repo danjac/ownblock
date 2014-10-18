@@ -55,6 +55,14 @@ class ItemSerializer(serializers.ModelSerializer):
                   'is_removable',
                   'serial_no')
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        request = self.context['request']
+        # a bit funky, photo is optional at edit
+        if request.method == 'PUT' and not request.FILES:
+            del self.fields['photo']
+
     def get_place_name(self, obj):
         return obj.place.name
 
