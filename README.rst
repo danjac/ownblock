@@ -8,21 +8,24 @@ Community management application for apartment blocks and condos. Written in Dja
 requirements
 ========================
 
-Python 3
-PostgreSQL
-Bower
+* Python 3
+* PostgreSQL
+* Bower
 
 ========================
 installation
 ========================
 
-    pip install -r requirements.txt
+    pip install -r requirements/local.txt
+
     bower install 
 
 Set the following environment variables:
     
     DB_NAME
+
     DB_USER
+
     DB_PASSWORD
 
 Run migrations:
