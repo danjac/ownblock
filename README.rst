@@ -16,9 +16,13 @@ requirements
 installation
 ========================
 
-    pip install -r requirements/local.txt
+    cd ownblock/
 
-    bower install 
+    pip install -r ../requirements/local.txt
+
+    npm install 
+
+    gulp
 
 Set the following environment variables:
     
@@ -30,7 +34,7 @@ Set the following environment variables:
 
 Run migrations:
     
-    python ownblock/manage.py migrate 
+    python manage.py migrate 
 
 Online demo: http://demo.ownblock.com
 
