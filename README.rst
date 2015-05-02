@@ -24,13 +24,17 @@ installation
 
     gulp
 
-Set the following environment variables:
+Create a new database in PostgreSQL:
+
+    createdb -U <name> -W <db_name>
+
+Set the following environment variables to point to your database:
     
-    DB_NAME
+    DJANGO_DB_NAME
 
-    DB_USER
+    DJANGO_DB_USER
 
-    DB_PASSWORD
+    DJANGO_DB_PASSWORD
 
 Run migrations:
     
