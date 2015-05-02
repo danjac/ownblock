@@ -19,7 +19,6 @@ class Base(Configuration):
     TEMPLATE_DEBUG = DEBUG
 
     ADMINS = (
-        ('Dan Jacob', 'danjac354@gmail.com'),
     )
     DEFAULT_FROM_EMAIL = 'noreply@ownblock.com'
 

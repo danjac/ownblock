@@ -2,20 +2,31 @@
 ownblock
 ========================
 
+Community management application for apartment blocks and condos. Written in Django ad AngularJS.
+
 ========================
 requirements
 ========================
 
+Python 3
+PostgreSQL
 
 ========================
 installation
 ========================
 
-Install Python dependencies
+    pip install -r requirements.txt
+    bower install 
 
-Setup PostgreSQL
+Set the following environment variables:
+    
+    DB_NAME
+    DB_USER
+    DB_PASSWORD
 
-Run bower
+Run migrations:
+    
+    python ownblock/manage.py migrate 
 
-OpenLayers fixes
+Online demo: http://demo.ownblock.com
 
