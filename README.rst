@@ -10,6 +10,7 @@ requirements
 
 Python 3
 PostgreSQL
+Bower
 
 ========================
 installation
